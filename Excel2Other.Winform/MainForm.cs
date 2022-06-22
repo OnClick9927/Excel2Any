@@ -38,15 +38,15 @@ namespace Excel2Other.Winform
             //添加Json页面
             jsonPage = new JsonConvertPage();
             AddPage(jsonPage, ++pageIndex);
-            Aside.CreateNode("Json", 157417, 30, pageIndex);
+            var jsonNode = Aside.CreateNode("Json", 261787, 30, pageIndex);
             //添加Xml页面
             xmlPage = new XMLConvertPage();
             AddPage(xmlPage, ++pageIndex);
-            Aside.CreateNode("Xml", 261891, 30, pageIndex);
+            var xmlNode = Aside.CreateNode("Xml", 261891, 30, pageIndex);
             //添加CSharp页面
             csharpPage = new CSharpConvertPage();
             AddPage(csharpPage, ++pageIndex);
-            Aside.CreateNode("C#", 261897, 30, pageIndex);
+            var csNode = Aside.CreateNode("C#", 261897, 30, pageIndex);
             //添加设置页面
             var settingPage = new SettingPage(jsonSetting, cSharpSetting, xmlSetting, formSetting);
             AddPage(settingPage, ++pageIndex);
@@ -104,7 +104,7 @@ namespace Excel2Other.Winform
 
 
             //程序设置部分
-            if (formSetting.openLast && !string.IsNullOrEmpty(formSetting.lastOpenPath))
+            if (formSetting.openLast && !string.IsNullOrEmpty(formSetting.lastOpenPath) && Directory.Exists(formSetting.lastOpenPath))
             {
                 OpenFileOrDirectory(formSetting.lastOpenPath);
             }
@@ -112,7 +112,7 @@ namespace Excel2Other.Winform
 
         private void Aside_MenuItemClick(TreeNode node, NavMenuItem item, int pageIndex)
         {
-            if (item.Text != "设置")
+            if (pageIndex != -1 && item.Text != "设置")
             {
                 ((BaseConvertPage)GetPage(pageIndex)).SetFileListControl(tvwFile);
             }

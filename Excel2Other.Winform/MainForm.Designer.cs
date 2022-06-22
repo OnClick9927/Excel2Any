@@ -48,9 +48,11 @@
             this.Aside.SelectedColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.Aside.SelectedForeColor = System.Drawing.Color.White;
             this.Aside.SelectedHighColor = System.Drawing.Color.Silver;
+            this.Aside.ShowItemsArrow = false;
+            this.Aside.ShowNodeToolTips = true;
             this.Aside.ShowPlusMinus = false;
             this.Aside.ShowRootLines = false;
-            this.Aside.Size = new System.Drawing.Size(58, 562);
+            this.Aside.Size = new System.Drawing.Size(127, 562);
             this.Aside.Style = Sunny.UI.UIStyle.Custom;
             this.Aside.StyleCustomMode = true;
             this.Aside.MenuItemClick += new Sunny.UI.UINavMenu.OnMenuItemClick(this.Aside_MenuItemClick);
@@ -82,7 +84,7 @@
             this.tvwFile.ImageList = this.imglstFiles;
             this.tvwFile.Indent = 10;
             this.tvwFile.LineColor = System.Drawing.Color.DimGray;
-            this.tvwFile.Location = new System.Drawing.Point(0, 0);
+            this.tvwFile.Location = new System.Drawing.Point(60, 35);
             this.tvwFile.Name = "tvwFile";
             this.tvwFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tvwFile.SelectedImageIndex = 0;
@@ -112,7 +114,7 @@
             this.btnSetting.RectPressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.btnSetting.RectSelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.btnSetting.RectSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.None;
-            this.btnSetting.Size = new System.Drawing.Size(49, 47);
+            this.btnSetting.Size = new System.Drawing.Size(118, 47);
             this.btnSetting.Style = Sunny.UI.UIStyle.Custom;
             this.btnSetting.StyleCustomMode = true;
             this.btnSetting.Symbol = 61459;
