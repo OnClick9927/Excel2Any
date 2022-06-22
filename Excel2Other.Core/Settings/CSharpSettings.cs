@@ -1,0 +1,29 @@
+﻿namespace Excel2Other
+{
+    public class CSharpSettings:BaseSettings
+    {
+
+        /// <summary>
+        /// 描述行号设置
+        /// </summary>
+        public int CommentRowNum;
+
+        /// <summary>
+        /// 字段名行号设置
+        /// </summary>
+        public int FieldRowNum;
+
+        /// <summary>
+        /// 字段类型行号设置
+        /// </summary>
+        public int TypeRowNum;
+
+
+        public CSharpSettings() : base()
+        {
+            CommentRowNum = 2;              //字段描述所在行号
+            TypeRowNum = 1;                 //字段类型所在行号
+            FieldRowNum = 0;                //字段名所在行号
+        }
+    }
+}
