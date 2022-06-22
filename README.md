@@ -1,5 +1,5 @@
 # Excel2Other
-这个工具可以将Excel转换成其他格式的文档，目前支持Json、Xml、C#，支持继续扩展核心代码,感谢大家使用，本程序仅在Github上开源，不商用
+这个工具可以将Excel转换成其他格式的文档，目前支持Json、Xml、C#，支持继续扩展核心代码，欢迎大家使用。
 
 参考[neil3d/excel2json](https://github.com/neil3d/excel2json)优化了部分代码和增减了其他配置，界面使用了SunnyUI并且参考VSCode配色美化
 
