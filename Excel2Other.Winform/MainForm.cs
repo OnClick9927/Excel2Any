@@ -39,14 +39,18 @@ namespace Excel2Other.Winform
             jsonPage = new JsonConvertPage();
             AddPage(jsonPage, ++pageIndex);
             var jsonNode = Aside.CreateNode("Json", 261787, 30, pageIndex);
+            jsonNode.ToolTipText = "Json";
+            //uiToolTip1.Show("1111");
             //添加Xml页面
             xmlPage = new XMLConvertPage();
             AddPage(xmlPage, ++pageIndex);
             var xmlNode = Aside.CreateNode("Xml", 261891, 30, pageIndex);
+            xmlNode.ToolTipText = "Xml";
             //添加CSharp页面
             csharpPage = new CSharpConvertPage();
             AddPage(csharpPage, ++pageIndex);
             var csNode = Aside.CreateNode("C#", 261897, 30, pageIndex);
+            csNode.ToolTipText = "C#";
             //添加设置页面
             var settingPage = new SettingPage(jsonSetting, cSharpSetting, xmlSetting, formSetting);
             AddPage(settingPage, ++pageIndex);
@@ -91,6 +95,8 @@ namespace Excel2Other.Winform
             onOpenFile += csharpPage.RefreshSheet;
             onOpenFile += xmlPage.RefreshSheet;
 
+            settingPage.onNavMenuChange += AsideWidthChange;
+
             //设置部分的委托
             settingPage.onJsonSave += (selectPath) => SaveSetting(jsonSetting, "jconfig", selectPath ? "" : "Settings/JsonSettings.jconfig");
             settingPage.onCSharpSave += (selectPath) => SaveSetting(cSharpSetting, "csconfig", selectPath ? "" : "Settings/CSharpSettings.csconfig");
@@ -116,6 +122,11 @@ namespace Excel2Other.Winform
             {
                 ((BaseConvertPage)GetPage(pageIndex)).SetFileListControl(tvwFile);
             }
+        }
+
+        private void AsideWidthChange(bool expand)
+        {
+            Aside.Width = expand ? 120 : 55;
         }
         private void tvwFile_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {

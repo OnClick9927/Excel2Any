@@ -30,6 +30,9 @@
         {
             this.tabSettings = new Sunny.UI.UITabControlMenu();
             this.tabBase = new System.Windows.Forms.TabPage();
+            this.swExpand = new Sunny.UI.UISwitch();
+            this.uiLabel26 = new Sunny.UI.UILabel();
+            this.uiLabel32 = new Sunny.UI.UILabel();
             this.uiLabel6 = new Sunny.UI.UILabel();
             this.uiLabel17 = new Sunny.UI.UILabel();
             this.uiLabel5 = new Sunny.UI.UILabel();
@@ -77,6 +80,8 @@
             this.swJsonString = new Sunny.UI.UISwitch();
             this.swJsonCell = new Sunny.UI.UISwitch();
             this.tabXml = new System.Windows.Forms.TabPage();
+            this.uiLabel16 = new Sunny.UI.UILabel();
+            this.uiLabel31 = new Sunny.UI.UILabel();
             this.uiLabel14 = new Sunny.UI.UILabel();
             this.uiLabel12 = new Sunny.UI.UILabel();
             this.uiLabel13 = new Sunny.UI.UILabel();
@@ -136,8 +141,6 @@
             this.swCsExcludeSheet = new Sunny.UI.UISwitch();
             this.txtCsSavePath = new Sunny.UI.UITextBox();
             this.swCsMultiFiles = new Sunny.UI.UISwitch();
-            this.uiLabel16 = new Sunny.UI.UILabel();
-            this.uiLabel31 = new Sunny.UI.UILabel();
             this.tabSettings.SuspendLayout();
             this.tabBase.SuspendLayout();
             this.tabJson.SuspendLayout();
@@ -177,6 +180,9 @@
             // tabBase
             // 
             this.tabBase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.tabBase.Controls.Add(this.swExpand);
+            this.tabBase.Controls.Add(this.uiLabel26);
+            this.tabBase.Controls.Add(this.uiLabel32);
             this.tabBase.Controls.Add(this.uiLabel6);
             this.tabBase.Controls.Add(this.uiLabel17);
             this.tabBase.Controls.Add(this.uiLabel5);
@@ -192,11 +198,53 @@
             this.tabBase.TabIndex = 0;
             this.tabBase.Text = "　　通用";
             // 
+            // swExpand
+            // 
+            this.swExpand.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.swExpand.Location = new System.Drawing.Point(30, 312);
+            this.swExpand.MinimumSize = new System.Drawing.Size(1, 1);
+            this.swExpand.Name = "swExpand";
+            this.swExpand.Size = new System.Drawing.Size(75, 29);
+            this.swExpand.Style = Sunny.UI.UIStyle.Custom;
+            this.swExpand.StyleCustomMode = true;
+            this.swExpand.TabIndex = 11;
+            this.swExpand.Text = "排除文件";
+            this.swExpand.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.swExpand.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swExpand_ValueChanged);
+            // 
+            // uiLabel26
+            // 
+            this.uiLabel26.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.uiLabel26.ForeColor = System.Drawing.Color.White;
+            this.uiLabel26.Location = new System.Drawing.Point(111, 316);
+            this.uiLabel26.Name = "uiLabel26";
+            this.uiLabel26.Size = new System.Drawing.Size(437, 21);
+            this.uiLabel26.Style = Sunny.UI.UIStyle.Custom;
+            this.uiLabel26.StyleCustomMode = true;
+            this.uiLabel26.TabIndex = 10;
+            this.uiLabel26.Text = "侧边导航栏显示名称，并关闭ToolTip提示";
+            this.uiLabel26.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiLabel26.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // uiLabel32
+            // 
+            this.uiLabel32.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.uiLabel32.ForeColor = System.Drawing.Color.White;
+            this.uiLabel32.Location = new System.Drawing.Point(25, 281);
+            this.uiLabel32.Name = "uiLabel32";
+            this.uiLabel32.Size = new System.Drawing.Size(177, 28);
+            this.uiLabel32.Style = Sunny.UI.UIStyle.Custom;
+            this.uiLabel32.StyleCustomMode = true;
+            this.uiLabel32.TabIndex = 9;
+            this.uiLabel32.Text = "侧边栏显示名称";
+            this.uiLabel32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiLabel32.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
             // uiLabel6
             // 
             this.uiLabel6.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiLabel6.ForeColor = System.Drawing.Color.White;
-            this.uiLabel6.Location = new System.Drawing.Point(111, 230);
+            this.uiLabel6.Location = new System.Drawing.Point(111, 229);
             this.uiLabel6.Name = "uiLabel6";
             this.uiLabel6.Size = new System.Drawing.Size(437, 21);
             this.uiLabel6.Style = Sunny.UI.UIStyle.Custom;
@@ -954,6 +1002,34 @@
             this.tabXml.TabIndex = 2;
             this.tabXml.Text = "　　Xml";
             // 
+            // uiLabel16
+            // 
+            this.uiLabel16.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.uiLabel16.ForeColor = System.Drawing.Color.White;
+            this.uiLabel16.Location = new System.Drawing.Point(26, 839);
+            this.uiLabel16.Name = "uiLabel16";
+            this.uiLabel16.Size = new System.Drawing.Size(333, 21);
+            this.uiLabel16.Style = Sunny.UI.UIStyle.Custom;
+            this.uiLabel16.StyleCustomMode = true;
+            this.uiLabel16.TabIndex = 78;
+            this.uiLabel16.Text = "Excel表中对应字段描述的行号（从1开始）";
+            this.uiLabel16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiLabel16.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // uiLabel31
+            // 
+            this.uiLabel31.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.uiLabel31.ForeColor = System.Drawing.Color.White;
+            this.uiLabel31.Location = new System.Drawing.Point(25, 811);
+            this.uiLabel31.Name = "uiLabel31";
+            this.uiLabel31.Size = new System.Drawing.Size(177, 28);
+            this.uiLabel31.Style = Sunny.UI.UIStyle.Custom;
+            this.uiLabel31.StyleCustomMode = true;
+            this.uiLabel31.TabIndex = 77;
+            this.uiLabel31.Text = "字段描述行号";
+            this.uiLabel31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiLabel31.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
             // uiLabel14
             // 
             this.uiLabel14.BackColor = System.Drawing.Color.Transparent;
@@ -1000,7 +1076,7 @@
             // 
             this.uiLabel52.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiLabel52.ForeColor = System.Drawing.Color.White;
-            this.uiLabel52.Location = new System.Drawing.Point(26, 841);
+            this.uiLabel52.Location = new System.Drawing.Point(26, 944);
             this.uiLabel52.Name = "uiLabel52";
             this.uiLabel52.Size = new System.Drawing.Size(333, 21);
             this.uiLabel52.Style = Sunny.UI.UIStyle.Custom;
@@ -1014,7 +1090,7 @@
             // 
             this.uiLabel53.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiLabel53.ForeColor = System.Drawing.Color.White;
-            this.uiLabel53.Location = new System.Drawing.Point(25, 813);
+            this.uiLabel53.Location = new System.Drawing.Point(25, 916);
             this.uiLabel53.Name = "uiLabel53";
             this.uiLabel53.Size = new System.Drawing.Size(177, 28);
             this.uiLabel53.Style = Sunny.UI.UIStyle.Custom;
@@ -1297,7 +1373,7 @@
             // 
             this.txtXmlStart.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtXmlStart.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtXmlStart.Location = new System.Drawing.Point(30, 867);
+            this.txtXmlStart.Location = new System.Drawing.Point(30, 970);
             this.txtXmlStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtXmlStart.MinimumSize = new System.Drawing.Size(1, 16);
             this.txtXmlStart.Name = "txtXmlStart";
@@ -1354,7 +1430,7 @@
             // 
             this.txtXmlComment.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtXmlComment.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.txtXmlComment.Location = new System.Drawing.Point(30, 973);
+            this.txtXmlComment.Location = new System.Drawing.Point(30, 865);
             this.txtXmlComment.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtXmlComment.MinimumSize = new System.Drawing.Size(1, 16);
             this.txtXmlComment.Name = "txtXmlComment";
@@ -1890,34 +1966,6 @@
             this.swCsMultiFiles.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.swCsMultiFiles.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swCsMultiFiles_ValueChanged);
             // 
-            // uiLabel16
-            // 
-            this.uiLabel16.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.uiLabel16.ForeColor = System.Drawing.Color.White;
-            this.uiLabel16.Location = new System.Drawing.Point(26, 947);
-            this.uiLabel16.Name = "uiLabel16";
-            this.uiLabel16.Size = new System.Drawing.Size(333, 21);
-            this.uiLabel16.Style = Sunny.UI.UIStyle.Custom;
-            this.uiLabel16.StyleCustomMode = true;
-            this.uiLabel16.TabIndex = 78;
-            this.uiLabel16.Text = "Excel表中对应字段描述的行号（从1开始）";
-            this.uiLabel16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.uiLabel16.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            // 
-            // uiLabel31
-            // 
-            this.uiLabel31.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.uiLabel31.ForeColor = System.Drawing.Color.White;
-            this.uiLabel31.Location = new System.Drawing.Point(25, 919);
-            this.uiLabel31.Name = "uiLabel31";
-            this.uiLabel31.Size = new System.Drawing.Size(177, 28);
-            this.uiLabel31.Style = Sunny.UI.UIStyle.Custom;
-            this.uiLabel31.StyleCustomMode = true;
-            this.uiLabel31.TabIndex = 77;
-            this.uiLabel31.Text = "字段描述行号";
-            this.uiLabel31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.uiLabel31.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            // 
             // SettingPage
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -2048,5 +2096,8 @@
         private Sunny.UI.UILabel uiLabel15;
         private Sunny.UI.UILabel uiLabel16;
         private Sunny.UI.UILabel uiLabel31;
+        private Sunny.UI.UISwitch swExpand;
+        private Sunny.UI.UILabel uiLabel26;
+        private Sunny.UI.UILabel uiLabel32;
     }
 }

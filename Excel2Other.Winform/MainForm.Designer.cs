@@ -52,7 +52,7 @@
             this.Aside.ShowNodeToolTips = true;
             this.Aside.ShowPlusMinus = false;
             this.Aside.ShowRootLines = false;
-            this.Aside.Size = new System.Drawing.Size(127, 562);
+            this.Aside.Size = new System.Drawing.Size(52, 562);
             this.Aside.Style = Sunny.UI.UIStyle.Custom;
             this.Aside.StyleCustomMode = true;
             this.Aside.MenuItemClick += new Sunny.UI.UINavMenu.OnMenuItemClick(this.Aside_MenuItemClick);
@@ -105,7 +105,7 @@
             this.btnSetting.FillPressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.btnSetting.FillSelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(56)))), ((int)(((byte)(56)))));
             this.btnSetting.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSetting.Location = new System.Drawing.Point(5, 548);
+            this.btnSetting.Location = new System.Drawing.Point(2, 548);
             this.btnSetting.MinimumSize = new System.Drawing.Size(1, 1);
             this.btnSetting.Name = "btnSetting";
             this.btnSetting.RadiusSides = Sunny.UI.UICornerRadiusSides.None;
@@ -114,7 +114,7 @@
             this.btnSetting.RectPressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.btnSetting.RectSelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.btnSetting.RectSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.None;
-            this.btnSetting.Size = new System.Drawing.Size(118, 47);
+            this.btnSetting.Size = new System.Drawing.Size(52, 47);
             this.btnSetting.Style = Sunny.UI.UIStyle.Custom;
             this.btnSetting.StyleCustomMode = true;
             this.btnSetting.Symbol = 61459;

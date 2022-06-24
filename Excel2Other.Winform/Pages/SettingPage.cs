@@ -23,6 +23,8 @@ namespace Excel2Other.Winform
         public Action onXmlLoad;
         public Action onCSharpLoad;
 
+        public Action<bool> onNavMenuChange;
+
         public SettingPage(JsonSettings jsonSetting, CSharpSettings cSharpSetting, XmlSettings xmlSetting, FormSetting formSetting)
         {
             _jsonSetting = jsonSetting;
@@ -52,6 +54,7 @@ namespace Excel2Other.Winform
                 swComExcludeFile.Active = _formSetting.excludeFile;
                 swComLast.Active = _formSetting.openLast;
                 txtComPrefix.Text = _formSetting.excludePrefix;
+                onNavMenuChange?.Invoke(_formSetting.isExpand);
             }
         }
 
@@ -393,6 +396,13 @@ namespace Excel2Other.Winform
             {
                 UIMessageTip.ShowError("请拖入文件夹");
             }
+        }
+
+        private void swExpand_ValueChanged(object sender, bool value)
+        {
+            _formSetting.isExpand = value;
+            onNavMenuChange?.Invoke(value);
+            onFormSave?.Invoke();
         }
     }
 }

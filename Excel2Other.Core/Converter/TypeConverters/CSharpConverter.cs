@@ -63,9 +63,6 @@ namespace Excel2Other
                     continue;
                 }
 
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine($"public class {sheet.TableName}\r\n{{");
-
                 #region 内容
                 int startCol;//开始列数
                 string sheetName;//Sheet名
@@ -73,6 +70,9 @@ namespace Excel2Other
                 startCol = _setting.excludeFirstCol ? 1 : 0;
                 sheetName = _setting.excludeFirstCol ? sheet.Rows[0][0].ToString() : sheet.TableName;
 
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine($"public class {sheetName}\r\n{{");
                 //遍历列 根据配置里设置的行号来确认字段的类型、名称和描述
                 for (int i = startCol; i < sheet.Columns.Count; i++)
                 {

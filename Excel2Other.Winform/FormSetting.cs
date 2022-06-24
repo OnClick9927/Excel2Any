@@ -19,12 +19,18 @@
         /// </summary>
         public bool excludeFile;
 
+        /// <summary>
+        /// 是否扩展左边的栏（调整宽度）
+        /// </summary>
+        public bool isExpand;
+
         public FormSetting()
         {
             lastOpenPath = "";
             openLast = false;
             excludePrefix = "#";
             excludeFile = true;
+            isExpand = false;
         }
     }
 }
