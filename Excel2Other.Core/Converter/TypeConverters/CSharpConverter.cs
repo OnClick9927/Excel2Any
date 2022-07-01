@@ -92,19 +92,23 @@ namespace Excel2Other
                         fieldType = "object";
                     }
 
-                    string fieldComment = "";
+                    var summary = new StringBuilder();
                     if (_setting.CommentRowNum <= sheet.Rows.Count - 1)
                     {
-                        fieldComment = sheet.Rows[_setting.CommentRowNum][i].ToString();
+                         var fieldComment = sheet.Rows[_setting.CommentRowNum][i].ToString();
+                        
                         if (!string.IsNullOrWhiteSpace(fieldComment))
                         {
-                            fieldComment = "//" + fieldComment;
-                            fieldComment.Replace("\n", "_"); //替换掉回车 不然单元格带回车的奇奇怪怪
+                            summary.AppendLine("\t/// <summmary>");
+                            foreach (var tempString in fieldComment.Replace("\r","").Split('\n'))
+                            {
+                                summary.AppendLine($"\t/// {tempString}");
+                            }
+                            summary.AppendLine("\t/// </summary>");
                         }
                     }
-
-
-                    sb.AppendLine($"\tpublic {fieldType} {fieldName}; {fieldComment}");
+                    sb.Append(summary);
+                    sb.AppendLine($"\tpublic {fieldType} {fieldName}{(_setting.IsProperty?"{ get; set; }":";")}\n");
                 }
                 #endregion
 

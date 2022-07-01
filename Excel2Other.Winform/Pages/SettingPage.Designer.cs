@@ -69,16 +69,16 @@
             this.btnJsonSave = new Sunny.UI.UIButton();
             this.btnJsonLoad = new Sunny.UI.UIButton();
             this.swJsonFirstCol = new Sunny.UI.UISwitch();
-            this.txtJsonStart = new Sunny.UI.UITextBox();
-            this.txtJsonField = new Sunny.UI.UITextBox();
-            this.txtJsonExcludePrefix = new Sunny.UI.UITextBox();
             this.swJsonExcludeSheet = new Sunny.UI.UISwitch();
-            this.txtJsonSavePath = new Sunny.UI.UITextBox();
             this.swJsonMultiFiles = new Sunny.UI.UISwitch();
-            this.txtJsonDateFormat = new Sunny.UI.UITextBox();
             this.swJsonSpace = new Sunny.UI.UISwitch();
             this.swJsonString = new Sunny.UI.UISwitch();
             this.swJsonCell = new Sunny.UI.UISwitch();
+            this.txtJsonStart = new Sunny.UI.UITextBox();
+            this.txtJsonField = new Sunny.UI.UITextBox();
+            this.txtJsonExcludePrefix = new Sunny.UI.UITextBox();
+            this.txtJsonSavePath = new Sunny.UI.UITextBox();
+            this.txtJsonDateFormat = new Sunny.UI.UITextBox();
             this.tabXml = new System.Windows.Forms.TabPage();
             this.uiLabel16 = new Sunny.UI.UILabel();
             this.uiLabel31 = new Sunny.UI.UILabel();
@@ -114,6 +114,9 @@
             this.txtXmlSavePath = new Sunny.UI.UITextBox();
             this.swXmlMultiFiles = new Sunny.UI.UISwitch();
             this.tabCSharp = new System.Windows.Forms.TabPage();
+            this.uiLabel33 = new Sunny.UI.UILabel();
+            this.uiLabel34 = new Sunny.UI.UILabel();
+            this.swCsProperty = new Sunny.UI.UISwitch();
             this.uiLabel15 = new Sunny.UI.UILabel();
             this.btnCsLoad = new Sunny.UI.UIButton();
             this.btnCsSave = new Sunny.UI.UIButton();
@@ -400,16 +403,16 @@
             this.tabJson.Controls.Add(this.btnJsonSave);
             this.tabJson.Controls.Add(this.btnJsonLoad);
             this.tabJson.Controls.Add(this.swJsonFirstCol);
-            this.tabJson.Controls.Add(this.txtJsonStart);
-            this.tabJson.Controls.Add(this.txtJsonField);
-            this.tabJson.Controls.Add(this.txtJsonExcludePrefix);
             this.tabJson.Controls.Add(this.swJsonExcludeSheet);
-            this.tabJson.Controls.Add(this.txtJsonSavePath);
             this.tabJson.Controls.Add(this.swJsonMultiFiles);
-            this.tabJson.Controls.Add(this.txtJsonDateFormat);
             this.tabJson.Controls.Add(this.swJsonSpace);
             this.tabJson.Controls.Add(this.swJsonString);
             this.tabJson.Controls.Add(this.swJsonCell);
+            this.tabJson.Controls.Add(this.txtJsonStart);
+            this.tabJson.Controls.Add(this.txtJsonField);
+            this.tabJson.Controls.Add(this.txtJsonExcludePrefix);
+            this.tabJson.Controls.Add(this.txtJsonSavePath);
+            this.tabJson.Controls.Add(this.txtJsonDateFormat);
             this.tabJson.Location = new System.Drawing.Point(131, 0);
             this.tabJson.Name = "tabJson";
             this.tabJson.Size = new System.Drawing.Size(669, 450);
@@ -421,7 +424,7 @@
             this.uiLabel21.BackColor = System.Drawing.Color.Transparent;
             this.uiLabel21.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiLabel21.ForeColor = System.Drawing.Color.White;
-            this.uiLabel21.Location = new System.Drawing.Point(26, 1085);
+            this.uiLabel21.Location = new System.Drawing.Point(24, 1089);
             this.uiLabel21.Name = "uiLabel21";
             this.uiLabel21.Size = new System.Drawing.Size(308, 21);
             this.uiLabel21.Style = Sunny.UI.UIStyle.Custom;
@@ -742,7 +745,7 @@
             // 
             this.btnJsonSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnJsonSave.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnJsonSave.Location = new System.Drawing.Point(161, 1047);
+            this.btnJsonSave.Location = new System.Drawing.Point(159, 1051);
             this.btnJsonSave.MinimumSize = new System.Drawing.Size(1, 1);
             this.btnJsonSave.Name = "btnJsonSave";
             this.btnJsonSave.Size = new System.Drawing.Size(125, 35);
@@ -763,7 +766,7 @@
             this.btnJsonLoad.FillPressColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(46)))), ((int)(((byte)(147)))));
             this.btnJsonLoad.FillSelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(46)))), ((int)(((byte)(147)))));
             this.btnJsonLoad.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnJsonLoad.Location = new System.Drawing.Point(30, 1047);
+            this.btnJsonLoad.Location = new System.Drawing.Point(28, 1051);
             this.btnJsonLoad.MinimumSize = new System.Drawing.Size(1, 1);
             this.btnJsonLoad.Name = "btnJsonLoad";
             this.btnJsonLoad.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(58)))), ((int)(((byte)(183)))));
@@ -792,6 +795,76 @@
             this.swJsonFirstCol.Text = "uiSwitch6";
             this.swJsonFirstCol.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.swJsonFirstCol.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonFirstCol_ValueChanged);
+            // 
+            // swJsonExcludeSheet
+            // 
+            this.swJsonExcludeSheet.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.swJsonExcludeSheet.Location = new System.Drawing.Point(30, 697);
+            this.swJsonExcludeSheet.MinimumSize = new System.Drawing.Size(1, 1);
+            this.swJsonExcludeSheet.Name = "swJsonExcludeSheet";
+            this.swJsonExcludeSheet.Size = new System.Drawing.Size(75, 29);
+            this.swJsonExcludeSheet.Style = Sunny.UI.UIStyle.Custom;
+            this.swJsonExcludeSheet.StyleCustomMode = true;
+            this.swJsonExcludeSheet.TabIndex = 11;
+            this.swJsonExcludeSheet.Text = "uiSwitch1";
+            this.swJsonExcludeSheet.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.swJsonExcludeSheet.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonExcludeSheet_ValueChanged);
+            // 
+            // swJsonMultiFiles
+            // 
+            this.swJsonMultiFiles.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.swJsonMultiFiles.Location = new System.Drawing.Point(30, 509);
+            this.swJsonMultiFiles.MinimumSize = new System.Drawing.Size(1, 1);
+            this.swJsonMultiFiles.Name = "swJsonMultiFiles";
+            this.swJsonMultiFiles.Size = new System.Drawing.Size(75, 29);
+            this.swJsonMultiFiles.Style = Sunny.UI.UIStyle.Custom;
+            this.swJsonMultiFiles.StyleCustomMode = true;
+            this.swJsonMultiFiles.TabIndex = 7;
+            this.swJsonMultiFiles.Text = "uiSwitch1";
+            this.swJsonMultiFiles.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.swJsonMultiFiles.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonMultiFiles_ValueChanged);
+            // 
+            // swJsonSpace
+            // 
+            this.swJsonSpace.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.swJsonSpace.Location = new System.Drawing.Point(30, 315);
+            this.swJsonSpace.MinimumSize = new System.Drawing.Size(1, 1);
+            this.swJsonSpace.Name = "swJsonSpace";
+            this.swJsonSpace.Size = new System.Drawing.Size(75, 29);
+            this.swJsonSpace.Style = Sunny.UI.UIStyle.Custom;
+            this.swJsonSpace.StyleCustomMode = true;
+            this.swJsonSpace.TabIndex = 2;
+            this.swJsonSpace.Text = "uiSwitch6";
+            this.swJsonSpace.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.swJsonSpace.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonSpace_ValueChanged);
+            // 
+            // swJsonString
+            // 
+            this.swJsonString.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.swJsonString.Location = new System.Drawing.Point(30, 230);
+            this.swJsonString.MinimumSize = new System.Drawing.Size(1, 1);
+            this.swJsonString.Name = "swJsonString";
+            this.swJsonString.Size = new System.Drawing.Size(75, 29);
+            this.swJsonString.Style = Sunny.UI.UIStyle.Custom;
+            this.swJsonString.StyleCustomMode = true;
+            this.swJsonString.TabIndex = 2;
+            this.swJsonString.Text = "uiSwitch6";
+            this.swJsonString.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.swJsonString.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonString_ValueChanged);
+            // 
+            // swJsonCell
+            // 
+            this.swJsonCell.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.swJsonCell.Location = new System.Drawing.Point(30, 40);
+            this.swJsonCell.MinimumSize = new System.Drawing.Size(1, 1);
+            this.swJsonCell.Name = "swJsonCell";
+            this.swJsonCell.Size = new System.Drawing.Size(75, 29);
+            this.swJsonCell.Style = Sunny.UI.UIStyle.Custom;
+            this.swJsonCell.StyleCustomMode = true;
+            this.swJsonCell.TabIndex = 2;
+            this.swJsonCell.Text = "uiSwitch6";
+            this.swJsonCell.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.swJsonCell.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonCell_ValueChanged);
             // 
             // txtJsonStart
             // 
@@ -849,20 +922,6 @@
             this.txtJsonExcludePrefix.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.txtJsonExcludePrefix.Leave += new System.EventHandler(this.txtJsonExcludePrefix_Leave);
             // 
-            // swJsonExcludeSheet
-            // 
-            this.swJsonExcludeSheet.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.swJsonExcludeSheet.Location = new System.Drawing.Point(30, 697);
-            this.swJsonExcludeSheet.MinimumSize = new System.Drawing.Size(1, 1);
-            this.swJsonExcludeSheet.Name = "swJsonExcludeSheet";
-            this.swJsonExcludeSheet.Size = new System.Drawing.Size(75, 29);
-            this.swJsonExcludeSheet.Style = Sunny.UI.UIStyle.Custom;
-            this.swJsonExcludeSheet.StyleCustomMode = true;
-            this.swJsonExcludeSheet.TabIndex = 11;
-            this.swJsonExcludeSheet.Text = "uiSwitch1";
-            this.swJsonExcludeSheet.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonExcludeSheet.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonExcludeSheet_ValueChanged);
-            // 
             // txtJsonSavePath
             // 
             this.txtJsonSavePath.AllowDrop = true;
@@ -885,20 +944,6 @@
             this.txtJsonSavePath.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
             this.txtJsonSavePath.DragEnter += new System.Windows.Forms.DragEventHandler(this.File_DragEnter);
             // 
-            // swJsonMultiFiles
-            // 
-            this.swJsonMultiFiles.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.swJsonMultiFiles.Location = new System.Drawing.Point(30, 509);
-            this.swJsonMultiFiles.MinimumSize = new System.Drawing.Size(1, 1);
-            this.swJsonMultiFiles.Name = "swJsonMultiFiles";
-            this.swJsonMultiFiles.Size = new System.Drawing.Size(75, 29);
-            this.swJsonMultiFiles.Style = Sunny.UI.UIStyle.Custom;
-            this.swJsonMultiFiles.StyleCustomMode = true;
-            this.swJsonMultiFiles.TabIndex = 7;
-            this.swJsonMultiFiles.Text = "uiSwitch1";
-            this.swJsonMultiFiles.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonMultiFiles.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonMultiFiles_ValueChanged);
-            // 
             // txtJsonDateFormat
             // 
             this.txtJsonDateFormat.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -916,48 +961,6 @@
             this.txtJsonDateFormat.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtJsonDateFormat.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.txtJsonDateFormat.Leave += new System.EventHandler(this.txtJsonDateFormat_Leave);
-            // 
-            // swJsonSpace
-            // 
-            this.swJsonSpace.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.swJsonSpace.Location = new System.Drawing.Point(30, 315);
-            this.swJsonSpace.MinimumSize = new System.Drawing.Size(1, 1);
-            this.swJsonSpace.Name = "swJsonSpace";
-            this.swJsonSpace.Size = new System.Drawing.Size(75, 29);
-            this.swJsonSpace.Style = Sunny.UI.UIStyle.Custom;
-            this.swJsonSpace.StyleCustomMode = true;
-            this.swJsonSpace.TabIndex = 2;
-            this.swJsonSpace.Text = "uiSwitch6";
-            this.swJsonSpace.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonSpace.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonSpace_ValueChanged);
-            // 
-            // swJsonString
-            // 
-            this.swJsonString.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.swJsonString.Location = new System.Drawing.Point(30, 230);
-            this.swJsonString.MinimumSize = new System.Drawing.Size(1, 1);
-            this.swJsonString.Name = "swJsonString";
-            this.swJsonString.Size = new System.Drawing.Size(75, 29);
-            this.swJsonString.Style = Sunny.UI.UIStyle.Custom;
-            this.swJsonString.StyleCustomMode = true;
-            this.swJsonString.TabIndex = 2;
-            this.swJsonString.Text = "uiSwitch6";
-            this.swJsonString.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonString.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonString_ValueChanged);
-            // 
-            // swJsonCell
-            // 
-            this.swJsonCell.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.swJsonCell.Location = new System.Drawing.Point(30, 40);
-            this.swJsonCell.MinimumSize = new System.Drawing.Size(1, 1);
-            this.swJsonCell.Name = "swJsonCell";
-            this.swJsonCell.Size = new System.Drawing.Size(75, 29);
-            this.swJsonCell.Style = Sunny.UI.UIStyle.Custom;
-            this.swJsonCell.StyleCustomMode = true;
-            this.swJsonCell.TabIndex = 2;
-            this.swJsonCell.Text = "uiSwitch6";
-            this.swJsonCell.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonCell.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonCell_ValueChanged);
             // 
             // tabXml
             // 
@@ -1517,6 +1520,9 @@
             // 
             this.tabCSharp.AutoScroll = true;
             this.tabCSharp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.tabCSharp.Controls.Add(this.uiLabel33);
+            this.tabCSharp.Controls.Add(this.uiLabel34);
+            this.tabCSharp.Controls.Add(this.swCsProperty);
             this.tabCSharp.Controls.Add(this.uiLabel15);
             this.tabCSharp.Controls.Add(this.btnCsLoad);
             this.tabCSharp.Controls.Add(this.btnCsSave);
@@ -1550,12 +1556,54 @@
             this.tabCSharp.TabIndex = 3;
             this.tabCSharp.Text = "　　C#";
             // 
+            // uiLabel33
+            // 
+            this.uiLabel33.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.uiLabel33.ForeColor = System.Drawing.Color.White;
+            this.uiLabel33.Location = new System.Drawing.Point(106, 864);
+            this.uiLabel33.Name = "uiLabel33";
+            this.uiLabel33.Size = new System.Drawing.Size(389, 21);
+            this.uiLabel33.Style = Sunny.UI.UIStyle.Custom;
+            this.uiLabel33.StyleCustomMode = true;
+            this.uiLabel33.TabIndex = 84;
+            this.uiLabel33.Text = "将字段输出为属性器（即{get; set;}）";
+            this.uiLabel33.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiLabel33.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // uiLabel34
+            // 
+            this.uiLabel34.Font = new System.Drawing.Font("微软雅黑", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.uiLabel34.ForeColor = System.Drawing.Color.White;
+            this.uiLabel34.Location = new System.Drawing.Point(25, 830);
+            this.uiLabel34.Name = "uiLabel34";
+            this.uiLabel34.Size = new System.Drawing.Size(293, 28);
+            this.uiLabel34.Style = Sunny.UI.UIStyle.Custom;
+            this.uiLabel34.StyleCustomMode = true;
+            this.uiLabel34.TabIndex = 83;
+            this.uiLabel34.Text = "输出为属性器";
+            this.uiLabel34.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.uiLabel34.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // swCsProperty
+            // 
+            this.swCsProperty.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.swCsProperty.Location = new System.Drawing.Point(30, 861);
+            this.swCsProperty.MinimumSize = new System.Drawing.Size(1, 1);
+            this.swCsProperty.Name = "swCsProperty";
+            this.swCsProperty.Size = new System.Drawing.Size(75, 29);
+            this.swCsProperty.Style = Sunny.UI.UIStyle.Custom;
+            this.swCsProperty.StyleCustomMode = true;
+            this.swCsProperty.TabIndex = 82;
+            this.swCsProperty.Text = "uiSwitch6";
+            this.swCsProperty.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.swCsProperty.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swCsProperty_ValueChanged);
+            // 
             // uiLabel15
             // 
             this.uiLabel15.BackColor = System.Drawing.Color.Transparent;
             this.uiLabel15.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiLabel15.ForeColor = System.Drawing.Color.White;
-            this.uiLabel15.Location = new System.Drawing.Point(26, 876);
+            this.uiLabel15.Location = new System.Drawing.Point(29, 970);
             this.uiLabel15.Name = "uiLabel15";
             this.uiLabel15.Size = new System.Drawing.Size(333, 21);
             this.uiLabel15.Style = Sunny.UI.UIStyle.Custom;
@@ -1573,7 +1621,7 @@
             this.btnCsLoad.FillPressColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(46)))), ((int)(((byte)(147)))));
             this.btnCsLoad.FillSelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(46)))), ((int)(((byte)(147)))));
             this.btnCsLoad.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnCsLoad.Location = new System.Drawing.Point(30, 838);
+            this.btnCsLoad.Location = new System.Drawing.Point(33, 932);
             this.btnCsLoad.MinimumSize = new System.Drawing.Size(1, 1);
             this.btnCsLoad.Name = "btnCsLoad";
             this.btnCsLoad.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(58)))), ((int)(((byte)(183)))));
@@ -1592,7 +1640,7 @@
             // 
             this.btnCsSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCsSave.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnCsSave.Location = new System.Drawing.Point(161, 838);
+            this.btnCsSave.Location = new System.Drawing.Point(164, 932);
             this.btnCsSave.MinimumSize = new System.Drawing.Size(1, 1);
             this.btnCsSave.Name = "btnCsSave";
             this.btnCsSave.Size = new System.Drawing.Size(125, 35);
@@ -1988,24 +2036,12 @@
 
         private Sunny.UI.UITabControlMenu tabSettings;
         internal System.Windows.Forms.TabPage tabBase;
-        private System.Windows.Forms.TabPage tabJson;
         private System.Windows.Forms.TabPage tabXml;
         private System.Windows.Forms.TabPage tabCSharp;
         private Sunny.UI.UILabel uiLabel1;
         private Sunny.UI.UISwitch swComLast;
         private Sunny.UI.UITextBox txtComPrefix;
         private Sunny.UI.UISwitch swComExcludeFile;
-        private Sunny.UI.UISwitch swJsonCell;
-        private Sunny.UI.UISwitch swJsonString;
-        private Sunny.UI.UISwitch swJsonSpace;
-        private Sunny.UI.UITextBox txtJsonDateFormat;
-        private Sunny.UI.UITextBox txtJsonSavePath;
-        private Sunny.UI.UISwitch swJsonMultiFiles;
-        private Sunny.UI.UISwitch swJsonExcludeSheet;
-        private Sunny.UI.UISwitch swJsonFirstCol;
-        private Sunny.UI.UITextBox txtJsonStart;
-        private Sunny.UI.UITextBox txtJsonField;
-        private Sunny.UI.UITextBox txtJsonExcludePrefix;
         private Sunny.UI.UISwitch swCsFirstCol;
         private Sunny.UI.UITextBox txtCsType;
         private Sunny.UI.UITextBox txtCsField;
@@ -2024,8 +2060,6 @@
         private Sunny.UI.UISwitch swXmlExcludeSheet;
         private Sunny.UI.UITextBox txtXmlSavePath;
         private Sunny.UI.UISwitch swXmlMultiFiles;
-        private Sunny.UI.UIButton btnJsonSave;
-        private Sunny.UI.UIButton btnJsonLoad;
         private Sunny.UI.UIButton btnXmlSave;
         private Sunny.UI.UIButton btnXmlLoad;
         private Sunny.UI.UILabel uiLabel3;
@@ -2033,29 +2067,6 @@
         private Sunny.UI.UILabel uiLabel5;
         private Sunny.UI.UILabel uiLabel6;
         private Sunny.UI.UILabel uiLabel17;
-        private Sunny.UI.UILabel uiLabel19;
-        private Sunny.UI.UILabel uiLabel29;
-        private Sunny.UI.UILabel uiLabel36;
-        private Sunny.UI.UILabel uiLabel8;
-        private Sunny.UI.UILabel uiLabel11;
-        private Sunny.UI.UILabel uiLabel39;
-        private Sunny.UI.UILabel uiLabel9;
-        private Sunny.UI.UILabel uiLabel40;
-        private Sunny.UI.UILabel uiLabel10;
-        private Sunny.UI.UILabel uiLabel41;
-        private Sunny.UI.UILabel uiLabel2;
-        private Sunny.UI.UILabel uiLabel42;
-        private Sunny.UI.UILabel uiLabel4;
-        private Sunny.UI.UILabel uiLabel43;
-        private Sunny.UI.UILabel uiLabel44;
-        private Sunny.UI.UILabel uiLabel45;
-        private Sunny.UI.UILabel uiLabel7;
-        private Sunny.UI.UILabel uiLabel23;
-        private Sunny.UI.UILabel uiLabel22;
-        private Sunny.UI.UILabel uiLabel46;
-        private Sunny.UI.UILabel uiLabel20;
-        private Sunny.UI.UILabel uiLabel47;
-        private Sunny.UI.UILabel uiLabel21;
         private Sunny.UI.UILabel uiLabel48;
         private Sunny.UI.UILabel uiLabel49;
         private Sunny.UI.UILabel uiLabel30;
@@ -2099,5 +2110,45 @@
         private Sunny.UI.UISwitch swExpand;
         private Sunny.UI.UILabel uiLabel26;
         private Sunny.UI.UILabel uiLabel32;
+        private System.Windows.Forms.TabPage tabJson;
+        private Sunny.UI.UILabel uiLabel21;
+        private Sunny.UI.UILabel uiLabel20;
+        private Sunny.UI.UILabel uiLabel47;
+        private Sunny.UI.UILabel uiLabel22;
+        private Sunny.UI.UILabel uiLabel46;
+        private Sunny.UI.UILabel uiLabel7;
+        private Sunny.UI.UILabel uiLabel23;
+        private Sunny.UI.UILabel uiLabel4;
+        private Sunny.UI.UILabel uiLabel43;
+        private Sunny.UI.UILabel uiLabel44;
+        private Sunny.UI.UILabel uiLabel45;
+        private Sunny.UI.UILabel uiLabel2;
+        private Sunny.UI.UILabel uiLabel42;
+        private Sunny.UI.UILabel uiLabel10;
+        private Sunny.UI.UILabel uiLabel41;
+        private Sunny.UI.UILabel uiLabel9;
+        private Sunny.UI.UILabel uiLabel40;
+        private Sunny.UI.UILabel uiLabel11;
+        private Sunny.UI.UILabel uiLabel39;
+        private Sunny.UI.UILabel uiLabel36;
+        private Sunny.UI.UILabel uiLabel8;
+        private Sunny.UI.UILabel uiLabel19;
+        private Sunny.UI.UILabel uiLabel29;
+        private Sunny.UI.UIButton btnJsonSave;
+        private Sunny.UI.UIButton btnJsonLoad;
+        private Sunny.UI.UISwitch swJsonFirstCol;
+        private Sunny.UI.UISwitch swJsonExcludeSheet;
+        private Sunny.UI.UISwitch swJsonMultiFiles;
+        private Sunny.UI.UISwitch swJsonSpace;
+        private Sunny.UI.UISwitch swJsonString;
+        private Sunny.UI.UISwitch swJsonCell;
+        private Sunny.UI.UITextBox txtJsonStart;
+        private Sunny.UI.UITextBox txtJsonField;
+        private Sunny.UI.UITextBox txtJsonExcludePrefix;
+        private Sunny.UI.UITextBox txtJsonSavePath;
+        private Sunny.UI.UITextBox txtJsonDateFormat;
+        private Sunny.UI.UILabel uiLabel33;
+        private Sunny.UI.UILabel uiLabel34;
+        private Sunny.UI.UISwitch swCsProperty;
     }
 }

@@ -106,6 +106,7 @@ namespace Excel2Other.Winform
                 txtCsType.Text = (_cSharpSetting.TypeRowNum + 1).ToString();
                 txtCsField.Text = (_cSharpSetting.FieldRowNum + 1).ToString();
                 swCsFirstCol.Active = _cSharpSetting.excludeFirstCol;
+                swCsProperty.Active = _cSharpSetting.IsProperty;
             }
         }
 
@@ -403,6 +404,12 @@ namespace Excel2Other.Winform
             _formSetting.isExpand = value;
             onNavMenuChange?.Invoke(value);
             onFormSave?.Invoke();
+        }
+
+        private void swCsProperty_ValueChanged(object sender, bool value)
+        {
+            _cSharpSetting.IsProperty = value;
+            onCSharpSave?.Invoke(false);
         }
     }
 }

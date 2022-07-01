@@ -38,7 +38,6 @@ namespace Excel2Other.Winform
         {
             pnlFiles.Controls.Add(tvwFile);
         }
-
         private void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabSheets.SelectedIndex == -1) return;
@@ -87,45 +86,30 @@ namespace Excel2Other.Winform
                 onFolderOpen?.Invoke(dialog.FileName);
             }
         }
-
-
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             tabSheets.TabPages.Clear();
             txtCode.Text = "";
             onFolderRefresh?.Invoke();
         }
-
         private void btnSetting_Click(object sender, EventArgs e)
         {
             onSettingClick?.Invoke();
         }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             onSave?.Invoke();
         }
-
         private void MenuItemCopyAll_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(txtCode.Text);
             UIMessageTip.ShowOk("已将所有文本复制到剪贴板");
         }
-
         private void MenuItemCopy_Click(object sender, EventArgs e)
         {
             txtCode.Copy();
             UIMessageTip.ShowOk("已将选中文本复制到剪贴板");
         }
-
-
-
-        #region 文本框匹配
-
-
-
-
-        #endregion
 
     }
 }
