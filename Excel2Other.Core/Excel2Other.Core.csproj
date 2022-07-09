@@ -53,15 +53,15 @@
   <ItemGroup>
     <Compile Include="ContentSaver\ContentSaver.cs" />
     <Compile Include="Content\TypeContents\DataContent.cs" />
-    <Compile Include="Content\Interface\IContent.cs" />
+    <Compile Include="__Attributes\EntityCodeAttribute.cs" />
+    <Compile Include="__Interface\IContent.cs" />
     <Compile Include="Content\TypeContents\TextContent.cs" />
     <Compile Include="Converter\Define\RowHead.cs" />
-    <Compile Include="Converter\Factory\ConvertFactory.cs" />
     <Compile Include="Converter\Define\ConvertType.cs" />
     <Compile Include="Converter\TypeConverters\JsonConverter.cs" />
     <Compile Include="Converter\Define\SheetData.cs" />
     <Compile Include="Converter\TypeConverters\CSharpConverter.cs" />
-    <Compile Include="Converter\Interface\IConverter.cs" />
+    <Compile Include="__Interface\IConverter.cs" />
     <Compile Include="Converter\TypeConverters\SqliteConverter.cs" />
     <Compile Include="Reader\Define\HistoryData.cs" />
     <Compile Include="Settings\BaseSetting.cs" />
@@ -69,15 +69,18 @@
     <Compile Include="Reader\ExcelReader\ExcelReader.Save.cs" />
     <Compile Include="Reader\ExcelReader\ExcelReader.Load.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reader\Interface\IExcelReader.cs" />
+    <Compile Include="__Interface\IConverterSaver.cs" />
+    <Compile Include="__Interface\IExcelReader.cs" />
     <Compile Include="Settings\CSharpSetting.cs" />
-    <Compile Include="Settings\Interface\ISetting.cs" />
+    <Compile Include="__Interface\ISetting.cs" />
     <Compile Include="Settings\SqliteSetting.cs" />
     <Compile Include="Settings\JsonSetting.cs" />
     <Compile Include="Settings\XmlSetting.cs" />
     <Compile Include="Utilities\DataValueUtil.cs" />
     <Compile Include="Utilities\StringUtil.cs" />
     <Compile Include="Utilities\XmlUtil.cs" />
+    <Compile Include="__Interface\ITargetTypeEntity.cs" />
+    <Compile Include="__Attributes\TargetEntityAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
