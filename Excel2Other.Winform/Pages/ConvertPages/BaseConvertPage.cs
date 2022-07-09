@@ -9,7 +9,7 @@ namespace Excel2Other.Winform
 {
     public partial class BaseConvertPage : UIPage
     {
-        List<SheetContent> _sheets;
+        public List<SheetData> _sheets;
         public Action<string> onFolderOpen;
         public Action onFolderRefresh;
         public Action onSettingClick;
@@ -18,15 +18,13 @@ namespace Excel2Other.Winform
         public BaseConvertPage()
         {
             InitializeComponent();
-            txtCode.Dock = DockStyle.Fill;
-            txtCode.Visible = false;
         }
 
         /// <summary>
         /// 设置内容
         /// </summary>
         /// <param name="sheets"></param>
-        public void SetSheets(List<SheetContent> sheets)
+        public void SetSheets(List<SheetData> sheets)
         {
             _sheets = sheets;
         }
@@ -38,44 +36,6 @@ namespace Excel2Other.Winform
         {
             pnlFiles.Controls.Add(tvwFile);
         }
-        private void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabSheets.SelectedIndex == -1) return;
-            tabSheets.TabPages[tabSheets.SelectedIndex].Controls.Add(txtCode);
-
-            //这里为了防止在清空节点重新添加途中报错所以无脑判断了一下是否越界
-            if (tabSheets.SelectedIndex <= _sheets.Count - 1)
-            {
-                txtCode.Text = _sheets[tabSheets.SelectedIndex].content;
-            }
-        }
-
-        /// <summary>
-        /// 刷新Sheet
-        /// </summary>
-        public void RefreshSheet()
-        {
-            //清除所有Sheet
-            tabSheets.TabPages.Clear();
-            if (_sheets == null || _sheets.Count == 0)
-            {
-                txtCode.Visible = false;
-                return;
-            }
-            for (int i = 0; i < _sheets.Count; i++)
-            {
-                var tabPage = new TabPage(_sheets[i].sheetName);
-                tabPage.BackColor = Color.FromArgb(255, 30, 30, 30);
-                tabSheets.TabPages.Add(tabPage);
-            }
-
-            //将文本放到第一个sheet
-            txtCode.Visible = true;
-            tabSheets.TabPages[0].Controls.Add(txtCode);
-            txtCode.Text = _sheets[0].content;
-            tabSheets.SelectTab(0);
-        }
-
         private void btnOpen_Click(object sender, EventArgs e)
         {
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
@@ -86,12 +46,6 @@ namespace Excel2Other.Winform
                 onFolderOpen?.Invoke(dialog.FileName);
             }
         }
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            tabSheets.TabPages.Clear();
-            txtCode.Text = "";
-            onFolderRefresh?.Invoke();
-        }
         private void btnSetting_Click(object sender, EventArgs e)
         {
             onSettingClick?.Invoke();
@@ -100,16 +54,31 @@ namespace Excel2Other.Winform
         {
             onSave?.Invoke();
         }
-        private void MenuItemCopyAll_Click(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(txtCode.Text);
-            UIMessageTip.ShowOk("已将所有文本复制到剪贴板");
-        }
-        private void MenuItemCopy_Click(object sender, EventArgs e)
-        {
-            txtCode.Copy();
-            UIMessageTip.ShowOk("已将选中文本复制到剪贴板");
+            tabSheets.TabPages.Clear();
+            onFolderRefresh?.Invoke();
         }
 
+        /// <summary>
+        /// 刷新Sheet
+        /// </summary>
+        /// <returns>如果没有sheet返回false </returns>
+        protected bool RefreshTab()
+        {
+            //清除所有Sheet
+            tabSheets.TabPages.Clear();
+            if (_sheets == null || _sheets.Count == 0)
+            {
+                return false;
+            }
+            for (int i = 0; i < _sheets.Count; i++)
+            {
+                var tabPage = new TabPage(_sheets[i].sheetName);
+                tabPage.BackColor = Color.FromArgb(255, 30, 30, 30);
+                tabSheets.TabPages.Add(tabPage);
+            }
+            return true;
+        }
     }
 }

@@ -29,25 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BaseConvertPage));
             this.uiText = new Sunny.UI.UIPanel();
             this.tabSheets = new Sunny.UI.UITabControl();
-            this.uiContextMenuStrip1 = new Sunny.UI.UIContextMenuStrip();
-            this.MenuItemCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemCopyAll = new System.Windows.Forms.ToolStripMenuItem();
             this.btnSetting = new Sunny.UI.UISymbolButton();
             this.btnRefresh = new Sunny.UI.UISymbolButton();
             this.btnOpen = new Sunny.UI.UISymbolButton();
             this.btnSave = new Sunny.UI.UISymbolButton();
             this.pnlFiles = new Sunny.UI.UIPanel();
-            this.txtCode = new FastColoredTextBoxNS.FastColoredTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pnlOperations = new Sunny.UI.UIPanel();
             this.uiToolTip1 = new Sunny.UI.UIToolTip(this.components);
             this.uiText.SuspendLayout();
-            this.uiContextMenuStrip1.SuspendLayout();
-            this.pnlFiles.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -99,40 +91,6 @@
             this.tabSheets.TabSelectedHighColor = System.Drawing.Color.White;
             this.tabSheets.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tabSheets.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.tabSheets.SelectedIndexChanged += new System.EventHandler(this.tabSheets_SelectedIndexChanged);
-            // 
-            // uiContextMenuStrip1
-            // 
-            this.uiContextMenuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(46)))), ((int)(((byte)(46)))));
-            this.uiContextMenuStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.uiContextMenuStrip1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.uiContextMenuStrip1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            this.uiContextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemCopy,
-            this.MenuItemCopyAll});
-            this.uiContextMenuStrip1.Name = "uiContextMenuStrip1";
-            this.uiContextMenuStrip1.ShowImageMargin = false;
-            this.uiContextMenuStrip1.ShowItemToolTips = false;
-            this.uiContextMenuStrip1.Size = new System.Drawing.Size(120, 56);
-            this.uiContextMenuStrip1.Style = Sunny.UI.UIStyle.Custom;
-            this.uiContextMenuStrip1.StyleCustomMode = true;
-            this.uiContextMenuStrip1.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            // 
-            // MenuItemCopy
-            // 
-            this.MenuItemCopy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.MenuItemCopy.Name = "MenuItemCopy";
-            this.MenuItemCopy.Size = new System.Drawing.Size(119, 26);
-            this.MenuItemCopy.Text = "复制选中";
-            this.MenuItemCopy.Click += new System.EventHandler(this.MenuItemCopy_Click);
-            // 
-            // MenuItemCopyAll
-            // 
-            this.MenuItemCopyAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.MenuItemCopyAll.Name = "MenuItemCopyAll";
-            this.MenuItemCopyAll.Size = new System.Drawing.Size(119, 26);
-            this.MenuItemCopyAll.Text = "复制所有";
-            this.MenuItemCopyAll.Click += new System.EventHandler(this.MenuItemCopyAll_Click);
             // 
             // btnSetting
             // 
@@ -256,7 +214,6 @@
             // 
             // pnlFiles
             // 
-            this.pnlFiles.Controls.Add(this.txtCode);
             this.pnlFiles.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlFiles.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
             this.pnlFiles.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(38)))));
@@ -275,44 +232,6 @@
             this.pnlFiles.Text = "文件列表";
             this.pnlFiles.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.pnlFiles.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            // 
-            // txtCode
-            // 
-            this.txtCode.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.txtCode.AutoScrollMinSize = new System.Drawing.Size(179, 14);
-            this.txtCode.BackBrush = null;
-            this.txtCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.txtCode.CharCnWidth = 17;
-            this.txtCode.CharHeight = 14;
-            this.txtCode.CharWidth = 8;
-            this.txtCode.ContextMenuStrip = this.uiContextMenuStrip1;
-            this.txtCode.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.txtCode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
-            this.txtCode.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.txtCode.IndentBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.txtCode.IsReplaceMode = false;
-            this.txtCode.LineNumberColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(133)))), ((int)(((byte)(133)))));
-            this.txtCode.Location = new System.Drawing.Point(50, 172);
-            this.txtCode.Name = "txtCode";
-            this.txtCode.Paddings = new System.Windows.Forms.Padding(0);
-            this.txtCode.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
-            this.txtCode.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtCode.ServiceColors")));
-            this.txtCode.ServiceLinesColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtCode.Size = new System.Drawing.Size(150, 150);
-            this.txtCode.TabIndex = 1;
-            this.txtCode.Text = "fastColoredTextBox1";
-            this.txtCode.Zoom = 100;
             // 
             // splitContainer1
             // 
@@ -385,9 +304,6 @@
             this.StyleCustomMode = true;
             this.Text = "";
             this.uiText.ResumeLayout(false);
-            this.uiContextMenuStrip1.ResumeLayout(false);
-            this.pnlFiles.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtCode)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -398,7 +314,6 @@
         }
 
         #endregion
-        private Sunny.UI.UITabControl tabSheets;
         private Sunny.UI.UIPanel uiText;
         private Sunny.UI.UIPanel pnlFiles;
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -407,10 +322,7 @@
         private Sunny.UI.UISymbolButton btnOpen;
         private Sunny.UI.UISymbolButton btnSave;
         private Sunny.UI.UIToolTip uiToolTip1;
-        private Sunny.UI.UIContextMenuStrip uiContextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem MenuItemCopyAll;
-        private System.Windows.Forms.ToolStripMenuItem MenuItemCopy;
-        protected FastColoredTextBoxNS.FastColoredTextBox txtCode;
         private Sunny.UI.UIPanel pnlOperations;
+        protected internal Sunny.UI.UITabControl tabSheets;
     }
 }

@@ -6,49 +6,16 @@ namespace Excel2Other
 {
     public class CSharpConverter : IConverter
     {
-        public string Extension => "cs";
-        private List<SheetContent> _sheets = new List<SheetContent>();
-
-        private string _fileName;
-        public List<SheetContent> Sheets
+        private CSharpSetting _setting;
+        public CSharpConverter(ISetting setting)
         {
-            get
-            {
-                if (_setting.separateBySheet)
-                {
-                    return _sheets;
-                }
-                else
-                {
-                    if (_sheets != null && _sheets.Count > 0)
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        for (int i = 0; i < _sheets.Count; i++)
-                        {
-                            sb.AppendLine(_sheets[i].content);
-                            sb.AppendLine();
-                        }
-                        return new List<SheetContent>() { new SheetContent(_fileName, sb.ToString()) };
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
+            _setting = (CSharpSetting)setting;
         }
 
-
-        private CSharpSettings _setting;
-        public CSharpConverter(CSharpSettings setting)
+        public List<SheetData> Convert(DataSet data)
         {
-            _setting = setting;
-        }
-
-        public void Convert(DataSet data)
-        {
-            _fileName = data.DataSetName;
-            _sheets.Clear();
+            var sheetData = new List<SheetData>();
+            StringBuilder totalContent = new StringBuilder();
             foreach (DataTable sheet in data.Tables)
             {
                 //排除sheet包含头
@@ -99,7 +66,7 @@ namespace Excel2Other
                         
                         if (!string.IsNullOrWhiteSpace(fieldComment))
                         {
-                            summary.AppendLine("\t/// <summmary>");
+                            summary.AppendLine("\t/// <summary>");
                             foreach (var tempString in fieldComment.Replace("\r","").Split('\n'))
                             {
                                 summary.AppendLine($"\t/// {tempString}");
@@ -110,20 +77,36 @@ namespace Excel2Other
                     sb.Append(summary);
                     sb.AppendLine($"\tpublic {fieldType} {fieldName}{(_setting.IsProperty?"{ get; set; }":";")}\n");
                 }
-                #endregion
 
                 sb.Append('}');
+                #endregion
 
-                _sheets.Add(new SheetContent(sheetName, sb.ToString()));
+                //判断是否要将sheet区分开
+                if (!_setting.separateBySheet && sb.Length > 0)
+                {
+                    sheetData.Add(new SheetData(sheetName,new TextContent(sb.ToString())));
+                }
+                else
+                {
+                    totalContent.Append(sb);
+                    totalContent.AppendLine();
+                }
             }
+
+            if (!_setting.separateBySheet && totalContent.Length >0 )
+            {
+                sheetData.Add(new SheetData(data.DataSetName, new TextContent(totalContent.ToString())));
+            }
+
+            return sheetData;
         }
 
-        public void SetSetting(ISettings setting)
+        public void SetSetting(ISetting setting)
         {
-            _setting = (CSharpSettings)setting;
+            _setting = (CSharpSetting)setting;
         }
 
-        public ISettings GetSetting()
+        public ISetting GetSetting()
         {
             return _setting;
         }

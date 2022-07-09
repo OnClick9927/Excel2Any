@@ -9,9 +9,9 @@ namespace Excel2Other.Winform
     public partial class SettingPage : UIPage
     {
 
-        private JsonSettings _jsonSetting;
-        private CSharpSettings _cSharpSetting;
-        private XmlSettings _xmlSetting;
+        private JsonSetting _jsonSetting;
+        private CSharpSetting _cSharpSetting;
+        private XmlSetting _xmlSetting;
         private FormSetting _formSetting;
 
         public Action<bool> onJsonSave;
@@ -25,7 +25,7 @@ namespace Excel2Other.Winform
 
         public Action<bool> onNavMenuChange;
 
-        public SettingPage(JsonSettings jsonSetting, CSharpSettings cSharpSetting, XmlSettings xmlSetting, FormSetting formSetting)
+        public SettingPage(JsonSetting jsonSetting, CSharpSetting cSharpSetting, XmlSetting xmlSetting, FormSetting formSetting)
         {
             _jsonSetting = jsonSetting;
             _cSharpSetting = cSharpSetting;
@@ -76,7 +76,6 @@ namespace Excel2Other.Winform
             }
         }
 
-
         public void InitXmlSettings()
         {
             if (_xmlSetting != null)
@@ -119,7 +118,7 @@ namespace Excel2Other.Winform
         {
             for (int i = 0; i < tabSettings.TabPages.Count; i++)
             {
-                if (tabName.Equals(tabSettings.TabPages[i].Text))
+                if (tabName.Equals(tabSettings.TabPages[i].Text.Trim()))
                 {
                     tabSettings.SelectTab(i);
                     return;

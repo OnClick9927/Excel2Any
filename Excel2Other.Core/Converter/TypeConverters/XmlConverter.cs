@@ -9,55 +9,24 @@ namespace Excel2Other
 {
     public class XmlConverter : IConverter
     {
-        public string Extension => "xml";
-        private string _fileName;
+        private XmlSetting _setting;
 
-        char[] splitChar = new char[] { '\r', '\n' };
-        private XmlSettings _setting;
-        private List<SheetContent> _sheets = new List<SheetContent>();
-        public List<SheetContent> Sheets
+        public XmlConverter(ISetting setting)
         {
-            get
-            {
-                if (_setting.separateBySheet)
-                {
-                    return _sheets;
-                }
-                else
-                {
-                    if (_sheets != null && _sheets.Count > 0)
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        sb.AppendLine($"<{_fileName}>");
-                        for (int i = 0; i < _sheets.Count; i++)
-                        {
-                            //给内容加上缩进，暂时没找到好一点的方法
-                            var content = _sheets[i].content.Split(splitChar, StringSplitOptions.RemoveEmptyEntries);
-                            for (int j = 0; j < content.Length; j++)
-                            {
-                                sb.AppendLine($"  {content[j]}");
-                            }
-                        }
-                        sb.AppendLine($"</{_fileName}>");
-                        return new List<SheetContent>() { new SheetContent(_fileName, sb.ToString()) };
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
+            _setting = (XmlSetting)setting;
         }
-
-
-        public XmlConverter(XmlSettings setting)
+        public List<SheetData> Convert(DataSet data)
         {
-            _setting = setting;
-        }
-        public void Convert(DataSet data)
-        {
-            _fileName = data.DataSetName;
-            _sheets.Clear();
+            List<SheetData> allSheetData = new List<SheetData>();
+
+            //xmldoc
+            var allSheetDataXml = new XmlDocument();
+            allSheetDataXml.AddXmlHeader();
+
+            //XmlElement rootElement = allSheetDataXml.CreateElement(data.DataSetName);
+            XmlElement rootElement = allSheetDataXml.CreateElement("root");
+            allSheetDataXml.AppendChild(rootElement);
+
             foreach (DataTable sheet in data.Tables)
             {
                 //排除sheet包含头
@@ -77,27 +46,34 @@ namespace Excel2Other
                 }
                 else
                 {
-                    ConvertSheet(sheet);
+                    var convertedData = ConvertSheet(sheet, out string sheetName);
+                    if (!_setting.separateBySheet)
+                    {
+                        if (allSheetDataXml != null)
+                        {
+                            var sheetData = new XmlDocument();
+                            sheetData.AddXmlHeader();
+                            sheetData.AppendChild(convertedData);
+                            allSheetData.Add(new SheetData(sheetName, new TextContent(formatXml(sheetData))));
+                        }
+                    }
+                    else
+                    {
+                        var sheetElement = allSheetDataXml.CreateElement($"{sheetName}s");
+                        //sheetElement.AppendChild(convertedData);
+                        //rootElement.AppendChild(sheetElement);
+                    }
                 }
             }
-        }
 
-        /// <summary>
-        /// 用于保存表头和索引
-        /// </summary>
-        struct RowHead
-        {
-            public string fieldName;
-            public int index;
-
-            public RowHead(string rowName, int index)
+            if (!_setting.separateBySheet)
             {
-                this.fieldName = rowName;
-                this.index = index;
+                allSheetData.Add(new SheetData(data.DataSetName, new TextContent(formatXml(allSheetDataXml))));
             }
+            return allSheetData;
         }
 
-        private void ConvertSheet(DataTable sheet)
+        private XmlNode ConvertSheet(DataTable sheet, out string sheetName)
         {
             //xmldoc
             var doc = new XmlDocument();
@@ -107,16 +83,15 @@ namespace Excel2Other
             //保存表头的索引
             List<RowHead> rowHeads = new List<RowHead>();
 
-            //保存每行的数据
-            List<object> rows = new List<object>();
-
             int startCol; //开始列号
-            string sheetName; //Sheet名
 
             //判断是否排除第一列
             startCol = _setting.excludeFirstCol ? 1 : 0;
             sheetName = _setting.excludeFirstCol ? sheet.Rows[0][0].ToString() : sheet.TableName;
-
+            if (string.IsNullOrEmpty(sheetName))
+            {
+                sheetName = "Empty";
+            }
             //列表头索引和名字获取
             for (int i = startCol; i < sheet.Columns.Count; i++)
             {
@@ -124,7 +99,7 @@ namespace Excel2Other
                 if (string.IsNullOrWhiteSpace(fieldName) || fieldName.Contains("#")) continue; //xml不能包含#
                 rowHeads.Add(new RowHead(fieldName, i));
             }
-            if (rowHeads.Count == 0) return;
+            if (rowHeads.Count == 0) return null;
 
             XmlElement root = doc.CreateElement($"{sheetName}s");
 
@@ -148,13 +123,7 @@ namespace Excel2Other
                     {
                         continue;
                     }
-                    // 去掉数值字段的“.0”
-                    if (value.GetType() == typeof(double))
-                    {
-                        double num = (double)value;
-                        if ((int)num == num)
-                            value = (int)num;
-                    }
+                    value = DataValueUtil.GetIntValue(value);
 
                     XmlElement innerChild = doc.CreateElement(rowHeads[j].fieldName);
                     innerChild.InnerText = value.ToString();
@@ -166,7 +135,7 @@ namespace Excel2Other
                 }
             }
             doc.AppendChild(root);
-            _sheets.Add(new SheetContent(sheetName, formatXml(doc)));
+            return doc;
         }
 
         private string formatXml(XmlDocument xml)
@@ -189,12 +158,12 @@ namespace Excel2Other
             return sb.ToString();
         }
 
-        public void SetSetting(ISettings setting)
+        public void SetSetting(ISetting setting)
         {
-            _setting = (XmlSettings)setting;
+            _setting = (XmlSetting)setting;
         }
 
-        public ISettings GetSetting()
+        public ISetting GetSetting()
         {
             return _setting;
         }

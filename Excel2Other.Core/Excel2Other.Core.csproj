@@ -51,25 +51,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converter\ConvertType.cs" />
+    <Compile Include="ContentSaver\ContentSaver.cs" />
+    <Compile Include="Content\TypeContents\DataContent.cs" />
+    <Compile Include="Content\Interface\IContent.cs" />
+    <Compile Include="Content\TypeContents\TextContent.cs" />
+    <Compile Include="Converter\Define\RowHead.cs" />
+    <Compile Include="Converter\Factory\ConvertFactory.cs" />
+    <Compile Include="Converter\Define\ConvertType.cs" />
     <Compile Include="Converter\TypeConverters\JsonConverter.cs" />
-    <Compile Include="Converter\SheetContent.cs" />
+    <Compile Include="Converter\Define\SheetData.cs" />
     <Compile Include="Converter\TypeConverters\CSharpConverter.cs" />
-    <Compile Include="Converter\TypeConverters\IConverter.cs" />
-    <Compile Include="Settings\BaseSettings.cs" />
+    <Compile Include="Converter\Interface\IConverter.cs" />
+    <Compile Include="Converter\TypeConverters\SqliteConverter.cs" />
+    <Compile Include="Reader\Define\HistoryData.cs" />
+    <Compile Include="Settings\BaseSetting.cs" />
     <Compile Include="Converter\TypeConverters\XmlConverter.cs" />
-    <Compile Include="Reader\ExcelReader.Save.cs" />
-    <Compile Include="Reader\ExcelReader.Load.cs" />
+    <Compile Include="Reader\ExcelReader\ExcelReader.Save.cs" />
+    <Compile Include="Reader\ExcelReader\ExcelReader.Load.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reader\IExcelReader.cs" />
-    <Compile Include="Settings\CSharpSettings.cs" />
-    <Compile Include="Settings\ISettings.cs" />
-    <Compile Include="Settings\JsonSettings.cs" />
-    <Compile Include="Settings\XmlSettings.cs" />
+    <Compile Include="Reader\Interface\IExcelReader.cs" />
+    <Compile Include="Settings\CSharpSetting.cs" />
+    <Compile Include="Settings\Interface\ISetting.cs" />
+    <Compile Include="Settings\SqliteSetting.cs" />
+    <Compile Include="Settings\JsonSetting.cs" />
+    <Compile Include="Settings\XmlSetting.cs" />
+    <Compile Include="Utilities\DataValueUtil.cs" />
+    <Compile Include="Utilities\StringUtil.cs" />
+    <Compile Include="Utilities\XmlUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Compile Include="Reader\ExcelReader.Convert.cs" />
+    <Compile Include="Reader\ExcelReader\ExcelReader.Convert.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

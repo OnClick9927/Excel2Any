@@ -10,78 +10,33 @@ namespace Excel2Other
     {
         //用于默认值的保存
         private Dictionary<int, object> _defaultValue = new Dictionary<int, object>();
-        public string Extension => "json";
-        private string _fileName;
-
-
-        char[] splitChar = new char[] { '\r', '\n' };
-        private List<SheetContent> _sheets = new List<SheetContent>();
-        public List<SheetContent> Sheets
-        {
-            get
-            {
-                if (_setting.separateBySheet)
-                {
-                    return _sheets;
-                }
-                else
-                {
-                    if (_sheets != null && _sheets.Count > 0)
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        sb.AppendLine("[");
-                        for (int i = 0; i < _sheets.Count; i++)
-                        {
-                            sb.AppendLine($"  \"{_sheets[i].sheetName}\":");
-
-                            //给内容加上缩进，暂时没找到好一点的方法
-                            var content = _sheets[i].content.Split(splitChar, StringSplitOptions.RemoveEmptyEntries);
-                            if (content.Length > 0  && i != _sheets.Count -1)
-                            {
-                                content[content.Length - 1] += ",";
-                            }
-
-                            for (int j = 0; j < content.Length; j++)
-                            {
-                                sb.AppendLine($"  {content[j]}");
-                            }
-                        }
-                        sb.AppendLine("]");
-                        return new List<SheetContent>() { new SheetContent(_fileName, sb.ToString()) };
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
-        }
 
         //Json配置
-        private JsonSerializerSettings _jsonSettings;
+        private JsonSerializerSettings _jsonSerialSettings;
         //转换设置
-        private JsonSettings _setting;
+        private JsonSetting _setting;
 
         /// <summary>
         /// Ctor
         /// </summary>
-        public JsonConverter(JsonSettings setting)
+        public JsonConverter(ISetting setting)
         {
-            _jsonSettings = new JsonSerializerSettings
+            _jsonSerialSettings = new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented
             };
 
-            _setting = setting;
+            _setting = (JsonSetting)setting;
         }
 
-        public void Convert(DataSet data)
+        public List<SheetData> Convert(DataSet data)
         {
-            _fileName = data.DataSetName;
-            _sheets.Clear();
+            List<SheetData> allSheetData = new List<SheetData>();
+            Dictionary<string, List<object>> sheetDataDic = new Dictionary<string, List<object>>();
             _defaultValue.Clear();
+
             //更改设置
-            _jsonSettings.DateFormatString = _setting.dateFormat;
+            _jsonSerialSettings.DateFormatString = _setting.dateFormat;
 
             foreach (DataTable sheet in data.Tables)
             {
@@ -102,27 +57,39 @@ namespace Excel2Other
                 }
                 else
                 {
-                    ConvertSheet(sheet);
+                    var sheetData = ConvertSheet(sheet, out string sheetName);
+
+                    //判断是否拆分
+                    if (_setting.separateBySheet)
+                    {
+                        if (sheetData != null)
+                        {
+                            var content = JsonConvert.SerializeObject(sheetData, _jsonSerialSettings);
+                            allSheetData.Add(new SheetData(sheetName, new TextContent(content)));
+                        }
+                        
+                    }
+                    else
+                    {
+                        sheetDataDic.Add(sheetName, sheetData);
+                    }
                 }
-
             }
-        }
 
-        /// <summary>
-        /// 用于保存表头和索引
-        /// </summary>
-        struct RowHead
-        {
-            public string fieldName;
-            public int index;
-
-            public RowHead(string rowName, int index)
+            //判断是否拆分
+            if (!_setting.separateBySheet)
             {
-                this.fieldName = rowName;
-                this.index = index;
+                if (sheetDataDic.Count > 0)
+                {
+                    var content = JsonConvert.SerializeObject(sheetDataDic, _jsonSerialSettings);
+                    allSheetData.Add(new SheetData(data.DataSetName, new TextContent(content)));
+                }
+                
             }
+            return allSheetData;
         }
-        private void ConvertSheet(DataTable sheet)
+
+        private List<object> ConvertSheet(DataTable sheet, out string sheetName)
         {
             //保存表头的索引
             List<RowHead> rowHeads = new List<RowHead>();
@@ -131,8 +98,6 @@ namespace Excel2Other
             List<object> rows = new List<object>();
 
             int startCol; //开始列号
-            string sheetName; //Sheet名
-
             //判断是否排除第一列
             startCol = _setting.excludeFirstCol ? 1 : 0;
             sheetName = _setting.excludeFirstCol ? sheet.Rows[0][0].ToString() : sheet.TableName;
@@ -144,7 +109,7 @@ namespace Excel2Other
                 if (string.IsNullOrWhiteSpace(fieldName)) continue;
                 rowHeads.Add(new RowHead(fieldName, i));
             }
-            if (rowHeads.Count == 0) return;
+            if (rowHeads.Count == 0) return null;
 
             //遍历每行根据表头转换成对象字典
             for (int i = _setting.StartRowNum; i < sheet.Rows.Count; i++)
@@ -157,8 +122,7 @@ namespace Excel2Other
                 }
             }
 
-            var content = JsonConvert.SerializeObject(rows, _jsonSettings);
-            _sheets.Add(new SheetContent(sheetName, content));
+            return rows;
         }
 
         /// <summary>
@@ -191,32 +155,10 @@ namespace Excel2Other
                 //对单元格内Json的处理
                 else if (_setting.JsonCell)
                 {
-                    string cellText = value.ToString().Trim();
-                    if (cellText.StartsWith("[") || cellText.StartsWith("{"))
-                    {
-                        try
-                        {
-                            if (cellText.EndsWith(","))
-                            {
-                                cellText = cellText.Substring(0, cellText.Length - 1);
-                            }
-                            object cellJsonObj = JsonConvert.DeserializeObject(cellText);
-                            if (cellJsonObj != null)
-                                value = cellJsonObj;
-                        }
-                        catch (Exception)
-                        {
+                    value = DataValueUtil.GetJsonObj(value);
+                }
 
-                        }
-                    }
-                }
-                // 去掉数值字段的“.0”
-                if (value.GetType() == typeof(double))
-                {
-                    double num = (double)value;
-                    if ((int)num == num)
-                        value = (int)num;
-                }
+                value = DataValueUtil.GetIntValue(value);
 
                 //全部转换为string
                 if (_setting.allString && !(value is string))
@@ -261,12 +203,12 @@ namespace Excel2Other
             return "";
         }
 
-        public void SetSetting(ISettings setting)
+        public void SetSetting(ISetting setting)
         {
-            _setting = (JsonSettings)setting;
+            _setting = (JsonSetting)setting;
         }
 
-        public ISettings GetSetting()
+        public ISetting GetSetting()
         {
             return _setting;
         }

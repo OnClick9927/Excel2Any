@@ -1,6 +1,6 @@
 ﻿namespace Excel2Other.Winform
 {
-    public class FormSetting
+    public class FormSetting : ISetting
     {
         /// <summary>
         /// 上次打开路径
