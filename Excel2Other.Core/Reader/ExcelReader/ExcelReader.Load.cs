@@ -14,7 +14,7 @@ namespace Excel2Other
         Dictionary<string, HistoryData> _historyData;
 
         ExcelDataTableConfiguration tableConfig;
-        ExcelDataSetConfiguration dataSetConfig;
+        public static ExcelDataSetConfiguration dataSetConfig;
 
         /// <summary>
         /// Ctor
@@ -59,8 +59,8 @@ namespace Excel2Other
                     {
                         var result = reader.AsDataSet(dataSetConfig);
                         result.DataSetName = fileInfo.Name.Substring(0, fileInfo.Name.IndexOf("."));
-                        var hisData = new HistoryData(fullPath, lastWriteTime,result);
-                        _historyData[fullPath] =hisData;
+                        var hisData = new HistoryData(fullPath, lastWriteTime, result);
+                        _historyData[fullPath] = hisData;
                     }
                 }
             }

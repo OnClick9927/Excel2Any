@@ -14,7 +14,7 @@ namespace Excel2Other
         {
             _setting = (SqliteSetting)setting;
         }
-    public List<SheetData> Convert(DataSet data)
+        public List<SheetData> Convert(DataSet data)
         {
             List<SheetData> allSheetData = new List<SheetData>();
 
@@ -49,7 +49,6 @@ namespace Excel2Other
 
             return allSheetData;
         }
-
         public DataTable ConvertSheet(DataTable sheet)
         {
             //保存表头的索引

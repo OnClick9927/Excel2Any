@@ -6,6 +6,22 @@ namespace Excel2Other
 	public partial class ExcelReader
 	{
 		Dictionary<ConvertType, IConverter> _converters = new Dictionary<ConvertType, IConverter>();
+		private static IConverter CreateNewConverter(ConvertType type, ISetting settings)
+		{
+			switch (type)
+			{
+				case ConvertType.CSharp:
+					return new CSharpConverter(settings);
+				case ConvertType.Json:
+					return new JsonConverter(settings);
+				case ConvertType.Xml:
+					return new XmlConverter(settings);
+				case ConvertType.Sqlite:
+					return new SqliteConverter(settings);
+				default:
+					return null;
+			}
+		}
 
 		/// <summary>
 		/// 根据设置创建转换器
@@ -26,7 +42,7 @@ namespace Excel2Other
 			}
             else
             {
-				_converters.Add(type, ConvertFactory.CreateConverter(type,settings));
+				_converters.Add(type, CreateNewConverter(type,settings));
 			}
 		}
 
