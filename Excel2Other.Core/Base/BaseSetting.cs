@@ -9,7 +9,7 @@ namespace Excel2Other
         /// <summary>
         /// 保存时的路径
         /// </summary>
-       [SettingAttribute("保存路径","保存时的默认路径，为空时默认在桌面")]
+       [SettingAttribute("保存路径","保存时的默认路径，为空时默认在桌面", (int)StringType.Directory)]
         public string savePath;
 
         /// <summary>

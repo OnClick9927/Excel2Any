@@ -36,80 +36,81 @@ namespace Excel2Other.Winform
         /// </summary>
         /// <param name="fields"></param>
         /// <param name="tabName"></param>
-        public void CreateSettingTab(List<FieldInfo> fields, string tabName)
+        public void CreateSettingTab(ISetting setting, string tabName)
         {
+            var fields = SettingHelper.GetFields(setting.GetType());
             if (fields.Count == 0) return;
-            var tabPage = SettingUIHelper.GetNewTabPage(tabName);
+            var tabPage = SettingUIHelper.GetTabPage(tabName);
             tabSettings.TabPages.Add(tabPage);
+            int location = 10; //控件位置
             foreach (var field in fields)
             {
                 var attr = field.GetCustomAttribute<SettingAttribute>();
                 if (attr == null) continue; //没有的直接跳过
                 //生成标题
                 var title = SettingUIHelper.GetHeaderLabel(attr.name);
+                var content = SettingUIHelper.GetContentLabel(attr.des);
                 //生成内容
+                //分为两种  一个是切换按钮的  一个是填框框的，框框的文本框类型需要考虑
+                tabPage.Controls.Add(title);
+                title.Location = new System.Drawing.Point(30, location);
+                location += 30;
+
                 if (field.FieldType == typeof(bool))
                 {
                     //生成切换按钮
+                    var uiSwitch = SettingUIHelper.GetSwith();
+                    tabPage.Controls.Add(uiSwitch);
+                    tabPage.Controls.Add(content);
+                    uiSwitch.Location = new System.Drawing.Point(30, location);
+                    content.Location = new System.Drawing.Point(110, location + 4);
+                    location += 30;
+                    uiSwitch.Active = (bool)field.GetValue(setting);
+                    uiSwitch.ActiveChanged += (sender, e) =>
+                    {
+                        field.SetValue(setting, uiSwitch.Active);
+                        SettingHelper.SaveSetting(setting);
+                    };
                 }
-                else if (field.FieldType == typeof(string))
+                else
                 {
+                    UITextBox inputBox = null;
+                    if (field.FieldType == typeof(string))
+                    {
+                        inputBox = SettingUIHelper.GetInputBox((StringType)attr.textType);
+
+                        inputBox.Text = (string)field.GetValue(setting).ToString();
+                        inputBox.Leave += (sender, e) =>
+                        {
+                            field.SetValue(setting, inputBox.Text);
+                            SettingHelper.SaveSetting(setting);
+                        };
+                    }
+                    else if (field.FieldType == typeof(int))
+                    {
+                        //这里针对行号+1的问题处理……后续会改
+                        inputBox = SettingUIHelper.GetInputBox(StringType.Integer);
+                        inputBox.Text = (string)((int)field.GetValue(setting) + 1).ToString();
+                        inputBox.Leave += (sender, e) =>
+                        {
+                            field.SetValue(setting, Convert.ToInt32(inputBox.Text) - 1);
+                            SettingHelper.SaveSetting(setting);
+                        };
+                    }
+
+                    tabPage.Controls.Add(inputBox);
+                    tabPage.Controls.Add(content);
+
+                    content.Location = new System.Drawing.Point(30, location);
+                    inputBox.Location = new System.Drawing.Point(30, location + 30);
+                    location += 60;
 
                 }
 
+                location += 30;
             }
 
             tabSettings.Refresh();
         }
-
-        private void SavePath_DoubleClick(object sender, EventArgs e)
-        {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                ((UITextBox)sender).Text = dialog.FileName;
-            }
-        }
-
-        private void File_DragEnter(object sender, DragEventArgs e)
-        {
-            string[] dropData = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (dropData != null && dropData.Length > 0 && Directory.Exists(dropData[0]))
-            {
-                e.Effect = DragDropEffects.All;
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
-
-        }
-
-        private void File_DragDrop(object sender, DragEventArgs e)
-        {
-            string[] dropData = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-            if (dropData == null)
-            {
-                UIMessageTip.ShowError("你拖入了什么玩意？？？？？");
-                return;
-            }
-            //如果拖入的文件是多个，暂时不做处理直接报错提示
-            if (dropData.Length >= 2)
-            {
-                UIMessageTip.ShowError("请勿移入多个文件");
-                return;
-            }
-
-            if (Directory.Exists(dropData[0]))
-            {
-                ((UITextBox)sender).Text = dropData[0];
-            }
-            else
-            {
-                UIMessageTip.ShowError("请拖入文件夹");
-            }
-        }
-
     }
 }

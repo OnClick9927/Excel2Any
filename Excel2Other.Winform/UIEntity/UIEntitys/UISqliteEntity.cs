@@ -6,7 +6,7 @@
         public override string name { get; } = "Sqlite";
         public override BaseConvertPage page { get; } = new SqliteConvertPage();
 
-        public override BaseSetting setting { get; } = new SqliteSetting();
+        public override BaseSetting setting { get; set; } = new SqliteSetting();
 
         public override int symbol { get; } = 261787;
 

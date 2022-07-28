@@ -20,6 +20,7 @@ namespace Excel2Other.Winform
                 var uiEnity = Activator.CreateInstance(find.First()) as UIEntity;
                 uiEnity.page.SetEntityType(item);
                 uiEntityMap.Add(item, uiEnity);
+                uiEnity.setting = (BaseSetting)SettingHelper.GetSetting(item);
             };
         }
         public static string GetSettingExtension(Type entityType)

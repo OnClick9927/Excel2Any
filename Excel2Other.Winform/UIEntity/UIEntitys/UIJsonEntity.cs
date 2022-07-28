@@ -12,7 +12,7 @@ namespace Excel2Other.Winform
         public override string name { get; } = "Json";
         public override BaseConvertPage page { get; } = new JsonConvertPage();
 
-        public override BaseSetting setting { get; } = new JsonSetting();
+        public override BaseSetting setting { get; set; } = new JsonSetting();
 
         public override int symbol { get; } = 261787;
 

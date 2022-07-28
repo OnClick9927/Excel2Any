@@ -26,6 +26,6 @@
         None = 0,
         Integer = 1,
         Double = 2,
-        Directorty = 3,
+        Directory = 3,
     }
 }

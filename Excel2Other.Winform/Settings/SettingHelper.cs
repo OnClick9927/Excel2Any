@@ -14,11 +14,11 @@ namespace Excel2Other.Winform
         public static List<FieldInfo> GetFields(Type type)
         {
             List<FieldInfo> fs = new List<FieldInfo>();
-            while (type != typeof(System.Object))
+            if (type != typeof(System.Object))
             {
                 var _fs = type.GetFields();
                 fs.InsertRange(0, _fs);
-                type = type.BaseType;
+                //type = type.BaseType;
             }
             return fs;
         }
@@ -64,12 +64,13 @@ namespace Excel2Other.Winform
 
         public static ISetting GetFormSetting()
         {
-            var ISetting = GetSettingBySettingType(typeof(FormSetting), GetDefaultSettingPath(typeof(FormSetting)));
+            Type type = typeof(FormSetting);
+            var ISetting = GetSettingBySettingType(type, GetDefaultSettingPath(type));
             if (ISetting == null)
             {
                 ISetting = new FormSetting();
+                SaveFormSetting(ISetting);
             }
-            SaveFormSetting(ISetting);
             return ISetting;
         }
 

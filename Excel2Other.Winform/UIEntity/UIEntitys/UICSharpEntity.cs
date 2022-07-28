@@ -6,7 +6,7 @@
         public override string name { get; } = "C#";
         public override BaseConvertPage page { get; } = new CSharpConvertPage();
 
-        public override BaseSetting setting { get; } = new CSharpSetting();
+        public override BaseSetting setting { get; set; } = new CSharpSetting();
 
         public override int symbol { get; } = 261897;
 

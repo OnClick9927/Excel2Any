@@ -100,6 +100,7 @@
             this.grdData.RowTemplate.Height = 23;
             this.grdData.ScrollBarBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.grdData.ScrollBarColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.grdData.ScrollBarRectColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.grdData.SelectedIndex = -1;
             this.grdData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdData.ShowCellToolTips = false;

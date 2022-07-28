@@ -6,7 +6,7 @@
         public override string name { get; } = "Xml";
         public override BaseConvertPage page { get; } = new XmlConvertPage();
 
-        public override BaseSetting setting { get; } = new XmlSetting();
+        public override BaseSetting setting { get; set; } = new XmlSetting();
 
         public override int symbol { get; } = 261891;
 

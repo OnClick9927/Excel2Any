@@ -23,7 +23,9 @@ namespace Excel2Other.Winform
             //添加设置页面
             var settingPage = new SettingPage();
             AddPage(settingPage, settingPageIndex);
-            
+            var fields = SettingHelper.GetFields(typeof(FormSetting));
+            settingPage.CreateSettingTab(_formSetting, "通用");
+
             foreach (var entityType in ExcelHelper.GetAllEntityTypes())
             {
                 var uiEntity = UIEntityHelper.GetUIEntity(entityType);
@@ -43,17 +45,11 @@ namespace Excel2Other.Winform
                 };
 
                 uiEntity.page.onSave += () => SaveAllFiles(entityType);
+
+                settingPage.CreateSettingTab(uiEntity.setting, uiEntity.name);
             }
 
             Aside.SelectFirst();
-
-            //生成设置
-
-            var fields =  SettingHelper.GetFields(typeof(FormSetting));
-            settingPage.CreateSettingTab(fields,"通用");
-
-
-
 
 
             //设置部分的委托

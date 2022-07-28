@@ -20,7 +20,7 @@ namespace Excel2Other.Winform
         /// <summary>
         /// 设置
         /// </summary>
-        public abstract BaseSetting setting { get; }
+        public abstract BaseSetting setting { get; set; }
         /// <summary>
         /// 图标ID
         /// </summary>
