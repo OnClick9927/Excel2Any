@@ -1,5 +1,5 @@
 ﻿using FastColoredTextBoxNS;
-using System.Collections.Generic;
+using System;
 using System.Drawing;
 using System.Text.RegularExpressions;
 
@@ -7,11 +7,9 @@ namespace Excel2Other.Winform
 {
     public partial class CSharpConvertPage : TextConvertPage
     {
-        public CSharpConvertPage() : base()
+        public CSharpConvertPage()
         {
             InitializeComponent();
-
-            txtCode.Language = Language.Custom;
         }
 
         //CSstyles

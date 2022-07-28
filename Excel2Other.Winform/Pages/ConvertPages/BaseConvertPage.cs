@@ -15,9 +15,17 @@ namespace Excel2Other.Winform
         public Action onSettingClick;
         public Action onSave;
 
+        public Type entityType;
+
+
         public BaseConvertPage()
         {
             InitializeComponent();
+        }
+
+        public void SetEntityType(Type entityType)
+        {
+            this.entityType = entityType;
         }
 
         /// <summary>
@@ -27,6 +35,7 @@ namespace Excel2Other.Winform
         public void SetSheets(List<SheetData> sheets)
         {
             _sheets = sheets;
+            RefreshSheet();
         }
         /// <summary>
         /// 将文件列表控件移过来
@@ -60,6 +69,7 @@ namespace Excel2Other.Winform
             onFolderRefresh?.Invoke();
         }
 
+        public virtual void RefreshSheet() { }
         /// <summary>
         /// 刷新Sheet
         /// </summary>

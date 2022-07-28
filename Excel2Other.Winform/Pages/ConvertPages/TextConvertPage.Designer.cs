@@ -103,7 +103,7 @@
             // 
             this.MenuItemCopy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.MenuItemCopy.Name = "MenuItemCopy";
-            this.MenuItemCopy.Size = new System.Drawing.Size(155, 26);
+            this.MenuItemCopy.Size = new System.Drawing.Size(119, 26);
             this.MenuItemCopy.Text = "复制选中";
             this.MenuItemCopy.Click += new System.EventHandler(this.MenuItemCopy_Click);
             // 
@@ -111,7 +111,7 @@
             // 
             this.MenuItemCopyAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.MenuItemCopyAll.Name = "MenuItemCopyAll";
-            this.MenuItemCopyAll.Size = new System.Drawing.Size(155, 26);
+            this.MenuItemCopyAll.Size = new System.Drawing.Size(119, 26);
             this.MenuItemCopyAll.Text = "复制所有";
             this.MenuItemCopyAll.Click += new System.EventHandler(this.MenuItemCopyAll_Click);
             // 

@@ -8,10 +8,9 @@ namespace Excel2Other.Winform
 {
     public partial class XmlConvertPage : TextConvertPage
     {
-        public XmlConvertPage() : base()
+        public XmlConvertPage()
         {
             InitializeComponent();
-            txtCode.Language = Language.Custom;
         }
 
         private static readonly Platform platformType = PlatformType.GetOperationSystemPlatform();

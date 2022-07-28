@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Excel2Other.Winform
@@ -17,7 +11,6 @@ namespace Excel2Other.Winform
             InitializeComponent();
             grdData.Dock = DockStyle.Fill;
             grdData.Visible = false;
-            //grdData.RowHeadersDefaultCellStyle.Padding = new Padding(grdData.RowHeadersWidth);
         }
 
         private void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
@@ -36,7 +29,7 @@ namespace Excel2Other.Winform
         /// <summary>
         /// 刷新Sheet
         /// </summary>
-        public void RefreshSheet()
+        public override void RefreshSheet()
         {
             grdData.Visible = false;
 

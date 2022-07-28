@@ -11,141 +11,79 @@ namespace Excel2Other.Winform
 {
     public partial class MainForm : UIAsideMainFrame
     {
-        private ExcelReader reader;
-        private JsonSetting jsonSetting;
-        private CSharpSetting cSharpSetting;
-        private XmlSetting xmlSetting;
-        private FormSetting formSetting; //窗体配置
-        private SqliteSetting sqliteSetting;
-        private Action onOpenFile; //打开文件
+        private FormSetting _formSetting = (FormSetting)SettingHelper.GetFormSetting(); //窗体配置
 
-        JsonConvertPage jsonPage;
-        XmlConvertPage xmlPage;
-        CSharpConvertPage csharpPage;
-        SqliteConvertPage sqlitePage;
-
-        const int jsonPageIndex = 1001;
-        const int xmlPageIndex = 1002;
-        const int csPageIndex = 1003;
-        const int sqlitePageIndex = 1004;
-
-
-        const int settingPageIndex = 1100;
+        const int settingPageIndex = 9999;
 
         public MainForm()
         {
             InitializeComponent();
-
-            //读取本地设置
-            LoadSettings();
-            reader = new ExcelReader();
-            reader.CreateConverter(ConvertType.Json,jsonSetting);
-            reader.CreateConverter(ConvertType.CSharp,cSharpSetting);
-            reader.CreateConverter(ConvertType.Xml, xmlSetting);
-            reader.CreateConverter(ConvertType.Sqlite, sqliteSetting); ;
-
-            //添加Json页面
-            jsonPage = new JsonConvertPage();
-            AddPage(jsonPage, jsonPageIndex);
-            var jsonNode = Aside.CreateNode("Json", 261787, 30, jsonPageIndex);
-            jsonNode.ToolTipText = "Json";
-
-            //添加Xml页面
-            xmlPage = new XmlConvertPage();
-            AddPage(xmlPage, xmlPageIndex);
-            var xmlNode = Aside.CreateNode("Xml", 261891, 30, xmlPageIndex);
-            xmlNode.ToolTipText = "Xml";
-
-            //添加CSharp页面
-            csharpPage = new CSharpConvertPage();
-            AddPage(csharpPage, csPageIndex);
-            var csNode = Aside.CreateNode("C#", 261897, 30, csPageIndex);
-            csNode.ToolTipText = "C#";
-
-            //添加Sqlite页面
-            sqlitePage = new SqliteConvertPage();
-            AddPage(sqlitePage, sqlitePageIndex);
-            var sqliteNode = Aside.CreateNode("Sqlite", 261897, 30, sqlitePageIndex);
-            csNode.ToolTipText = "Sqlite";
-
-            //添加设置页面
-            var settingPage = new SettingPage(jsonSetting, cSharpSetting, xmlSetting, formSetting);
-            AddPage(settingPage, settingPageIndex);
-            //Aside.CreateNode("设置", 61459, 30, pageIndex);
-
             tvwFile.Dock = DockStyle.Fill;
 
-            //选择第一个界面
-            Aside.SelectPage(1001);
-
-            #region 子界面的按钮设置
-            jsonPage.onFolderOpen += OpenFileOrDirectory;
-            csharpPage.onFolderOpen += OpenFileOrDirectory;
-            xmlPage.onFolderOpen += OpenFileOrDirectory;
-            sqlitePage.onFolderOpen += OpenFileOrDirectory;
-
-
-            jsonPage.onFolderRefresh += ReloadPaths;
-            csharpPage.onFolderRefresh += ReloadPaths;
-            xmlPage.onFolderRefresh += ReloadPaths;
-            sqlitePage.onFolderRefresh += ReloadPaths;
-
-            jsonPage.onSettingClick += () =>
+            //添加设置页面
+            var settingPage = new SettingPage();
+            AddPage(settingPage, settingPageIndex);
+            
+            foreach (var entityType in ExcelHelper.GetAllEntityTypes())
             {
-                Aside.SelectedNode = null;
-                SelectPage(settingPageIndex);
-                settingPage.OpenSetting("Json");
-            };
-            csharpPage.onSettingClick += () =>
-            {
-                Aside.SelectedNode = null;
-                SelectPage(settingPageIndex);
-                settingPage.OpenSetting("C#");
-            };
-            xmlPage.onSettingClick += () =>
-            {
-                Aside.SelectedNode = null;
-                SelectPage(settingPageIndex);
-                settingPage.OpenSetting("Xml");
-            };
+                var uiEntity = UIEntityHelper.GetUIEntity(entityType);
+                LoadSetting(entityType);
+                AddPage(uiEntity.page, uiEntity.pageIndex);
+                var jsonNode = Aside.CreateNode(uiEntity.name, uiEntity.symbol, 30, uiEntity.pageIndex);
+                jsonNode.ToolTipText = uiEntity.name;
 
-            jsonPage.onSave += () => SaveAllFiles(ConvertType.Json); ;
-            xmlPage.onSave += () => SaveAllFiles(ConvertType.Xml); ;
-            csharpPage.onSave += () => SaveAllFiles(ConvertType.CSharp); ;
-            sqlitePage.onSave += () => SaveAllFiles(ConvertType.Sqlite); ;
-            #endregion 
+                uiEntity.page.onFolderOpen += OpenFileOrDirectory;
+                uiEntity.page.onFolderRefresh += ReloadPaths;
 
-            onOpenFile += jsonPage.RefreshSheet;
-            onOpenFile += csharpPage.RefreshSheet;
-            onOpenFile += xmlPage.RefreshSheet;
-            onOpenFile += sqlitePage.RefreshSheet;
+                uiEntity.page.onSettingClick += () =>
+                {
+                    Aside.SelectedNode = null;
+                    SelectPage(settingPageIndex);
+                    settingPage.OpenSetting(uiEntity.name);
+                };
 
-            settingPage.onNavMenuChange += AsideWidthChange;
+                uiEntity.page.onSave += () => SaveAllFiles(entityType);
+            }
+
+            Aside.SelectFirst();
+
+            //生成设置
+
+            var fields =  SettingHelper.GetFields(typeof(FormSetting));
+            settingPage.CreateSettingTab(fields,"通用");
+
+
+
+
 
             //设置部分的委托
-            settingPage.onJsonSave += (selectPath) => SaveSetting(jsonSetting, "jconfig", selectPath ? "" : "Settings/JsonSettings.jconfig");
-            settingPage.onCSharpSave += (selectPath) => SaveSetting(cSharpSetting, "csconfig", selectPath ? "" : "Settings/CSharpSettings.csconfig");
-            settingPage.onXmlSave += (selectPath) => SaveSetting(xmlSetting, "xconfig", selectPath ? "" : "Settings/XmlSettings.xconfig");
-            settingPage.onFormSave += SaveFormSetting;
+            //settingPage.onJsonSave += (selectPath) => SaveSetting(typeof(JsonEntity), true);
+            //settingPage.onCSharpSave += (selectPath) => SaveSetting(typeof(CSharpEntity), true);
+            //settingPage.onXmlSave += (selectPath) => SaveSetting(typeof(XmlEntity), true);
+            //settingPage.onFormSave += SaveSetting(typeof(JsonEntity), true);
 
-            settingPage.onJsonLoad += () => { LoadJsonSetting(); settingPage.InitJsonSettings(); };
-            settingPage.onCSharpLoad += () => { LoadCSharpSetting(); settingPage.InitCSharpSettings(); };
-            settingPage.onXmlLoad += () => { LoadXmlSetting(); settingPage.InitXmlSettings(); };
+            //settingPage.onJsonLoad += () => { LoadSetting(typeof(JsonEntity)); settingPage.InitJsonSettings(); };
+            //settingPage.onCSharpLoad += () => { LoadSetting(typeof(CSharpEntity)); settingPage.InitCSharpSettings(); };
+            //settingPage.onXmlLoad += () => { LoadSetting(typeof(XmlEntity)); settingPage.InitXmlSettings(); };
             //LoadSqliteSetting
 
             //程序设置部分
-            if (formSetting.openLast && !string.IsNullOrEmpty(formSetting.lastOpenPath) && Directory.Exists(formSetting.lastOpenPath))
+            if (_formSetting.openLast && !string.IsNullOrEmpty(_formSetting.lastOpenPath) && Directory.Exists(_formSetting.lastOpenPath))
             {
-                OpenFileOrDirectory(formSetting.lastOpenPath);
+                OpenFileOrDirectory(_formSetting.lastOpenPath);
             }
         }
 
+        BaseConvertPage currentPage = null;
         private void Aside_MenuItemClick(TreeNode node, NavMenuItem item, int pageIndex)
         {
             if (pageIndex != -1 && item.Text != "设置")
             {
                 ((BaseConvertPage)GetPage(pageIndex)).SetFileListControl(tvwFile);
+                currentPage = (BaseConvertPage)GetPage(pageIndex);
+                GetAndSetSheets(currentPage, tvwFile.SelectedNode);
             }
+            
         }
         private void AsideWidthChange(bool expand)
         {
@@ -154,21 +92,24 @@ namespace Excel2Other.Winform
         }
         private void tvwFile_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            var path = tvwFile.Nodes[0].Tag + e.Node.FullPath;
-            //判断是否存在excel文件，如果存在则打开
-            if (IsExcelFile(path))
-            {
-                //UIMessageTip.ShowOk(e.Node.FullPath);
-                jsonPage.SetSheets(reader.GetContent(path,ConvertType.Json));
-                xmlPage.SetSheets(reader.GetContent(path,ConvertType.Xml));
-                csharpPage.SetSheets(reader.GetContent(path,ConvertType.CSharp));
-                sqlitePage.SetSheets(reader.GetContent(path, ConvertType.Sqlite));
-                onOpenFile?.Invoke();
-            }
 
+            GetAndSetSheets(currentPage, e.Node);
             //这一句是为了防止TreeView点击之后图标改变
             e.Node.SelectedImageIndex = e.Node.ImageIndex;
         }
+
+
+        public void GetAndSetSheets(BaseConvertPage page,TreeNode node)
+        {
+            if (page != null && node != null)
+            {
+                var path = tvwFile.Nodes[0].Tag + node.FullPath;
+                page.SetSheets(ExcelHelper.GetSheets(currentPage.entityType, path));
+            }
+        }
+
+
+
         private void tvwFile_DragEnter(object sender, DragEventArgs e)
         {
             if (tvwFile.Nodes.Count > 0 && Directory.Exists(tvwFile.Nodes[0].Tag + tvwFile.Nodes[0].Text))
@@ -290,8 +231,8 @@ namespace Excel2Other.Winform
 
 
             //更新设置
-            formSetting.lastOpenPath = path;
-            SaveFormSetting();
+            _formSetting.lastOpenPath = path;
+            //SaveFormSetting();
         }
 
         /// <summary>
@@ -322,18 +263,18 @@ namespace Excel2Other.Winform
                 foreach (var file in files)
                 {
                     if (Path.GetFileName(file).StartsWith("~$") ||
-                        (formSetting.excludeFile
-                            && !string.IsNullOrWhiteSpace(formSetting.excludePrefix)
-                            && file.StartsWith(formSetting.excludePrefix))) continue;
+                        (_formSetting.excludeFile
+                            && !string.IsNullOrWhiteSpace(_formSetting.excludePrefix)
+                            && file.StartsWith(_formSetting.excludePrefix))) continue;
                     //只添加excel文件
                     if (IsExcelFile(file))
                     {
                         var fileName = file.Substring(file.LastIndexOf('\\') + 1);
 
                         //排除文件头设置
-                        if (formSetting.excludeFile
-                            && !string.IsNullOrWhiteSpace(formSetting.excludePrefix)
-                            && fileName.StartsWith(formSetting.excludePrefix))
+                        if (_formSetting.excludeFile
+                            && !string.IsNullOrWhiteSpace(_formSetting.excludePrefix)
+                            && fileName.StartsWith(_formSetting.excludePrefix))
                         {
                             continue;
                         }
@@ -420,7 +361,6 @@ namespace Excel2Other.Winform
             //如果没有节点
             if (tvwFile.Nodes.Count == 0) return;
 
-            reader.Clear();
             //根节点是文件的情况下判断文件是否存在，如果不存在就删除节点
             if (IsExcelFile(tvwFile.Nodes[0].Tag + tvwFile.Nodes[0].Text))
             {
@@ -441,257 +381,69 @@ namespace Excel2Other.Winform
 
         #endregion
 
-        #region 设置相关
-
-        //说明：
-        //配置文件根据不同的配置保存为不同的文件（Json配置一个文件，Csharp配置一个文件……）
-        //配置位置在程序目录的Settings文件夹下
-        //设置写得乱七八糟
-
-        /// <summary>
-        /// 读取本地设置
-        /// </summary>
-        private void LoadSettings()
+        #region 设置
+        private void SaveSetting(Type type, bool isSelect = false)
         {
-            if (!Directory.Exists("Settings"))
-            {
-                Directory.CreateDirectory("Settings");
-            }
-            //读取本地设置
-            jsonSetting = GetConvertSetting<JsonSetting>("Settings/JsonSettings.jconfig", true);
-            if (jsonSetting == null)
-            {
-                jsonSetting = new JsonSetting();
-                SaveJsonSetting();
-            }
-
-            xmlSetting = GetConvertSetting<XmlSetting>("Settings/XmlSettings.xconfig", true);
-            if (xmlSetting == null)
-            {
-                xmlSetting = new XmlSetting();
-                SaveXmlSetting();
-            }
-
-
-            cSharpSetting = GetConvertSetting<CSharpSetting>("Settings/CSharpSettings.csconfig", true);
-            if (cSharpSetting == null)
-            {
-                cSharpSetting = new CSharpSetting();
-                SaveCSharpSetting();
-            }
-
-            formSetting = GetConvertSetting<FormSetting>("Settings/FormSettings.mainconfig", true);
-            if (formSetting == null)
-            {
-                formSetting = new FormSetting();
-                SaveFormSetting();
-            }
-
-            sqliteSetting = GetConvertSetting<SqliteSetting>("Settings/SqliteSettings.sqliteconfig", true);
-            if (sqliteSetting == null)
-            {
-                sqliteSetting = new SqliteSetting();
-                SaveSqliteSetting();
-            }
-        }
-
-        /// <summary>
-        /// 返回文件读取的字符串
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private string ReadJsonText(string path)
-        {
-            if (!File.Exists(path))
-            {
-                return null;
-            }
-            try
-            {
-                using (StreamReader file = File.OpenText(path))
-                {
-                    return file.ReadToEnd();
-                }
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 获取对象
-        /// </summary>
-        private T GetConvertSetting<T>(string path, bool init = false)
-        {
-            var text = ReadJsonText(path);
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                if (!init)
-                    ShowErrorTip($"配置文件不存在或为空白！");
-                return default;
-            }
-            else
-            {
-                try
-                {
-                    return JsonConvert.DeserializeObject<T>(text);
-                }
-                catch (Exception)
-                {
-                    if (!init)
-                        ShowErrorDialog("配置文件有误");
-                    return default;
-                }
-            }
-        }
-
-        private void SaveSetting<T>(T settings, string extention, string path = "") where T :ISetting
-        {
-            bool isSelectSave = false;
-            if (settings == null) return;
-
-            if (string.IsNullOrEmpty(path))
+            var setting = UIEntityHelper.GetUIEntity(type).setting;
+            string savePath;
+            if (isSelect)
             {
                 SaveFileDialog save = new SaveFileDialog();
-                save.Filter = $"配置文件|*.{extention}";     //设置保存类型
-                save.Title = "请设置Json配置的保存位置和文件名";   //对话框标题
+                var settingExtension = UIEntityHelper.GetSettingExtension(type);
+                save.Filter = $"配置文件|*.{settingExtension}";     //设置保存类型
+                save.Title = $"请设置{settingExtension}的保存位置和文件名";   //对话框标题
                 if (save.ShowDialog() == DialogResult.OK)
                 {
-                    path = save.FileName;
-                    isSelectSave = true;
+                    savePath = save.FileName;
+                    SettingHelper.SaveSetting(setting, savePath);
                 }
                 else
                 {
                     return;
                 }
             }
-
-            try
+            else
             {
-                var text = JsonConvert.SerializeObject(settings, Formatting.Indented);
-
-                using (FileStream fs = new FileStream(path, FileMode.Create))
-                {
-                    //写入
-                    using (StreamWriter sw = new StreamWriter(fs))
-                    {
-                        sw.WriteLine(text);
-                    }
-                    if (isSelectSave)
-                    {
-                        ShowSuccessDialog("保存完毕");
-                    }
-                }
+                SettingHelper.SaveSetting(setting);
             }
-            catch (Exception e)
+            ExcelHelper.SetAllDirty(type);
+        }
+        private void LoadSetting(Type type, bool isSelect = false)
+        {
+            ISetting setting = null;
+            if (isSelect)
             {
-
-                UIMessageDialog.ShowErrorDialog(this, e.Message);
-            }
-        }
-
-        private void SaveJsonSetting()
-        {
-            SaveSetting(jsonSetting, "jconfig", "Settings/JsonSettings.jconfig");
-            reader?.Clear(ConvertType.Json);
-        }
-
-        private void SaveCSharpSetting()
-        {
-            SaveSetting(cSharpSetting, "csconfig", "Settings/CSharpSettings.csconfig");
-            reader?.Clear(ConvertType.CSharp);
-        }
-
-        private void SaveXmlSetting()
-        {
-            SaveSetting(xmlSetting, "xconfig", "Settings/XmlSettings.xconfig");
-            reader?.Clear(ConvertType.Xml);
-        }
-
-        private void SaveFormSetting()
-        {
-            SaveSetting(formSetting, "mainconfig", "Settings/FormSettings.mainconfig");
-        }
-        private void SaveSqliteSetting()
-        {
-            SaveSetting(sqliteSetting, "sqliteconfig", "Settings/SqliteSettings.sqliteconfig");
-            reader?.Clear(ConvertType.Sqlite);
-        }
-
-        private void LoadJsonSetting()
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "请选择Json配置";
-            dialog.CheckFileExists = true;
-            dialog.CheckPathExists = true;
-            dialog.Filter = "配置文件|*.jconfig";
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                var setting = GetConvertSetting<JsonSetting>(dialog.FileName);
-                if (setting != null)
+                var settingExtension = UIEntityHelper.GetSettingExtension(type);
+                OpenFileDialog dialog = new OpenFileDialog
                 {
-                    jsonSetting = setting;
-                    SaveJsonSetting();
+                    Title = $"请选择{settingExtension}",
+                    CheckFileExists = true,
+                    CheckPathExists = true,
+                    Filter = $"配置文件|*.{settingExtension}"
+                };
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var path = dialog.FileName;
+                    setting = SettingHelper.GetSetting(type, path);
+
+                    ExcelHelper.GetEntity(type).SetSetting(setting);
                     ShowSuccessTip("读取完毕");
                 }
             }
-        }
-
-        private void LoadXmlSetting()
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "请选择Xml配置";
-            dialog.CheckFileExists = true;
-            dialog.CheckPathExists = true;
-            dialog.Filter = "配置文件|*.xconfig";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            else
             {
-                var setting = GetConvertSetting<XmlSetting>(dialog.FileName);
-                if (setting != null)
-                {
-                    xmlSetting = setting;
-                    SaveXmlSetting();
-                    ShowSuccessTip("读取完毕");
-                }
+                setting = SettingHelper.GetSetting(type);
             }
-        }
 
-        private void LoadCSharpSetting()
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "请选择C#配置";
-            dialog.CheckFileExists = true;
-            dialog.CheckPathExists = true;
-            dialog.Filter = "配置文件|*.csconfig";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            if (setting == null && !isSelect)
             {
-                var setting = GetConvertSetting<CSharpSetting>(dialog.FileName);
-                if (setting != null)
-                {
-                    cSharpSetting = setting;
-                    SaveCSharpSetting();
-                    ShowSuccessTip("读取完毕");
-                }
+                setting = UIEntityHelper.GetUIEntity(type).setting;
+                ExcelHelper.GetEntity(type).SetSetting(setting);
+                SaveSetting(type);
             }
-        }
-
-        private void LoadSqliteSetting()
-        {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "请选择Sqlite配置";
-            dialog.CheckFileExists = true;
-            dialog.CheckPathExists = true;
-            dialog.Filter = "配置文件|*.sqliteconfig";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            else
             {
-                var setting = GetConvertSetting<SqliteSetting>(dialog.FileName);
-                if (setting != null)
-                {
-                    sqliteSetting = setting;
-                    SaveSqliteSetting();
-                    ShowSuccessTip("读取完毕");
-                }
+                ExcelHelper.GetEntity(type).SetSetting(setting);
             }
         }
         #endregion
@@ -701,7 +453,7 @@ namespace Excel2Other.Winform
         /// 一键保存
         /// </summary>
         /// <param name="type">保存类型</param>
-        private void SaveAllFiles(ConvertType type)
+        private void SaveAllFiles(Type type)
         {
             //保存前自动刷新目录
             ReloadPaths();
@@ -713,30 +465,29 @@ namespace Excel2Other.Winform
             {
                 for (int i = 0; i < tvwFile.Nodes.Count; i++)
                 {
-                    reader.Save(FormatPath(tvwFile.Nodes[i].Tag + tvwFile.Nodes[i].Text),type);
+                    ExcelHelper.Save(type, FormatPath(tvwFile.Nodes[i].Tag + tvwFile.Nodes[i].Text));
                 }
             }
             else
             {
                 //文件夹的话则遍历到所有叶子节点并保存
                 //直接递归判断imageIndex 是不是1 ，是1就是叶子节点23333
-                LoadNode(tvwFile.Nodes[0], type);
+                SaveNode(tvwFile.Nodes[0], type);
             }
 
         }
-
-        private void LoadNode(TreeNode node, ConvertType type)
+        private void SaveNode(TreeNode node, Type entity)
         {
             if (node.ImageIndex == 1)
             {
-                reader.Save(FormatPath(tvwFile.Nodes[0].Tag + node.FullPath),type);
+                ExcelHelper.Save(entity, FormatPath(tvwFile.Nodes[0].Tag + node.FullPath));
                 return;
             }
 
             if (node.Nodes.Count == 0) return;
             foreach (TreeNode tnSub in node.Nodes)
             {
-                LoadNode(tnSub, type);
+                SaveNode(tnSub, entity);
             }
         }
         #endregion
@@ -746,7 +497,6 @@ namespace Excel2Other.Winform
             Aside.SelectedNode = null;
             SelectPage(settingPageIndex);
         }
-
         private void MainForm_Resize(object sender, EventArgs e)
         {
             btnSetting.Location = new Point(btnSetting.Location.X, this.Size.Height - btnSetting.Height);

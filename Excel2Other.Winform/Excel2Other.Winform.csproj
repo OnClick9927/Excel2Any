@@ -73,7 +73,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormSetting.cs" />
+    <Compile Include="Settings\FormSetting.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +130,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\SettingHelper.cs" />
+    <Compile Include="Settings\SettingUIHelper.cs" />
+    <Compile Include="UIEntity\UIEntitys\UICSharpEntity.cs" />
+    <Compile Include="UIEntity\UIEnitty.cs" />
+    <Compile Include="UIEntity\UIEntityHelper.cs" />
+    <Compile Include="UIEntity\UIEntitys\UIJsonEntity.cs" />
+    <Compile Include="UIEntity\UIEntitys\UISqliteEntity.cs" />
+    <Compile Include="UIEntity\UIEntitys\UIXmlEntity.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -183,5 +191,6 @@
       <Name>Excel2Other.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

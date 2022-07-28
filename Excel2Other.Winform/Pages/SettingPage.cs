@@ -1,114 +1,19 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using Sunny.UI;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Excel2Other.Winform
 {
     public partial class SettingPage : UIPage
     {
-
-        private JsonSetting _jsonSetting;
-        private CSharpSetting _cSharpSetting;
-        private XmlSetting _xmlSetting;
-        private FormSetting _formSetting;
-
-        public Action<bool> onJsonSave;
-        public Action<bool> onXmlSave;
-        public Action<bool> onCSharpSave;
-        public Action onFormSave;
-
-        public Action onJsonLoad;
-        public Action onXmlLoad;
-        public Action onCSharpLoad;
-
-        public Action<bool> onNavMenuChange;
-
-        public SettingPage(JsonSetting jsonSetting, CSharpSetting cSharpSetting, XmlSetting xmlSetting, FormSetting formSetting)
+        public SettingPage()
         {
-            _jsonSetting = jsonSetting;
-            _cSharpSetting = cSharpSetting;
-            _xmlSetting = xmlSetting;
-            _formSetting = formSetting;
             InitializeComponent();
-            InitControl();
         }
-
-        private void InitControl()
-        {
-            InitFormSettings();
-            InitJsonSettings();
-            InitXmlSettings();
-            InitCSharpSettings();
-
-        }
-
-        /// <summary>
-        /// 窗体配置
-        /// </summary>
-        public void InitFormSettings()
-        {
-            if (_formSetting != null)
-            {
-                swComExcludeFile.Active = _formSetting.excludeFile;
-                swComLast.Active = _formSetting.openLast;
-                txtComPrefix.Text = _formSetting.excludePrefix;
-                onNavMenuChange?.Invoke(_formSetting.isExpand);
-            }
-        }
-
-        public void InitJsonSettings()
-        {
-            if (_jsonSetting != null)
-            {
-                swJsonCell.Active = _jsonSetting.JsonCell;
-                swJsonString.Active = _jsonSetting.allString;
-                swJsonSpace.Active = _jsonSetting.saveSpace;
-                txtJsonDateFormat.Text = _jsonSetting.dateFormat;
-                txtJsonSavePath.Text = _jsonSetting.savePath;
-                swJsonMultiFiles.Active = _jsonSetting.separateBySheet;
-                txtJsonExcludePrefix.Text = _jsonSetting.excludePrefix;
-                swJsonExcludeSheet.Active = _jsonSetting.excludeSheet;
-                txtJsonField.Text = (_jsonSetting.FieldRowNum + 1).ToString();
-                txtJsonStart.Text = (_jsonSetting.StartRowNum + 1).ToString();
-                swJsonFirstCol.Active = _jsonSetting.excludeFirstCol;
-            }
-        }
-
-        public void InitXmlSettings()
-        {
-            if (_xmlSetting != null)
-            {
-                txtXmlDateFormat.Text = _xmlSetting.dateFormat;
-                txtXmlSavePath.Text = _xmlSetting.savePath;
-                swXmlMultiFiles.Active = _xmlSetting.separateBySheet;
-                txtXmlExcludePrefix.Text = _xmlSetting.excludePrefix;
-                swXmlExcludeSheet.Active = _xmlSetting.excludeSheet;
-                txtXmlComment.Text = (_xmlSetting.CommentRowNum + 1).ToString();
-                txtXmlType.Text = (_xmlSetting.TypeRowNum + 1).ToString();
-                txtXmlField.Text = (_xmlSetting.FieldRowNum + 1).ToString();
-                txtXmlStart.Text = (_xmlSetting.StartRowNum + 1).ToString();
-                swXmlFirstCol.Active = _xmlSetting.excludeFirstCol;
-            }
-        }
-
-        public void InitCSharpSettings()
-        {
-            if (_cSharpSetting != null)
-            {
-                txtCsSavePath.Text = _cSharpSetting.savePath;
-                swCsMultiFiles.Active = _cSharpSetting.separateBySheet;
-                txtCsExcludePrefix.Text = _cSharpSetting.excludePrefix;
-                swCsExcludeSheet.Active = _cSharpSetting.excludeSheet;
-                txtCsComment.Text = (_cSharpSetting.CommentRowNum + 1).ToString();
-                txtCsType.Text = (_cSharpSetting.TypeRowNum + 1).ToString();
-                txtCsField.Text = (_cSharpSetting.FieldRowNum + 1).ToString();
-                swCsFirstCol.Active = _cSharpSetting.excludeFirstCol;
-                swCsProperty.Active = _cSharpSetting.IsProperty;
-            }
-        }
-
 
         /// <summary>
         /// 打开对应设置
@@ -126,227 +31,35 @@ namespace Excel2Other.Winform
             }
         }
 
-        private void btnJsonLoad_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 传入设置属性和转换名，自动生成设置页面
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <param name="tabName"></param>
+        public void CreateSettingTab(List<FieldInfo> fields, string tabName)
         {
-            onJsonLoad?.Invoke();
-        }
+            if (fields.Count == 0) return;
+            var tabPage = SettingUIHelper.GetNewTabPage(tabName);
+            tabSettings.TabPages.Add(tabPage);
+            foreach (var field in fields)
+            {
+                var attr = field.GetCustomAttribute<SettingAttribute>();
+                if (attr == null) continue; //没有的直接跳过
+                //生成标题
+                var title = SettingUIHelper.GetHeaderLabel(attr.name);
+                //生成内容
+                if (field.FieldType == typeof(bool))
+                {
+                    //生成切换按钮
+                }
+                else if (field.FieldType == typeof(string))
+                {
 
-        private void btnJsonSave_Click(object sender, EventArgs e)
-        {
-            onJsonSave?.Invoke(true);
-        }
+                }
 
-        private void btnXmlLoad_Click(object sender, EventArgs e)
-        {
-            onXmlLoad?.Invoke();
-        }
+            }
 
-        private void btnXmlSave_Click(object sender, EventArgs e)
-        {
-            onXmlSave?.Invoke(true);
-        }
-
-        private void btnCsLoad_Click(object sender, EventArgs e)
-        {
-            onCSharpLoad?.Invoke();
-        }
-
-        private void btnCsSave_Click(object sender, EventArgs e)
-        {
-            onCSharpSave?.Invoke(true);
-        }
-
-        private void swComLast_ValueChanged(object sender, bool value)
-        {
-            _formSetting.openLast = value;
-            onFormSave?.Invoke();
-        }
-
-        private void swComExcludeFile_ValueChanged(object sender, bool value)
-        {
-            _formSetting.excludeFile = value;
-            onFormSave?.Invoke();
-        }
-
-        private void txtComPrefix_Leave(object sender, EventArgs e)
-        {
-            _formSetting.excludePrefix = txtComPrefix.Text;
-            onFormSave?.Invoke();
-        }
-
-        private void swJsonCell_ValueChanged(object sender, bool value)
-        {
-            _jsonSetting.JsonCell = value;
-            onJsonSave?.Invoke(false);
-        }
-
-        private void swJsonString_ValueChanged(object sender, bool value)
-        {
-            _jsonSetting.allString = value;
-            onJsonSave?.Invoke(false);
-        }
-
-        private void swJsonSpace_ValueChanged(object sender, bool value)
-        {
-            _jsonSetting.saveSpace = value;
-            onJsonSave?.Invoke(false);
-        }
-
-        private void swJsonMultiFiles_ValueChanged(object sender, bool value)
-        {
-            _jsonSetting.separateBySheet = value;
-            onJsonSave?.Invoke(false);
-        }
-
-        private void swJsonExcludeSheet_ValueChanged(object sender, bool value)
-        {
-            _jsonSetting.excludeSheet = value;
-            onJsonSave?.Invoke(false);
-        }
-
-        private void swJsonFirstCol_ValueChanged(object sender, bool value)
-        {
-            _jsonSetting.excludeFirstCol = value;
-            onJsonSave?.Invoke(false);
-        }
-
-        private void txtJsonDateFormat_Leave(object sender, EventArgs e)
-        {
-            _jsonSetting.dateFormat = txtJsonDateFormat.Text;
-            onJsonSave?.Invoke(false);
-        }
-
-        private void txtJsonSavePath_Leave(object sender, EventArgs e)
-        {
-            _jsonSetting.savePath = txtJsonSavePath.Text;
-            onJsonSave?.Invoke(false);
-        }
-
-        private void txtJsonExcludePrefix_Leave(object sender, EventArgs e)
-        {
-            _jsonSetting.excludePrefix = txtJsonSavePath.Text;
-            onJsonSave?.Invoke(false);
-        }
-
-
-        private void txtJsonField_Leave(object sender, EventArgs e)
-        {
-            _jsonSetting.FieldRowNum = int.Parse(txtJsonField.Text) - 1;  //设置里面是索引 外面写的是行号
-            onJsonSave?.Invoke(false);
-        }
-
-        private void txtJsonStart_Leave(object sender, EventArgs e)
-        {
-            _jsonSetting.StartRowNum = int.Parse(txtJsonStart.Text) - 1; //设置里面是索引 外面写的是行号
-            onJsonSave?.Invoke(false);
-        }
-
-        private void swXmlMultiFiles_ValueChanged(object sender, bool value)
-        {
-            _xmlSetting.separateBySheet = value;
-            onXmlSave?.Invoke(false);
-        }
-
-        private void swXmlExcludeSheet_ValueChanged(object sender, bool value)
-        {
-            _xmlSetting.excludeSheet = value;
-            onXmlSave?.Invoke(false);
-        }
-
-        private void swXmlFirstCol_ValueChanged(object sender, bool value)
-        {
-            _xmlSetting.excludeFirstCol = value;
-            onXmlSave?.Invoke(false);
-        }
-
-        private void txtXmlDateFormat_Leave(object sender, EventArgs e)
-        {
-            _xmlSetting.dateFormat = txtXmlDateFormat.Text;
-            onXmlSave?.Invoke(false);
-        }
-
-        private void txtXmlSavePath_Leave(object sender, EventArgs e)
-        {
-            _xmlSetting.savePath = txtXmlSavePath.Text;
-            onXmlSave?.Invoke(false);
-        }
-
-        private void txtXmlExcludePrefix_Leave(object sender, EventArgs e)
-        {
-            _xmlSetting.excludePrefix = txtXmlExcludePrefix.Text;
-            onXmlSave?.Invoke(false);
-        }
-
-        private void txtXmlComment_Leave(object sender, EventArgs e)
-        {
-            _xmlSetting.CommentRowNum = int.Parse(txtXmlComment.Text) - 1;//设置里面是索引 外面写的是行号
-            onXmlSave?.Invoke(false);
-        }
-
-        private void txtXmlType_Leave(object sender, EventArgs e)
-        {
-            _xmlSetting.TypeRowNum = int.Parse(txtXmlType.Text) - 1; //设置里面是索引 外面写的是行号
-            onXmlSave?.Invoke(false);
-        }
-
-        private void txtXmlField_Leave(object sender, EventArgs e)
-        {
-            _xmlSetting.FieldRowNum = int.Parse(txtXmlField.Text) - 1; //设置里面是索引 外面写的是行号
-            onXmlSave?.Invoke(false);
-        }
-
-        private void txtXmlStart_Leave(object sender, EventArgs e)
-        {
-            _xmlSetting.StartRowNum = int.Parse(txtXmlStart.Text) - 1; //设置里面是索引 外面写的是行号
-            onXmlSave?.Invoke(false);
-        }
-
-        private void swCsMultiFiles_ValueChanged(object sender, bool value)
-        {
-            _cSharpSetting.separateBySheet = value;
-            onCSharpSave?.Invoke(false);
-        }
-
-        private void swCsExcludeSheet_ValueChanged(object sender, bool value)
-        {
-            _cSharpSetting.excludeSheet = value;
-            onCSharpSave?.Invoke(false);
-        }
-
-        private void swCsFirstCol_ValueChanged(object sender, bool value)
-        {
-            _cSharpSetting.excludeFirstCol = value;
-            onCSharpSave?.Invoke(false);
-        }
-
-        private void txtCsSavePath_Leave(object sender, EventArgs e)
-        {
-            _cSharpSetting.savePath = txtCsSavePath.Text;
-            onCSharpSave?.Invoke(false);
-        }
-
-        private void txtCsExcludePrefix_Leave(object sender, EventArgs e)
-        {
-            _cSharpSetting.excludePrefix = txtCsExcludePrefix.Text;
-            onCSharpSave?.Invoke(false);
-        }
-
-        private void txtCsComment_Leave(object sender, EventArgs e)
-        {
-            _cSharpSetting.CommentRowNum = int.Parse(txtCsComment.Text) - 1; //设置里面是索引 外面写的是行号
-            onCSharpSave?.Invoke(false);
-        }
-
-        private void txtCsField_Leave(object sender, EventArgs e)
-        {
-            _cSharpSetting.FieldRowNum = int.Parse(txtCsField.Text) - 1; //设置里面是索引 外面写的是行号
-            onCSharpSave?.Invoke(false);
-        }
-
-        private void txtCsType_Leave(object sender, EventArgs e)
-        {
-            _cSharpSetting.TypeRowNum = int.Parse(txtCsType.Text) - 1; //设置里面是索引 外面写的是行号
-            onCSharpSave?.Invoke(false);
+            tabSettings.Refresh();
         }
 
         private void SavePath_DoubleClick(object sender, EventArgs e)
@@ -398,17 +111,5 @@ namespace Excel2Other.Winform
             }
         }
 
-        private void swExpand_ValueChanged(object sender, bool value)
-        {
-            _formSetting.isExpand = value;
-            onNavMenuChange?.Invoke(value);
-            onFormSave?.Invoke();
-        }
-
-        private void swCsProperty_ValueChanged(object sender, bool value)
-        {
-            _cSharpSetting.IsProperty = value;
-            onCSharpSave?.Invoke(false);
-        }
     }
 }

@@ -213,7 +213,6 @@
             this.swExpand.TabIndex = 11;
             this.swExpand.Text = "排除文件";
             this.swExpand.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swExpand.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swExpand_ValueChanged);
             // 
             // uiLabel26
             // 
@@ -328,8 +327,8 @@
             this.txtComPrefix.TabIndex = 2;
             this.txtComPrefix.Text = "#";
             this.txtComPrefix.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtComPrefix.Watermark = "";
             this.txtComPrefix.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtComPrefix.Leave += new System.EventHandler(this.txtComPrefix_Leave);
             // 
             // swComExcludeFile
             // 
@@ -343,7 +342,6 @@
             this.swComExcludeFile.TabIndex = 1;
             this.swComExcludeFile.Text = "排除文件";
             this.swComExcludeFile.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swComExcludeFile.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swComExcludeFile_ValueChanged);
             // 
             // swComLast
             // 
@@ -357,7 +355,6 @@
             this.swComLast.TabIndex = 1;
             this.swComLast.Text = "打开上一次路径";
             this.swComLast.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swComLast.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swComLast_ValueChanged);
             // 
             // uiLabel1
             // 
@@ -417,7 +414,7 @@
             this.tabJson.Name = "tabJson";
             this.tabJson.Size = new System.Drawing.Size(669, 450);
             this.tabJson.TabIndex = 1;
-            this.tabJson.Text = "　　Json";
+            this.tabJson.Text = "　　Json111";
             // 
             // uiLabel21
             // 
@@ -755,7 +752,6 @@
             this.btnJsonSave.Text = "另存Json配置";
             this.btnJsonSave.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnJsonSave.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.btnJsonSave.Click += new System.EventHandler(this.btnJsonSave_Click);
             // 
             // btnJsonLoad
             // 
@@ -780,7 +776,6 @@
             this.btnJsonLoad.Text = "读取Json配置";
             this.btnJsonLoad.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnJsonLoad.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.btnJsonLoad.Click += new System.EventHandler(this.btnJsonLoad_Click);
             // 
             // swJsonFirstCol
             // 
@@ -794,7 +789,6 @@
             this.swJsonFirstCol.TabIndex = 20;
             this.swJsonFirstCol.Text = "uiSwitch6";
             this.swJsonFirstCol.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonFirstCol.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonFirstCol_ValueChanged);
             // 
             // swJsonExcludeSheet
             // 
@@ -808,7 +802,6 @@
             this.swJsonExcludeSheet.TabIndex = 11;
             this.swJsonExcludeSheet.Text = "uiSwitch1";
             this.swJsonExcludeSheet.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonExcludeSheet.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonExcludeSheet_ValueChanged);
             // 
             // swJsonMultiFiles
             // 
@@ -822,7 +815,6 @@
             this.swJsonMultiFiles.TabIndex = 7;
             this.swJsonMultiFiles.Text = "uiSwitch1";
             this.swJsonMultiFiles.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonMultiFiles.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonMultiFiles_ValueChanged);
             // 
             // swJsonSpace
             // 
@@ -836,7 +828,6 @@
             this.swJsonSpace.TabIndex = 2;
             this.swJsonSpace.Text = "uiSwitch6";
             this.swJsonSpace.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonSpace.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonSpace_ValueChanged);
             // 
             // swJsonString
             // 
@@ -850,7 +841,6 @@
             this.swJsonString.TabIndex = 2;
             this.swJsonString.Text = "uiSwitch6";
             this.swJsonString.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonString.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonString_ValueChanged);
             // 
             // swJsonCell
             // 
@@ -864,7 +854,6 @@
             this.swJsonCell.TabIndex = 2;
             this.swJsonCell.Text = "uiSwitch6";
             this.swJsonCell.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swJsonCell.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swJsonCell_ValueChanged);
             // 
             // txtJsonStart
             // 
@@ -882,8 +871,8 @@
             this.txtJsonStart.Text = "0";
             this.txtJsonStart.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtJsonStart.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            this.txtJsonStart.Watermark = "";
             this.txtJsonStart.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtJsonStart.Leave += new System.EventHandler(this.txtJsonStart_Leave);
             // 
             // txtJsonField
             // 
@@ -901,8 +890,8 @@
             this.txtJsonField.Text = "0";
             this.txtJsonField.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtJsonField.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            this.txtJsonField.Watermark = "";
             this.txtJsonField.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtJsonField.Leave += new System.EventHandler(this.txtJsonField_Leave);
             // 
             // txtJsonExcludePrefix
             // 
@@ -919,8 +908,8 @@
             this.txtJsonExcludePrefix.TabIndex = 18;
             this.txtJsonExcludePrefix.Text = "#";
             this.txtJsonExcludePrefix.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtJsonExcludePrefix.Watermark = "";
             this.txtJsonExcludePrefix.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtJsonExcludePrefix.Leave += new System.EventHandler(this.txtJsonExcludePrefix_Leave);
             // 
             // txtJsonSavePath
             // 
@@ -938,9 +927,9 @@
             this.txtJsonSavePath.TabIndex = 9;
             this.txtJsonSavePath.Text = "C://XXX";
             this.txtJsonSavePath.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtJsonSavePath.Watermark = "";
             this.txtJsonSavePath.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.txtJsonSavePath.DoubleClick += new System.EventHandler(this.SavePath_DoubleClick);
-            this.txtJsonSavePath.Leave += new System.EventHandler(this.txtJsonSavePath_Leave);
             this.txtJsonSavePath.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
             this.txtJsonSavePath.DragEnter += new System.Windows.Forms.DragEventHandler(this.File_DragEnter);
             // 
@@ -959,8 +948,8 @@
             this.txtJsonDateFormat.TabIndex = 3;
             this.txtJsonDateFormat.Text = "yyyy/MM/dd";
             this.txtJsonDateFormat.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtJsonDateFormat.Watermark = "";
             this.txtJsonDateFormat.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtJsonDateFormat.Leave += new System.EventHandler(this.txtJsonDateFormat_Leave);
             // 
             // tabXml
             // 
@@ -1003,7 +992,7 @@
             this.tabXml.Name = "tabXml";
             this.tabXml.Size = new System.Drawing.Size(669, 450);
             this.tabXml.TabIndex = 2;
-            this.tabXml.Text = "　　Xml";
+            this.tabXml.Text = "　　Xml1111";
             // 
             // uiLabel16
             // 
@@ -1313,7 +1302,6 @@
             this.btnXmlSave.Text = "另存Xml配置";
             this.btnXmlSave.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnXmlSave.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.btnXmlSave.Click += new System.EventHandler(this.btnXmlSave_Click);
             // 
             // btnXmlLoad
             // 
@@ -1338,7 +1326,6 @@
             this.btnXmlLoad.Text = "读取Xml配置";
             this.btnXmlLoad.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnXmlLoad.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.btnXmlLoad.Click += new System.EventHandler(this.btnXmlLoad_Click);
             // 
             // txtXmlDateFormat
             // 
@@ -1355,8 +1342,8 @@
             this.txtXmlDateFormat.TabIndex = 42;
             this.txtXmlDateFormat.Text = "yyyy/MM/dd";
             this.txtXmlDateFormat.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtXmlDateFormat.Watermark = "";
             this.txtXmlDateFormat.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtXmlDateFormat.Leave += new System.EventHandler(this.txtXmlDateFormat_Leave);
             // 
             // swXmlFirstCol
             // 
@@ -1370,7 +1357,6 @@
             this.swXmlFirstCol.TabIndex = 40;
             this.swXmlFirstCol.Text = "uiSwitch6";
             this.swXmlFirstCol.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swXmlFirstCol.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swXmlFirstCol_ValueChanged);
             // 
             // txtXmlStart
             // 
@@ -1388,8 +1374,8 @@
             this.txtXmlStart.Text = "0";
             this.txtXmlStart.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtXmlStart.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            this.txtXmlStart.Watermark = "";
             this.txtXmlStart.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtXmlStart.Leave += new System.EventHandler(this.txtXmlStart_Leave);
             // 
             // txtXmlField
             // 
@@ -1407,8 +1393,8 @@
             this.txtXmlField.Text = "0";
             this.txtXmlField.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtXmlField.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            this.txtXmlField.Watermark = "";
             this.txtXmlField.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtXmlField.Leave += new System.EventHandler(this.txtXmlField_Leave);
             // 
             // txtXmlType
             // 
@@ -1426,8 +1412,8 @@
             this.txtXmlType.Text = "0";
             this.txtXmlType.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtXmlType.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            this.txtXmlType.Watermark = "";
             this.txtXmlType.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtXmlType.Leave += new System.EventHandler(this.txtXmlType_Leave);
             // 
             // txtXmlComment
             // 
@@ -1445,8 +1431,8 @@
             this.txtXmlComment.Text = "0";
             this.txtXmlComment.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtXmlComment.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            this.txtXmlComment.Watermark = "";
             this.txtXmlComment.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtXmlComment.Leave += new System.EventHandler(this.txtXmlComment_Leave);
             // 
             // txtXmlExcludePrefix
             // 
@@ -1463,8 +1449,8 @@
             this.txtXmlExcludePrefix.TabIndex = 35;
             this.txtXmlExcludePrefix.Text = "#";
             this.txtXmlExcludePrefix.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtXmlExcludePrefix.Watermark = "";
             this.txtXmlExcludePrefix.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtXmlExcludePrefix.Leave += new System.EventHandler(this.txtXmlExcludePrefix_Leave);
             // 
             // swXmlExcludeSheet
             // 
@@ -1478,7 +1464,6 @@
             this.swXmlExcludeSheet.TabIndex = 28;
             this.swXmlExcludeSheet.Text = "uiSwitch1";
             this.swXmlExcludeSheet.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swXmlExcludeSheet.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swXmlExcludeSheet_ValueChanged);
             // 
             // txtXmlSavePath
             // 
@@ -1496,9 +1481,9 @@
             this.txtXmlSavePath.TabIndex = 26;
             this.txtXmlSavePath.Text = "C://XXX";
             this.txtXmlSavePath.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtXmlSavePath.Watermark = "";
             this.txtXmlSavePath.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.txtXmlSavePath.DoubleClick += new System.EventHandler(this.SavePath_DoubleClick);
-            this.txtXmlSavePath.Leave += new System.EventHandler(this.txtXmlSavePath_Leave);
             this.txtXmlSavePath.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
             this.txtXmlSavePath.DragEnter += new System.Windows.Forms.DragEventHandler(this.File_DragEnter);
             // 
@@ -1514,7 +1499,6 @@
             this.swXmlMultiFiles.TabIndex = 24;
             this.swXmlMultiFiles.Text = "uiSwitch1";
             this.swXmlMultiFiles.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swXmlMultiFiles.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swXmlMultiFiles_ValueChanged);
             // 
             // tabCSharp
             // 
@@ -1554,7 +1538,7 @@
             this.tabCSharp.Name = "tabCSharp";
             this.tabCSharp.Size = new System.Drawing.Size(669, 450);
             this.tabCSharp.TabIndex = 3;
-            this.tabCSharp.Text = "　　C#";
+            this.tabCSharp.Text = "　　C#1111";
             // 
             // uiLabel33
             // 
@@ -1596,7 +1580,6 @@
             this.swCsProperty.TabIndex = 82;
             this.swCsProperty.Text = "uiSwitch6";
             this.swCsProperty.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swCsProperty.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swCsProperty_ValueChanged);
             // 
             // uiLabel15
             // 
@@ -1887,7 +1870,6 @@
             this.swCsFirstCol.TabIndex = 40;
             this.swCsFirstCol.Text = "uiSwitch6";
             this.swCsFirstCol.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swCsFirstCol.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swCsFirstCol_ValueChanged);
             // 
             // txtCsType
             // 
@@ -1905,8 +1887,8 @@
             this.txtCsType.Text = "0";
             this.txtCsType.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtCsType.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            this.txtCsType.Watermark = "";
             this.txtCsType.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtCsType.Leave += new System.EventHandler(this.txtCsType_Leave);
             // 
             // txtCsField
             // 
@@ -1924,8 +1906,8 @@
             this.txtCsField.Text = "0";
             this.txtCsField.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtCsField.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            this.txtCsField.Watermark = "";
             this.txtCsField.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtCsField.Leave += new System.EventHandler(this.txtCsField_Leave);
             // 
             // txtCsComment
             // 
@@ -1943,8 +1925,8 @@
             this.txtCsComment.Text = "0";
             this.txtCsComment.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtCsComment.Type = Sunny.UI.UITextBox.UIEditType.Integer;
+            this.txtCsComment.Watermark = "";
             this.txtCsComment.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtCsComment.Leave += new System.EventHandler(this.txtCsComment_Leave);
             // 
             // txtCsExcludePrefix
             // 
@@ -1961,8 +1943,8 @@
             this.txtCsExcludePrefix.TabIndex = 35;
             this.txtCsExcludePrefix.Text = "#";
             this.txtCsExcludePrefix.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtCsExcludePrefix.Watermark = "";
             this.txtCsExcludePrefix.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.txtCsExcludePrefix.Leave += new System.EventHandler(this.txtCsExcludePrefix_Leave);
             // 
             // swCsExcludeSheet
             // 
@@ -1976,7 +1958,6 @@
             this.swCsExcludeSheet.TabIndex = 28;
             this.swCsExcludeSheet.Text = "uiSwitch1";
             this.swCsExcludeSheet.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swCsExcludeSheet.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swCsExcludeSheet_ValueChanged);
             // 
             // txtCsSavePath
             // 
@@ -1994,9 +1975,9 @@
             this.txtCsSavePath.TabIndex = 26;
             this.txtCsSavePath.Text = "C://XXX";
             this.txtCsSavePath.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            this.txtCsSavePath.Watermark = "";
             this.txtCsSavePath.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.txtCsSavePath.DoubleClick += new System.EventHandler(this.SavePath_DoubleClick);
-            this.txtCsSavePath.Leave += new System.EventHandler(this.txtCsSavePath_Leave);
             this.txtCsSavePath.DragDrop += new System.Windows.Forms.DragEventHandler(this.File_DragDrop);
             this.txtCsSavePath.DragEnter += new System.Windows.Forms.DragEventHandler(this.File_DragEnter);
             // 
@@ -2012,7 +1993,6 @@
             this.swCsMultiFiles.TabIndex = 24;
             this.swCsMultiFiles.Text = "uiSwitch1";
             this.swCsMultiFiles.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.swCsMultiFiles.ValueChanged += new Sunny.UI.UISwitch.OnValueChanged(this.swCsMultiFiles_ValueChanged);
             // 
             // SettingPage
             // 

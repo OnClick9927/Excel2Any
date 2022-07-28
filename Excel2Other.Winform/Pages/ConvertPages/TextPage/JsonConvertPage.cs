@@ -6,10 +6,9 @@ namespace Excel2Other.Winform
 {
     public partial class JsonConvertPage : TextConvertPage
     {
-        public JsonConvertPage() : base()
+        public JsonConvertPage()
         {
             InitializeComponent();
-            txtCode.Language = Language.Custom;
         }
 
         TextStyle keyStyle = new TextStyle(new SolidBrush(Color.FromArgb(255, 156, 200, 254)), null, FontStyle.Regular); //键

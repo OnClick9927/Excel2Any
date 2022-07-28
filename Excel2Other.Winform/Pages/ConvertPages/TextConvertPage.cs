@@ -1,8 +1,6 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using FastColoredTextBoxNS;
 using Sunny.UI;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace Excel2Other.Winform
@@ -14,7 +12,9 @@ namespace Excel2Other.Winform
             InitializeComponent();
             txtCode.Dock = DockStyle.Fill;
             txtCode.Visible = false;
+            txtCode.Language = Language.Custom;
         }
+
 
         private void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -31,7 +31,7 @@ namespace Excel2Other.Winform
         /// <summary>
         /// 刷新Sheet
         /// </summary>
-        public void RefreshSheet()
+        public override void RefreshSheet()
         {
             txtCode.Visible = false;
 
