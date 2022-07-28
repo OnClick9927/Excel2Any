@@ -36,6 +36,10 @@ namespace Excel2Other.Winform
             {
                 path = GetDefaultSettingPath(settingType);
             }
+            if (!File.Exists(path))
+            {
+                SaveSetting(Activator.CreateInstance(settingType) as ISetting, path);
+            }
             return GetSettingBySettingType(settingType, path);
         }
 

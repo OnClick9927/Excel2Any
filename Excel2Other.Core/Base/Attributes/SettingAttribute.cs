@@ -5,20 +5,14 @@
     {
         public readonly string name;
         public readonly string des;
-        public readonly int textType;
+        public StringType textType;
+        public int priority;
         public SettingAttribute(string name, string des)
         {
             this.name = name;
             this.des = des;
-            textType = (int)StringType.None;
         }
 
-        public SettingAttribute(string name, string des, int textType)
-        {
-            this.name = name;
-            this.des = des;
-            this.textType = textType;
-        }
     }
 
     public enum StringType

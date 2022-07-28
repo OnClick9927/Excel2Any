@@ -40,13 +40,14 @@ namespace Excel2Other.Winform
         {
             var fields = SettingHelper.GetFields(setting.GetType());
             if (fields.Count == 0) return;
+            fields.RemoveAll((f) => { return f.GetCustomAttribute<SettingAttribute>() == null; });
+            fields.Sort((x, y) => { return x.GetCustomAttribute<SettingAttribute>().priority - y.GetCustomAttribute<SettingAttribute>().priority; });
             var tabPage = SettingUIHelper.GetTabPage(tabName);
             tabSettings.TabPages.Add(tabPage);
             int location = 10; //控件位置
             foreach (var field in fields)
             {
                 var attr = field.GetCustomAttribute<SettingAttribute>();
-                if (attr == null) continue; //没有的直接跳过
                 //生成标题
                 var title = SettingUIHelper.GetHeaderLabel(attr.name);
                 var content = SettingUIHelper.GetContentLabel(attr.des);
