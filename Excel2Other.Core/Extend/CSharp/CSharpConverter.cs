@@ -56,7 +56,7 @@ namespace Excel2Other
                     }
 
                     //从字典中拿类型
-                    fieldType = FieldTypeUtil.GetTypeName(fieldName);
+                    fieldType = FieldTypeUtil.GetTypeName(fieldType);
 
                     var summary = new StringBuilder();
                     if (_setting.CommentRowNum <= sheet.Rows.Count - 1)

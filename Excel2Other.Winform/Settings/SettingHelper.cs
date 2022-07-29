@@ -38,7 +38,8 @@ namespace Excel2Other.Winform
             }
             if (!File.Exists(path))
             {
-                SaveSetting(Activator.CreateInstance(settingType) as ISetting, path);
+                return default;
+                //SaveSetting(Activator.CreateInstance(settingType) as ISetting, path);
             }
             return GetSettingBySettingType(settingType, path);
         }

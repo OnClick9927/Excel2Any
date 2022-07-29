@@ -47,12 +47,12 @@ namespace Excel2Other
                 }
                 else
                 {
-                    var convertedData = ConvertSheet(sheet, allSheetDataXml, out string sheetName);
-                    if (!_setting.separateBySheet)
+                    if (_setting.separateBySheet)
                     {
                         if (allSheetDataXml != null)
                         {
                             var sheetData = new XmlDocument();
+                            var convertedData = ConvertSheet(sheet, sheetData, out string sheetName);
                             sheetData.AddXmlHeader();
                             sheetData.AppendChild(convertedData);
                             allSheetData.Add(new SheetData(sheetName, new TextContent(formatXml(sheetData))));
@@ -60,9 +60,8 @@ namespace Excel2Other
                     }
                     else
                     {
-                        var sheetElement = allSheetDataXml.CreateElement($"{sheetName}s");
-                        sheetElement.AppendChild(convertedData);
-                        rootElement.AppendChild(sheetElement);
+                        var convertedData = ConvertSheet(sheet, allSheetDataXml, out string sheetName);
+                        rootElement.AppendChild(convertedData);
                     }
                 }
             }
@@ -76,10 +75,6 @@ namespace Excel2Other
 
         private XmlNode ConvertSheet(DataTable sheet,XmlDocument xd,out string sheetName)
         {
-            //xmldoc
-            var doc = xd.CreateElement(sheet.TableName);
-            //XmlDeclaration declaration = doc.CreateXmlDeclaration("1.0", "utf-8", null);
-            //doc.AppendChild(declaration);
 
             //保存表头的索引
             List<RowHead> rowHeads = new List<RowHead>();
@@ -138,8 +133,7 @@ namespace Excel2Other
                     root.AppendChild(child);
                 }
             }
-            doc.AppendChild(root);
-            return doc;
+            return root;
         }
 
         private string formatXml(XmlDocument xd)

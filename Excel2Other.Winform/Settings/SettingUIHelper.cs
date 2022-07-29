@@ -1,4 +1,4 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using Ookii.Dialogs.WinForms;
 using Sunny.UI;
 using System.Collections.Generic;
 using System.Drawing;
@@ -79,11 +79,10 @@ namespace Excel2Other.Winform
                     #region 添加事件
                     inputBox.DoubleClick += (sender, e) =>
                     {
-                        CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-                        dialog.IsFolderPicker = true;
-                        if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                        VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
+                        if (dialog.ShowDialog() == DialogResult.OK)
                         {
-                            ((UITextBox)sender).Text = dialog.FileName;
+                            ((UITextBox)sender).Text = dialog.SelectedPath;
                         }
                     };
 

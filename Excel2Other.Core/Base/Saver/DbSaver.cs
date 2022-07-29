@@ -7,16 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Excel2Other
-{ 
-    public  class DbSaver : IConverterSaver
+{
+    public class DbSaver : IConverterSaver
     {
         public DbSaver(ISetting setting) : base(setting)
         {
         }
 
-        public override void Save2File(List<SheetData> sheets, string fileName)
+        public override void Save2File(List<SheetData> sheets, string path)
         {
-            if (string.IsNullOrWhiteSpace(fileName)) return;
+            if (string.IsNullOrEmpty(path)) return;
 
             //拼出路径，判断路径是否存在
             if (sheets == null || sheets.Count == 0) return;
@@ -35,7 +35,7 @@ namespace Excel2Other
             }
 
             //文件存在则删除
-            var filePath = $"{savePath}/{fileName}.{extension}";
+            var filePath = $"{savePath}/{path}.{extension}";
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
@@ -63,13 +63,17 @@ namespace Excel2Other
             {
                 //创建表，遍历表头获取标题
                 StringBuilder sb = new StringBuilder();
-                sb.Append($"Create table { sheetData.sheetName }");
+                sb.Append($"Create table {sheetData.sheetName}");
                 sb.Append("(");
                 var content = (DataContent)sheetData.content;
                 var table = content.value;
                 for (int i = 0; i < table.Columns.Count; i++)
                 {
-                    sb.Append($"{table.Columns[i].ColumnName} {FieldTypeUtil.GetSqliteType(table.Columns[i].DataType)},");
+                    sb.Append($"{table.Columns[i].ColumnName} {FieldTypeUtil.GetSqliteType(table.Columns[i].DataType)}");
+                    if (i != table.Columns.Count -1)
+                    {
+                        sb.Append(",");
+                    }
                 }
                 sb.Append(");");
 
@@ -78,9 +82,13 @@ namespace Excel2Other
                     StringBuilder rows = new StringBuilder();
                     for (int j = 0; j < table.Columns.Count; j++)
                     {
-                        rows.Append($"{table.Rows[i][j]},");
+                        rows.Append($"\'{table.Rows[i][j]}\'");
+                        if (j != table.Columns.Count - 1)
+                        {
+                            rows.Append(",");
+                        }
                     }
-                    sb.AppendLine($"insert into {sheetData.sheetName} values({rows})");
+                    sb.AppendLine($"insert into {sheetData.sheetName} values({rows});");
                 }
                 totalQuery.Append(sb);
             }

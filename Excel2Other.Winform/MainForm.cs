@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Sunny.UI;
@@ -46,7 +45,7 @@ namespace Excel2Other.Winform
 
                 uiEntity.page.onSave += () => SaveAllFiles(entityType);
 
-                settingPage.CreateSettingTab(uiEntity.setting, uiEntity.name);
+                settingPage.CreateSettingTab(uiEntity.setting, uiEntity.name,entityType);
             }
 
             Aside.SelectFirst();
@@ -68,6 +67,8 @@ namespace Excel2Other.Winform
             {
                 OpenFileOrDirectory(_formSetting.lastOpenPath);
             }
+
+            AsideWidthChange(_formSetting.isExpand);
         }
 
         BaseConvertPage currentPage = null;
@@ -94,7 +95,6 @@ namespace Excel2Other.Winform
             e.Node.SelectedImageIndex = e.Node.ImageIndex;
         }
 
-
         public void GetAndSetSheets(BaseConvertPage page,TreeNode node)
         {
             if (page != null && node != null)
@@ -103,8 +103,6 @@ namespace Excel2Other.Winform
                 page.SetSheets(ExcelHelper.GetSheets(currentPage.entityType, path));
             }
         }
-
-
 
         private void tvwFile_DragEnter(object sender, DragEventArgs e)
         {
@@ -228,7 +226,7 @@ namespace Excel2Other.Winform
 
             //更新设置
             _formSetting.lastOpenPath = path;
-            //SaveFormSetting();
+            SettingHelper.SaveSetting(_formSetting);
         }
 
         /// <summary>

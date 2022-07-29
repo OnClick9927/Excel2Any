@@ -1,4 +1,4 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using Ookii.Dialogs.WinForms;
 using Sunny.UI;
 using System;
 using System.Collections.Generic;
@@ -47,12 +47,11 @@ namespace Excel2Other.Winform
         }
         private void btnOpen_Click(object sender, EventArgs e)
         {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
-                UIMessageTip.ShowOk(dialog.FileName);
-                onFolderOpen?.Invoke(dialog.FileName);
+                UIMessageTip.ShowOk(dialog.SelectedPath);
+                onFolderOpen?.Invoke(dialog.SelectedPath);
             }
         }
         private void btnSetting_Click(object sender, EventArgs e)

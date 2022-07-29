@@ -229,8 +229,11 @@ namespace Excel2Other
         /// <param name="path"></param>
         public static void Save(Type entityType, string path)
         {
+            FileInfo fileInfo = new FileInfo(path);
+            var filename = fileInfo.Name.Substring(0, fileInfo.Name.LastIndexOf("."));
             var entity = GetEntity(entityType);
-            entity.Save2File(GetSheets(entityType, path));
+
+            entity.Save2File(GetSheets(entityType, path), filename);
         }
     }
 }

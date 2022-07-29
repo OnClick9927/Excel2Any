@@ -1,10 +1,6 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using Sunny.UI;
+﻿using Sunny.UI;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using System.Windows.Forms;
 
 namespace Excel2Other.Winform
 {
@@ -36,12 +32,17 @@ namespace Excel2Other.Winform
         /// </summary>
         /// <param name="fields"></param>
         /// <param name="tabName"></param>
-        public void CreateSettingTab(ISetting setting, string tabName)
+        public void CreateSettingTab(ISetting setting, string tabName, Type entityType = null)
         {
             var fields = SettingHelper.GetFields(setting.GetType());
             if (fields.Count == 0) return;
             fields.RemoveAll((f) => { return f.GetCustomAttribute<SettingAttribute>() == null; });
-            fields.Sort((x, y) => { return x.GetCustomAttribute<SettingAttribute>().priority - y.GetCustomAttribute<SettingAttribute>().priority; });
+            fields.Sort((x, y) =>
+            {
+                int xPriority = x.GetCustomAttribute<SettingAttribute>().priority;
+                int yPriority = y.GetCustomAttribute<SettingAttribute>().priority;
+                return xPriority - yPriority;
+            });
             var tabPage = SettingUIHelper.GetTabPage(tabName);
             tabSettings.TabPages.Add(tabPage);
             int location = 10; //控件位置
@@ -70,7 +71,7 @@ namespace Excel2Other.Winform
                     uiSwitch.ActiveChanged += (sender, e) =>
                     {
                         field.SetValue(setting, uiSwitch.Active);
-                        SettingHelper.SaveSetting(setting);
+                        SaveAndRefreshSetting(setting, entityType);
                     };
                 }
                 else
@@ -85,6 +86,7 @@ namespace Excel2Other.Winform
                         {
                             field.SetValue(setting, inputBox.Text);
                             SettingHelper.SaveSetting(setting);
+                            SaveAndRefreshSetting(setting, entityType);
                         };
                     }
                     else if (field.FieldType == typeof(int))
@@ -95,7 +97,7 @@ namespace Excel2Other.Winform
                         inputBox.Leave += (sender, e) =>
                         {
                             field.SetValue(setting, Convert.ToInt32(inputBox.Text) - 1);
-                            SettingHelper.SaveSetting(setting);
+                            SaveAndRefreshSetting(setting, entityType);
                         };
                     }
 
@@ -112,6 +114,16 @@ namespace Excel2Other.Winform
             }
 
             tabSettings.Refresh();
+        }
+
+        private void SaveAndRefreshSetting(ISetting setting, Type entityType)
+        {
+            SettingHelper.SaveSetting(setting);
+            if (entityType != null)
+            {
+                ExcelHelper.GetEntity(entityType).SetSetting(setting);
+                ExcelHelper.SetAllDirty(entityType);
+            }
         }
     }
 }
