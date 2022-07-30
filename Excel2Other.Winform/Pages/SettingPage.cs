@@ -34,6 +34,7 @@ namespace Excel2Other.Winform
         /// <param name="tabName"></param>
         public void CreateSettingTab(ISetting setting, string tabName, Type entityType = null)
         {
+            var settingType = setting.GetType();
             var fields = SettingHelper.GetFields(setting.GetType());
             if (fields.Count == 0) return;
             fields.RemoveAll((f) => { return f.GetCustomAttribute<SettingAttribute>() == null; });
@@ -79,7 +80,7 @@ namespace Excel2Other.Winform
                     UITextBox inputBox = null;
                     if (field.FieldType == typeof(string))
                     {
-                        inputBox = SettingUIHelper.GetInputBox((StringType)attr.textType);
+                        inputBox = SettingUIHelper.GetInputBox(attr.textType);
 
                         inputBox.Text = (string)field.GetValue(setting).ToString();
                         inputBox.Leave += (sender, e) =>
@@ -96,7 +97,8 @@ namespace Excel2Other.Winform
                         inputBox.Text = (string)((int)field.GetValue(setting) + 1).ToString();
                         inputBox.Leave += (sender, e) =>
                         {
-                            field.SetValue(setting, Convert.ToInt32(inputBox.Text) - 1);
+                            int.TryParse(inputBox.Text, out int num);
+                            field.SetValue(setting, -1);
                             SaveAndRefreshSetting(setting, entityType);
                         };
                     }
@@ -107,12 +109,38 @@ namespace Excel2Other.Winform
                     content.Location = new System.Drawing.Point(30, location);
                     inputBox.Location = new System.Drawing.Point(30, location + 30);
                     location += 60;
-
                 }
-
                 location += 30;
+
             }
 
+            if (!tabName.Equals("通用"))
+            {
+                //生成按钮
+                var loadButton = SettingUIHelper.GetUIButton("设置读取");
+                var saveButton = SettingUIHelper.GetUIButton("设置另存为");
+                tabPage.Controls.Add(loadButton);
+                tabPage.Controls.Add(saveButton);
+
+                //按钮绑定方法
+                loadButton.Click += (sender, e) =>
+                {
+                    SettingHelper.LoadSetting(settingType, true);
+                };
+                saveButton.Click += (sender, e) =>
+                {
+                    SettingHelper.SaveSetting(entityType, true);
+                };
+
+                loadButton.Location = new System.Drawing.Point(30, location);
+                saveButton.Location = new System.Drawing.Point(150, location);
+
+                location += 50;
+                var blankLabel = SettingUIHelper.GetUILabel();
+                tabPage.Controls.Add(blankLabel);
+                blankLabel.Location = new System.Drawing.Point(0, location);
+            }
+            
             tabSettings.Refresh();
         }
 

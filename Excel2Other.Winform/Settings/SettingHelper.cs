@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Excel2Other.Winform
 {
@@ -23,7 +24,7 @@ namespace Excel2Other.Winform
             return fs;
         }
 
-        static string rootPath = "";
+        static readonly string  rootPath = "";
 
         private static string GetDefaultSettingPath(Type type)
         {
@@ -82,6 +83,90 @@ namespace Excel2Other.Winform
         private static void SaveFormSetting(ISetting set)
         {
             SaveSetting(set, GetDefaultSettingPath(typeof(FormSetting)));
+        }
+
+        public static void SaveSetting(Type entityType, bool isSelect = false)
+        {
+            ISetting setting = UIEntityHelper.GetUIEntity(entityType).setting;
+            string savePath;
+            if (isSelect)
+            {
+                SaveFileDialog save = new SaveFileDialog();
+                var settingExtension = UIEntityHelper.GetSettingExtension(entityType);
+                save.Filter = $"配置文件|*.{settingExtension}";     //设置保存类型
+                save.Title = $"请设置{settingExtension}的保存位置和文件名";   //对话框标题
+                save.FileName = "config";
+                if (save.ShowDialog() == DialogResult.OK)
+                {
+                    savePath = save.FileName;
+                    SaveSetting(setting, savePath);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                SaveSetting(setting);
+            }
+            ExcelHelper.SetAllDirty(entityType);
+        }
+
+        public static void LoadSetting(Type settingType, bool isSelect = false)
+        {
+            ISetting setting = null;
+            if (isSelect)
+            {
+                var settingExtension = settingType.Name;
+                OpenFileDialog dialog = new OpenFileDialog
+                {
+                    Title = $"请选择{settingExtension}",
+                    CheckFileExists = true,
+                    CheckPathExists = true,
+                    Filter = $"配置文件|*.{settingExtension}"
+                };
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var path = dialog.FileName;
+                    setting = GetSetting(settingType, path);
+
+                    ExcelHelper.GetEntity(settingType).SetSetting(setting);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                setting = GetSetting(settingType);
+            }
+
+
+            if (setting == null)
+            {
+                if (isSelect)
+                {
+                    //throw new IOException("打开的文件有误");
+                    return;
+                }
+                else
+                {
+                    setting = Activator.CreateInstance(settingType) as ISetting;
+                    UIEntityHelper.GetUIEntity(settingType).setting = (BaseSetting)setting;
+                    SaveSetting(setting);
+                }
+            }
+            else
+            {
+                if (isSelect)
+                {
+                    SaveSetting(setting);
+                }
+            }
+            
+            ExcelHelper.GetEntity(settingType).SetSetting(setting);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Excel2Other.Winform
             foreach (var entityType in ExcelHelper.GetAllEntityTypes())
             {
                 var uiEntity = UIEntityHelper.GetUIEntity(entityType);
-                LoadSetting(entityType);
+                SettingHelper.LoadSetting(entityType);
                 AddPage(uiEntity.page, uiEntity.pageIndex);
                 var jsonNode = Aside.CreateNode(uiEntity.name, uiEntity.symbol, 30, uiEntity.pageIndex);
                 jsonNode.ToolTipText = uiEntity.name;
@@ -373,73 +373,6 @@ namespace Excel2Other.Winform
             }
         }
 
-        #endregion
-
-        #region 设置
-        private void SaveSetting(Type type, bool isSelect = false)
-        {
-            var setting = UIEntityHelper.GetUIEntity(type).setting;
-            string savePath;
-            if (isSelect)
-            {
-                SaveFileDialog save = new SaveFileDialog();
-                var settingExtension = UIEntityHelper.GetSettingExtension(type);
-                save.Filter = $"配置文件|*.{settingExtension}";     //设置保存类型
-                save.Title = $"请设置{settingExtension}的保存位置和文件名";   //对话框标题
-                if (save.ShowDialog() == DialogResult.OK)
-                {
-                    savePath = save.FileName;
-                    SettingHelper.SaveSetting(setting, savePath);
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
-            {
-                SettingHelper.SaveSetting(setting);
-            }
-            ExcelHelper.SetAllDirty(type);
-        }
-        private void LoadSetting(Type type, bool isSelect = false)
-        {
-            ISetting setting = null;
-            if (isSelect)
-            {
-                var settingExtension = UIEntityHelper.GetSettingExtension(type);
-                OpenFileDialog dialog = new OpenFileDialog
-                {
-                    Title = $"请选择{settingExtension}",
-                    CheckFileExists = true,
-                    CheckPathExists = true,
-                    Filter = $"配置文件|*.{settingExtension}"
-                };
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    var path = dialog.FileName;
-                    setting = SettingHelper.GetSetting(type, path);
-
-                    ExcelHelper.GetEntity(type).SetSetting(setting);
-                    ShowSuccessTip("读取完毕");
-                }
-            }
-            else
-            {
-                setting = SettingHelper.GetSetting(type);
-            }
-
-            if (setting == null && !isSelect)
-            {
-                setting = UIEntityHelper.GetUIEntity(type).setting;
-                ExcelHelper.GetEntity(type).SetSetting(setting);
-                SaveSetting(type);
-            }
-            else
-            {
-                ExcelHelper.GetEntity(type).SetSetting(setting);
-            }
-        }
         #endregion
 
         #region 保存文件

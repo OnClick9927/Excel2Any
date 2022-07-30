@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Excel2Other.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("P R C")]
+[assembly: AssemblyCompany("IFramework")]
 [assembly: AssemblyProduct("Excel2Other.Core")]
-[assembly: AssemblyCopyright("Copyright © P R C 2022")]
+[assembly: AssemblyCopyright("Copyright © IFramework 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -30,6 +30,7 @@ namespace Excel2Other.Winform
                 ExcelHelper.GetEntity(item).SetSetting(setting);
             };
         }
+
         public static string GetSettingExtension(Type entityType)
         {
             return uiEntityMap[entityType].setting.GetType().Name;

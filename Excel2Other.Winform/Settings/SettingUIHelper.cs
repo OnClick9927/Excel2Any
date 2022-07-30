@@ -17,14 +17,16 @@ namespace Excel2Other.Winform
         /// <returns></returns>
         public static UILabel GetHeaderLabel(string headerText)
         {
-            var headerLabel = new UILabel();
-            headerLabel.Style = UIStyle.Custom;
-            headerLabel.StyleCustomMode = true;
-            headerLabel.Font = new Font("微软雅黑", 14.25f, FontStyle.Bold);
-            headerLabel.ForeColor = Color.White;
-            headerLabel.TextAlign = ContentAlignment.MiddleLeft;
-            headerLabel.Size = new Size(500, 28);
-            headerLabel.Text = headerText;
+            var headerLabel = new UILabel
+            {
+                Style = UIStyle.Custom,
+                StyleCustomMode = true,
+                Font = new Font("微软雅黑", 14.25f, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Size = new Size(500, 28),
+                Text = headerText
+            };
             return headerLabel;
         }
 
@@ -35,14 +37,16 @@ namespace Excel2Other.Winform
         /// <returns></returns>
         public static UILabel GetContentLabel(string content)
         {
-            var headerLabel = new UILabel();
-            headerLabel.Style = UIStyle.Custom;
-            headerLabel.StyleCustomMode = true;
-            headerLabel.Font = new Font("微软雅黑", 12f);
-            headerLabel.ForeColor = Color.White;
-            headerLabel.TextAlign = ContentAlignment.MiddleLeft;
-            headerLabel.Size = new Size(500, 21);
-            headerLabel.Text = content;
+            var headerLabel = new UILabel
+            {
+                Style = UIStyle.Custom,
+                StyleCustomMode = true,
+                Font = new Font("微软雅黑", 12f),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Size = new Size(500, 21),
+                Text = content
+            };
             return headerLabel;
         }
 
@@ -54,10 +58,12 @@ namespace Excel2Other.Winform
         /// <returns></returns>
         public static UITextBox GetInputBox(StringType stringType)
         {
-            var inputBox = new UITextBox();
-            inputBox.Style = UIStyle.Custom;
-            inputBox.StyleCustomMode = true;
-            inputBox.TextAlignment = ContentAlignment.MiddleLeft;
+            var inputBox = new UITextBox
+            {
+                Style = UIStyle.Custom,
+                StyleCustomMode = true,
+                TextAlignment = ContentAlignment.MiddleLeft
+            };
 
             switch (stringType)
             {
@@ -143,11 +149,31 @@ namespace Excel2Other.Winform
 
         public static TabPage GetTabPage(string tabName)
         {
-            var tabPage = new TabPage();
-            tabPage.BackColor = Color.FromArgb(30, 30, 30);
-            tabPage.Text = tabName;
-            tabPage.AutoScroll = true;
+            var tabPage = new TabPage
+            {
+                BackColor = Color.FromArgb(30, 30, 30),
+                Text = tabName,
+                AutoScroll = true
+            };
             return tabPage;
+        }
+
+        public static UIButton GetUIButton(string text)
+        {
+            var button = new UIButton
+            {
+                Style = UIStyle.Custom,
+                StyleCustomMode = true,
+                Text = text
+            };
+
+            return button;
+        }
+
+        public static UILabel GetUILabel()
+        {
+            var label = new UILabel();
+            return label;
         }
 
     }
