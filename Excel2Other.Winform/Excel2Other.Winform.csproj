@@ -88,93 +88,93 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Settings\FormSetting.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Base\Settings\FormSetting.cs" />
+    <Compile Include="Base\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Base\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ConvertPages\BaseConvertPage.cs">
+    <Compile Include="Base\Pages\BaseConvertPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\ConvertPages\BaseConvertPage.Designer.cs">
+    <Compile Include="Base\Pages\BaseConvertPage.Designer.cs">
       <DependentUpon>BaseConvertPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ConvertPages\DataConvertPage.cs">
+    <Compile Include="Base\Pages\DataConvertPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\ConvertPages\DataConvertPage.Designer.cs">
+    <Compile Include="Base\Pages\DataConvertPage.Designer.cs">
       <DependentUpon>DataConvertPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ConvertPages\DataPage\SqliteConvertPage.cs">
+    <Compile Include="Extend\Sqlite\SqliteConvertPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\ConvertPages\DataPage\SqliteConvertPage.Designer.cs">
+    <Compile Include="Extend\Sqlite\SqliteConvertPage.Designer.cs">
       <DependentUpon>SqliteConvertPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ConvertPages\TextPage\CSharpConvertPage.cs">
+    <Compile Include="Extend\CSharp\CSharpConvertPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\ConvertPages\TextPage\CSharpConvertPage.Designer.cs">
+    <Compile Include="Extend\CSharp\CSharpConvertPage.Designer.cs">
       <DependentUpon>CSharpConvertPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ConvertPages\TextPage\JsonConvertPage.cs">
+    <Compile Include="Extend\Json\JsonConvertPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\ConvertPages\TextPage\JsonConvertPage.Designer.cs">
+    <Compile Include="Extend\Json\JsonConvertPage.Designer.cs">
       <DependentUpon>JsonConvertPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ConvertPages\TextConvertPage.cs">
+    <Compile Include="Base\Pages\TextConvertPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\ConvertPages\TextConvertPage.Designer.cs">
+    <Compile Include="Base\Pages\TextConvertPage.Designer.cs">
       <DependentUpon>TextConvertPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\SettingPage.cs">
+    <Compile Include="Base\Pages\SettingPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\SettingPage.Designer.cs">
+    <Compile Include="Base\Pages\SettingPage.Designer.cs">
       <DependentUpon>SettingPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ConvertPages\TextPage\XmlConvertPage.cs">
+    <Compile Include="Extend\Xml\XmlConvertPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Pages\ConvertPages\TextPage\XmlConvertPage.Designer.cs">
+    <Compile Include="Extend\Xml\XmlConvertPage.Designer.cs">
       <DependentUpon>XmlConvertPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\SettingHelper.cs" />
-    <Compile Include="Settings\SettingUIHelper.cs" />
-    <Compile Include="UIEntity\UIEntitys\UICSharpEntity.cs" />
-    <Compile Include="UIEntity\UIEnitty.cs" />
-    <Compile Include="UIEntity\UIEntityHelper.cs" />
-    <Compile Include="UIEntity\UIEntitys\UIJsonEntity.cs" />
-    <Compile Include="UIEntity\UIEntitys\UISqliteEntity.cs" />
-    <Compile Include="UIEntity\UIEntitys\UIXmlEntity.cs" />
-    <EmbeddedResource Include="MainForm.resx">
+    <Compile Include="Base\Settings\SettingHelper.cs" />
+    <Compile Include="Base\Settings\SettingUIHelper.cs" />
+    <Compile Include="Extend\CSharp\UICSharpEntity.cs" />
+    <Compile Include="Base\UIEntity\UIEnitty.cs" />
+    <Compile Include="Base\UIEntity\UIEntityHelper.cs" />
+    <Compile Include="Extend\Json\UIJsonEntity.cs" />
+    <Compile Include="Extend\Sqlite\UISqliteEntity.cs" />
+    <Compile Include="Extend\Xml\UIXmlEntity.cs" />
+    <EmbeddedResource Include="Base\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\ConvertPages\BaseConvertPage.resx">
+    <EmbeddedResource Include="Base\Pages\BaseConvertPage.resx">
       <DependentUpon>BaseConvertPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\ConvertPages\DataConvertPage.resx">
+    <EmbeddedResource Include="Base\Pages\DataConvertPage.resx">
       <DependentUpon>DataConvertPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\ConvertPages\TextPage\CSharpConvertPage.resx">
+    <EmbeddedResource Include="Extend\CSharp\CSharpConvertPage.resx">
       <DependentUpon>CSharpConvertPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\ConvertPages\TextPage\JsonConvertPage.resx">
+    <EmbeddedResource Include="Extend\Json\JsonConvertPage.resx">
       <DependentUpon>JsonConvertPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\ConvertPages\TextConvertPage.resx">
+    <EmbeddedResource Include="Base\Pages\TextConvertPage.resx">
       <DependentUpon>TextConvertPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\ConvertPages\TextPage\XmlConvertPage.resx">
+    <EmbeddedResource Include="Extend\Xml\XmlConvertPage.resx">
       <DependentUpon>XmlConvertPage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Pages\SettingPage.resx">
+    <EmbeddedResource Include="Base\Pages\SettingPage.resx">
       <DependentUpon>SettingPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
