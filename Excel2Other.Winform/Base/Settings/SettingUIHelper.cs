@@ -22,7 +22,7 @@ namespace Excel2Other.Winform
                 Style = UIStyle.Custom,
                 StyleCustomMode = true,
                 Font = new Font("微软雅黑", 14.25f, FontStyle.Bold),
-                ForeColor = Color.White,
+                ForeColor = Color.FromArgb(200,200,200),
                 TextAlign = ContentAlignment.MiddleLeft,
                 Size = new Size(500, 28),
                 Text = headerText
@@ -42,7 +42,7 @@ namespace Excel2Other.Winform
                 Style = UIStyle.Custom,
                 StyleCustomMode = true,
                 Font = new Font("微软雅黑", 12f),
-                ForeColor = Color.White,
+                ForeColor = Color.FromArgb(200, 200, 200),
                 TextAlign = ContentAlignment.MiddleLeft,
                 Size = new Size(500, 21),
                 Text = content
@@ -62,7 +62,11 @@ namespace Excel2Other.Winform
             {
                 Style = UIStyle.Custom,
                 StyleCustomMode = true,
-                TextAlignment = ContentAlignment.MiddleLeft
+                TextAlignment = ContentAlignment.MiddleLeft,
+                FillColor = Color.FromArgb(41, 41, 41),
+                ForeColor = Color.FromArgb(240, 240, 240),
+                RectSides = ToolStripStatusLabelBorderSides.None,
+                Size = new Size(400, 40)
             };
 
             switch (stringType)
@@ -70,16 +74,13 @@ namespace Excel2Other.Winform
                 case StringType.Integer:
                     inputBox.Type = UITextBox.UIEditType.Integer;
                     inputBox.Watermark = "输入数字";
-                    inputBox.Size = new Size(70, 30);
                     break;
                 case StringType.Double:
                     inputBox.Type = UITextBox.UIEditType.Double;
                     inputBox.Watermark = "输入数字";
-                    inputBox.Size = new Size(150, 30);
                     break;
                 case StringType.Directory:
                     inputBox.Type = UITextBox.UIEditType.String;
-                    inputBox.Size = new Size(400, 30);
                     inputBox.AllowDrop = true;
                     inputBox.Watermark = "双击选择路径或者拖入路径";
                     #region 添加事件
@@ -114,7 +115,7 @@ namespace Excel2Other.Winform
                             UIMessageTip.ShowError("你拖入了什么玩意？？？？？");
                             return;
                         }
-                        //如果拖入的文件是多个，暂时不做处理直接报错提示
+    //如果拖入的文件是多个，暂时不做处理直接报错提示
                         if (dropData.Length >= 2)
                         {
                             UIMessageTip.ShowError("请勿移入多个文件");
@@ -134,7 +135,6 @@ namespace Excel2Other.Winform
                     break;
                 default:
                     inputBox.Type = UITextBox.UIEditType.String;
-                    inputBox.Size = new Size(230, 30);
                     break;
             }
 
@@ -143,7 +143,14 @@ namespace Excel2Other.Winform
 
         public static UISwitch GetSwith()
         {
-            var uiSwitch = new UISwitch();
+            var uiSwitch = new UISwitch
+            {
+                ActiveColor = Color.FromArgb(60,60,60),
+                InActiveColor = Color.FromArgb(70, 70,70),
+                ButtonColor = Color.FromArgb(210,210,210),
+                ForeColor = Color.FromArgb(210, 210, 210),
+
+            };
             return uiSwitch;
         }
 
@@ -164,7 +171,13 @@ namespace Excel2Other.Winform
             {
                 Style = UIStyle.Custom,
                 StyleCustomMode = true,
-                Text = text
+                Text = text,
+                FillColor = Color.FromArgb(64, 64, 64),
+                RectSides = ToolStripStatusLabelBorderSides.None,
+                RadiusSides = UICornerRadiusSides.None,
+                ForeColor = Color.FromArgb(230,230,230),
+                FillHoverColor = Color.FromArgb(98,98,98),
+                FillPressColor = Color.FromArgb(38,38,38)
             };
 
             return button;

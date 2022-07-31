@@ -46,12 +46,38 @@ namespace Excel2Other.Winform
             });
             var tabPage = SettingUIHelper.GetTabPage(tabName);
             tabSettings.TabPages.Add(tabPage);
+
             int location = 10; //控件位置
+
+            if (!tabName.Equals("通用"))
+            {
+                //生成按钮
+                var loadButton = SettingUIHelper.GetUIButton("设置读取");
+                var saveButton = SettingUIHelper.GetUIButton("设置另存为");
+                tabPage.Controls.Add(loadButton);
+                tabPage.Controls.Add(saveButton);
+
+                //按钮绑定方法
+                loadButton.Click += (sender, e) =>
+                {
+                    SettingHelper.LoadSetting(settingType, true);
+                };
+                saveButton.Click += (sender, e) =>
+                {
+                    SettingHelper.SaveSetting(entityType, true);
+                };
+
+                loadButton.Location = new System.Drawing.Point(30, location);
+                saveButton.Location = new System.Drawing.Point(150, location);
+
+                location += 60;
+            }
+
             foreach (var field in fields)
             {
                 var attr = field.GetCustomAttribute<SettingAttribute>();
                 //生成标题
-                var title = SettingUIHelper.GetHeaderLabel(attr.name);
+                var title = SettingUIHelper.GetHeaderLabel(attr.name + $" ({field.FieldType.Name})");
                 var content = SettingUIHelper.GetContentLabel(attr.des);
                 //生成内容
                 //分为两种  一个是切换按钮的  一个是填框框的，框框的文本框类型需要考虑
@@ -98,7 +124,7 @@ namespace Excel2Other.Winform
                         inputBox.Leave += (sender, e) =>
                         {
                             int.TryParse(inputBox.Text, out int num);
-                            field.SetValue(setting, -1);
+                            field.SetValue(setting, num - 1);
                             SaveAndRefreshSetting(setting, entityType);
                         };
                     }
@@ -114,33 +140,10 @@ namespace Excel2Other.Winform
 
             }
 
-            if (!tabName.Equals("通用"))
-            {
-                //生成按钮
-                var loadButton = SettingUIHelper.GetUIButton("设置读取");
-                var saveButton = SettingUIHelper.GetUIButton("设置另存为");
-                tabPage.Controls.Add(loadButton);
-                tabPage.Controls.Add(saveButton);
-
-                //按钮绑定方法
-                loadButton.Click += (sender, e) =>
-                {
-                    SettingHelper.LoadSetting(settingType, true);
-                };
-                saveButton.Click += (sender, e) =>
-                {
-                    SettingHelper.SaveSetting(entityType, true);
-                };
-
-                loadButton.Location = new System.Drawing.Point(30, location);
-                saveButton.Location = new System.Drawing.Point(150, location);
-
-                location += 50;
-                var blankLabel = SettingUIHelper.GetUILabel();
-                tabPage.Controls.Add(blankLabel);
-                blankLabel.Location = new System.Drawing.Point(0, location);
-            }
-            
+            location += 30;
+            var blankLabel = SettingUIHelper.GetUILabel();
+            tabPage.Controls.Add(blankLabel);
+            blankLabel.Location = new System.Drawing.Point(0, location);
             tabSettings.Refresh();
         }
 

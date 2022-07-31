@@ -56,7 +56,7 @@
         '\"',
         '\'',
         '\''};
-            this.txtCode.AutoScrollMinSize = new System.Drawing.Size(179, 14);
+            this.txtCode.AutoScrollMinSize = new System.Drawing.Size(0, 0);
             this.txtCode.BackBrush = null;
             this.txtCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.txtCode.CharCnWidth = 17;
@@ -65,7 +65,6 @@
             this.txtCode.ContextMenuStrip = this.uiContextMenuStrip1;
             this.txtCode.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtCode.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.txtCode.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.txtCode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(212)))), ((int)(((byte)(212)))), ((int)(((byte)(212)))));
             this.txtCode.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.txtCode.IndentBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
@@ -77,6 +76,7 @@
             this.txtCode.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
             this.txtCode.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtCode.ServiceColors")));
             this.txtCode.ServiceLinesColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.txtCode.ShowScrollBars = false;
             this.txtCode.Size = new System.Drawing.Size(150, 150);
             this.txtCode.TabIndex = 2;
             this.txtCode.Text = "fastColoredTextBox1";

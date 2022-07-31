@@ -94,7 +94,7 @@ namespace Excel2Other
             for (int i = startCol; i < sheet.Columns.Count; i++)
             {
                 var fieldName = sheet.Rows[_setting.FieldRowNum][i].ToString();
-                fieldName = fieldName.Replace("\n", "").Replace("#","").Replace("-",""); //xml不能包含的字符
+                fieldName = fieldName.Replace("\n", "").Replace("#","").Replace("-","").Replace(" ", ""); //xml不能包含的字符
                 if (string.IsNullOrWhiteSpace(fieldName)) continue; 
                 rowHeads.Add(new RowHead(fieldName, i));
             }

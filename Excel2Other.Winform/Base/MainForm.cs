@@ -13,7 +13,6 @@ namespace Excel2Other.Winform
         private FormSetting _formSetting = (FormSetting)SettingHelper.GetFormSetting(); //窗体配置
 
         const int settingPageIndex = 9999;
-
         public MainForm()
         {
             InitializeComponent();
@@ -100,7 +99,11 @@ namespace Excel2Other.Winform
             if (page != null && node != null)
             {
                 var path = tvwFile.Nodes[0].Tag + node.FullPath;
-                page.SetSheets(ExcelHelper.GetSheets(currentPage.entityType, path));
+                if (IsExcelFile(path))
+                {
+                    page.SetSheets(ExcelHelper.GetSheets(currentPage.entityType, path));
+                }
+                
             }
         }
 
