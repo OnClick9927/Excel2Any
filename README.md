@@ -10,7 +10,7 @@ while(true)
 参考或使用的相关插件和仓库：
 1. [NewtonSoft.Json](https://github.com/JamesNK/Newtonsoft.Json)
 2. [SunnyUI](https://gitee.com/yhuse/SunnyUI)
-3. [FastColoredTextBox](https://github.com/PavelTorgashov/FastColoredTextBox)
+3. [FastColoredTextBox(这个是修复了中文重叠的版本)](https://github.com/ks3dev/FastColoredTextBox)
 4. [neil3d/excel2json](https://github.com/neil3d/excel2json)
 
 # 其他

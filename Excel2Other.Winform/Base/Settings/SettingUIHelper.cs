@@ -22,7 +22,7 @@ namespace Excel2Other.Winform
                 Style = UIStyle.Custom,
                 StyleCustomMode = true,
                 Font = new Font("微软雅黑", 14.25f, FontStyle.Bold),
-                ForeColor = Color.FromArgb(200,200,200),
+                ForeColor = Color.FromArgb(200, 200, 200),
                 TextAlign = ContentAlignment.MiddleLeft,
                 Size = new Size(500, 28),
                 Text = headerText
@@ -115,7 +115,7 @@ namespace Excel2Other.Winform
                             UIMessageTip.ShowError("你拖入了什么玩意？？？？？");
                             return;
                         }
-    //如果拖入的文件是多个，暂时不做处理直接报错提示
+                        //如果拖入的文件是多个，暂时不做处理直接报错提示
                         if (dropData.Length >= 2)
                         {
                             UIMessageTip.ShowError("请勿移入多个文件");
@@ -135,6 +135,7 @@ namespace Excel2Other.Winform
                     break;
                 default:
                     inputBox.Type = UITextBox.UIEditType.String;
+                    inputBox.Watermark = "输入字符串";
                     break;
             }
 
@@ -145,11 +146,10 @@ namespace Excel2Other.Winform
         {
             var uiSwitch = new UISwitch
             {
-                ActiveColor = Color.FromArgb(60,60,60),
-                InActiveColor = Color.FromArgb(70, 70,70),
-                ButtonColor = Color.FromArgb(210,210,210),
+                ActiveColor = Color.FromArgb(70, 70, 70),
+                InActiveColor = Color.FromArgb(100, 100, 100),
+                ButtonColor = Color.FromArgb(210, 210, 210),
                 ForeColor = Color.FromArgb(210, 210, 210),
-
             };
             return uiSwitch;
         }
@@ -162,6 +162,7 @@ namespace Excel2Other.Winform
                 Text = tabName,
                 AutoScroll = true
             };
+
             return tabPage;
         }
 
@@ -175,9 +176,9 @@ namespace Excel2Other.Winform
                 FillColor = Color.FromArgb(64, 64, 64),
                 RectSides = ToolStripStatusLabelBorderSides.None,
                 RadiusSides = UICornerRadiusSides.None,
-                ForeColor = Color.FromArgb(230,230,230),
-                FillHoverColor = Color.FromArgb(98,98,98),
-                FillPressColor = Color.FromArgb(38,38,38)
+                ForeColor = Color.FromArgb(230, 230, 230),
+                FillHoverColor = Color.FromArgb(98, 98, 98),
+                FillPressColor = Color.FromArgb(38, 38, 38)
             };
 
             return button;

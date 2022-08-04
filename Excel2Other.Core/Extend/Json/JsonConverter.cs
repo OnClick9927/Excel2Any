@@ -2,17 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace Excel2Other
 {
     [Entity(typeof(JsonEntity))]
-
     public class JsonConverter : IConverter
     {
         //用于默认值的保存
         private Dictionary<int, object> _defaultValue = new Dictionary<int, object>();
-
         //Json配置
         private JsonSerializerSettings _jsonSerialSettings;
         //转换设置

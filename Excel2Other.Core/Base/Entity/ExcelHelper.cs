@@ -177,7 +177,10 @@ namespace Excel2Other
             {
                 results.Add(entityType, new Dictionary<string, List<SheetData>>());
             }
-            if (!results[entityType].ContainsKey(path))
+
+            FileInfo fileInfo = new FileInfo(path);
+
+            if (!results[entityType].ContainsKey(path) || history[path].lastWriteTime != fileInfo.LastWriteTime)
             {
                 Create(entityType, path);
             }

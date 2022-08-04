@@ -55,9 +55,9 @@
 
         public CSharpSetting() : base()
         {
-            CommentRowNum = 2;              //字段描述所在行号
-            TypeRowNum = 1;                 //字段类型所在行号
-            FieldRowNum = 0;                //字段名所在行号
+            CommentRowNum = 0;              //字段描述所在行号
+            TypeRowNum = 3;                 //字段类型所在行号
+            FieldRowNum = 1;                //字段名所在行号
             IsProperty = true;
             separateBySheet = true;         //是否根据Sheet保存成多个文件
         }

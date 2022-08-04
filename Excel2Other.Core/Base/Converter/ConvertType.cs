@@ -5,6 +5,7 @@
         Json,
         Xml,
         CSharp,
-        Sqlite
+        Sqlite,
+        CSV
     }
 }

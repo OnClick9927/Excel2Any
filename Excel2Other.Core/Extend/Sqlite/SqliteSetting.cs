@@ -42,9 +42,9 @@ namespace Excel2Other
 
         public SqliteSetting() : base()
         {
-            TypeRowNum = 1;                 //字段类型所在行号
-            FieldRowNum = 0;                //字段名所在行号
-            StartRowNum = 3;                //内容开始的行号
+            TypeRowNum = 2;                 //字段类型所在行号
+            FieldRowNum = 1;                //字段名所在行号
+            StartRowNum = 4;                //内容开始的行号
         }
     }
 }

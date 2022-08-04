@@ -2,8 +2,6 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Sunny.UI;
 
 namespace Excel2Other.Winform
@@ -48,18 +46,6 @@ namespace Excel2Other.Winform
             }
 
             Aside.SelectFirst();
-
-
-            //设置部分的委托
-            //settingPage.onJsonSave += (selectPath) => SaveSetting(typeof(JsonEntity), true);
-            //settingPage.onCSharpSave += (selectPath) => SaveSetting(typeof(CSharpEntity), true);
-            //settingPage.onXmlSave += (selectPath) => SaveSetting(typeof(XmlEntity), true);
-            //settingPage.onFormSave += SaveSetting(typeof(JsonEntity), true);
-
-            //settingPage.onJsonLoad += () => { LoadSetting(typeof(JsonEntity)); settingPage.InitJsonSettings(); };
-            //settingPage.onCSharpLoad += () => { LoadSetting(typeof(CSharpEntity)); settingPage.InitCSharpSettings(); };
-            //settingPage.onXmlLoad += () => { LoadSetting(typeof(XmlEntity)); settingPage.InitXmlSettings(); };
-            //LoadSqliteSetting
 
             //程序设置部分
             if (_formSetting.openLast && !string.IsNullOrEmpty(_formSetting.lastOpenPath) && Directory.Exists(_formSetting.lastOpenPath))

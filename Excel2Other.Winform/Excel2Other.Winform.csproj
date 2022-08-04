@@ -107,6 +107,13 @@
     <Compile Include="Base\Pages\DataConvertPage.Designer.cs">
       <DependentUpon>DataConvertPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extend\CSV\CSVConvertPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Extend\CSV\CSVConvertPage.Designer.cs">
+      <DependentUpon>CSVConvertPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extend\CSV\UICSVEntity.cs" />
     <Compile Include="Extend\Sqlite\SqliteConvertPage.cs">
       <SubType>Form</SubType>
     </Compile>

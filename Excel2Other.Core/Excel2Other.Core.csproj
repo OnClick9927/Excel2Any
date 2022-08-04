@@ -63,6 +63,10 @@
     <Compile Include="Base\Attributes\SettingAttribute.cs" />
     <Compile Include="Extend\CSharp\CSharpEntity.cs" />
     <Compile Include="Extend\CSharp\CSharpSaver.cs" />
+    <Compile Include="Extend\CSV\CSVConverter.cs" />
+    <Compile Include="Extend\CSV\CSVEntity.cs" />
+    <Compile Include="Extend\CSV\CSVSaver.cs" />
+    <Compile Include="Extend\CSV\CSVSetting.cs" />
     <Compile Include="Extend\Json\JsonEntity.cs" />
     <Compile Include="Base\Attributes\EntityCodeAttribute.cs" />
     <Compile Include="Base\Entity\Entity.cs" />
