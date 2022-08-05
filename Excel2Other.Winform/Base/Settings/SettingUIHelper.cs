@@ -192,23 +192,14 @@ namespace Excel2Other.Winform
         }
 
 
-        public static UIFlowLayoutPanel GetUIFlowLayoutPanel()
+        public static UICustomPanel GetUIFlowLayoutPanel()
         {
-            var panel = new UIFlowLayoutPanel
+            var panel = new UICustomPanel
             {
-                RadiusSides = UICornerRadiusSides.None,
-                RectSides = ToolStripStatusLabelBorderSides.None,
                 Dock = DockStyle.Fill,
-                FillColor = Color.FromArgb(30, 30, 30),
-                FillColor2 = Color.FromArgb(30, 30, 30),
                 ScrollBarColor = Color.FromArgb(66, 66, 66),
             };
 
-            //反射获取UIVerScrollBarEx并修改背景色
-            var field = typeof(UIFlowLayoutPanel).GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
-                                                            .Where(f => f.Name == "VBar").First();
-            var vBar = (UIVerScrollBarEx)field.GetValue(panel);
-            vBar.FillColor = Color.FromArgb(30, 30, 30);
 
             return panel;
         }

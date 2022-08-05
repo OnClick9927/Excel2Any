@@ -108,7 +108,7 @@
       <DependentUpon>DataConvertPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Control\UICustomPanel.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Extend\CSV\CSVConvertPage.cs">
       <SubType>Form</SubType>
