@@ -47,15 +47,18 @@ namespace Excel2Other.Winform
             var tabPage = SettingUIHelper.GetTabPage(tabName);
             tabSettings.TabPages.Add(tabPage);
 
-            int location = 10; //控件位置
 
+            var panel = SettingUIHelper.GetUIFlowLayoutPanel();
+
+            #region 上方按钮部分
             if (!tabName.Equals("通用"))
             {
+                var panelContainer = SettingUIHelper.GetUIPanel();
                 //生成按钮
                 var loadButton = SettingUIHelper.GetUIButton("设置读取");
                 var saveButton = SettingUIHelper.GetUIButton("设置另存为");
-                tabPage.Controls.Add(loadButton);
-                tabPage.Controls.Add(saveButton);
+                panelContainer.Controls.Add(loadButton);
+                panelContainer.Controls.Add(saveButton);
 
                 //按钮绑定方法
                 loadButton.Click += (sender, e) =>
@@ -67,21 +70,26 @@ namespace Excel2Other.Winform
                     SettingHelper.SaveSetting(entityType, true);
                 };
 
-                loadButton.Location = new System.Drawing.Point(30, location);
-                saveButton.Location = new System.Drawing.Point(150, location);
+                loadButton.Location = new System.Drawing.Point(30, 10);
+                saveButton.Location = new System.Drawing.Point(150, 10);
 
-                location += 60;
+                panel.Add(panelContainer);
             }
+            #endregion
 
+            #region 内容部分
             foreach (var field in fields)
             {
+                var panelContainer = SettingUIHelper.GetUIPanel();
+                
+                int location = 10;
                 var attr = field.GetCustomAttribute<SettingAttribute>();
                 //生成标题
                 var title = SettingUIHelper.GetHeaderLabel(attr.name + $" ({field.FieldType.Name})");
                 var content = SettingUIHelper.GetContentLabel(attr.des);
                 //生成内容
                 //分为两种  一个是切换按钮的  一个是填框框的，框框的文本框类型需要考虑
-                tabPage.Controls.Add(title);
+                panelContainer.Controls.Add(title);
                 title.Location = new System.Drawing.Point(30, location);
                 location += 30;
 
@@ -89,8 +97,8 @@ namespace Excel2Other.Winform
                 {
                     //生成切换按钮
                     var uiSwitch = SettingUIHelper.GetSwith();
-                    tabPage.Controls.Add(uiSwitch);
-                    tabPage.Controls.Add(content);
+                    panelContainer.Controls.Add(uiSwitch);
+                    panelContainer.Controls.Add(content);
                     uiSwitch.Location = new System.Drawing.Point(30, location);
                     content.Location = new System.Drawing.Point(110, location + 4);
                     location += 30;
@@ -129,21 +137,22 @@ namespace Excel2Other.Winform
                         };
                     }
 
-                    tabPage.Controls.Add(inputBox);
-                    tabPage.Controls.Add(content);
+                    panelContainer.Controls.Add(inputBox);
+                    panelContainer.Controls.Add(content);
 
                     content.Location = new System.Drawing.Point(30, location);
                     inputBox.Location = new System.Drawing.Point(30, location + 30);
                     location += 60;
                 }
-                location += 30;
 
+                panel.Add(panelContainer);
             }
+            #endregion
 
-            location += 30;
             var blankLabel = SettingUIHelper.GetUILabel();
-            tabPage.Controls.Add(blankLabel);
-            blankLabel.Location = new System.Drawing.Point(0, location);
+            panel.Controls.Add(blankLabel);
+
+            tabPage.Controls.Add(panel);
             tabSettings.Refresh();
         }
 

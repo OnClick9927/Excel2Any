@@ -73,6 +73,7 @@
             this.tabSheets.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabSheets.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
             this.tabSheets.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tabSheets.Frame = null;
             this.tabSheets.ItemSize = new System.Drawing.Size(80, 30);
             this.tabSheets.Location = new System.Drawing.Point(0, 0);
             this.tabSheets.MainPage = "";

@@ -3,6 +3,7 @@ using Sunny.UI;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -160,7 +161,7 @@ namespace Excel2Other.Winform
             {
                 BackColor = Color.FromArgb(30, 30, 30),
                 Text = tabName,
-                AutoScroll = true
+                //AutoScroll = true
             };
 
             return tabPage;
@@ -190,5 +191,41 @@ namespace Excel2Other.Winform
             return label;
         }
 
+
+        public static UIFlowLayoutPanel GetUIFlowLayoutPanel()
+        {
+            var panel = new UIFlowLayoutPanel
+            {
+                RadiusSides = UICornerRadiusSides.None,
+                RectSides = ToolStripStatusLabelBorderSides.None,
+                Dock = DockStyle.Fill,
+                FillColor = Color.FromArgb(30, 30, 30),
+                FillColor2 = Color.FromArgb(30, 30, 30),
+                ScrollBarColor = Color.FromArgb(66, 66, 66),
+            };
+
+            //反射获取UIVerScrollBarEx并修改背景色
+            var field = typeof(UIFlowLayoutPanel).GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+                                                            .Where(f => f.Name == "VBar").First();
+            var vBar = (UIVerScrollBarEx)field.GetValue(panel);
+            vBar.FillColor = Color.FromArgb(30, 30, 30);
+
+            return panel;
+        }
+
+        public static UIPanel GetUIPanel()
+        {
+            var panel = new UIPanel
+            {
+                RadiusSides = UICornerRadiusSides.None,
+                RectSides = ToolStripStatusLabelBorderSides.None,
+                FillColor = Color.FromArgb(30, 30, 30),
+                FillColor2 = Color.FromArgb(30, 30, 30),
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
+            };
+
+            return panel;
+        }
     }
 }
