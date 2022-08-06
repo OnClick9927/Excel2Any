@@ -142,7 +142,7 @@ namespace Excel2Other.Winform
                 }
             }
         }
-        private void txtCode_TextChanged(object sender, TextChangedEventArgs e)
+        protected override void txtCode_TextChanged(object sender, TextChangedEventArgs e)
         {
             XMLSyntaxHighlight(e);
         }

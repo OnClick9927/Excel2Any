@@ -37,7 +37,7 @@ namespace Excel2Other.Winform
             e.ChangedRange.SetFoldingMarkers("{", "}");
         }
 
-        private void txtCode_TextChanged(object sender, TextChangedEventArgs e)
+        protected override void txtCode_TextChanged(object sender, TextChangedEventArgs e)
         {
             JsonSyntaxHighlight(e);
         }

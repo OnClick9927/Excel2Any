@@ -7,12 +7,13 @@ namespace Excel2Other.Winform
 {
     public partial class TextConvertPage : BaseConvertPage
     {
+        protected mTextBox txtCode = new mTextBox();
         public TextConvertPage()
         {
             InitializeComponent();
             txtCode.Dock = DockStyle.Fill;
             txtCode.Visible = false;
-            txtCode.Language = Language.Custom;
+            txtCode.TextChanged += txtCode_TextChanged;
         }
 
 
@@ -43,20 +44,12 @@ namespace Excel2Other.Winform
                 txtCode.Text = _sheets[0].content.ToString();
                 tabSheets.SelectTab(0);
             }
-
-
         }
-        private void MenuItemCopyAll_Click(object sender, EventArgs e)
+
+
+        protected virtual void txtCode_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Clipboard.SetText(txtCode.Text);
-            UIMessageTip.ShowOk("已将所有文本复制到剪贴板");
-        }
-        private void MenuItemCopy_Click(object sender, EventArgs e)
-        {
-            txtCode.Copy();
-            UIMessageTip.ShowOk("已将选中文本复制到剪贴板");
-        }
 
-
+        }
     }
 }

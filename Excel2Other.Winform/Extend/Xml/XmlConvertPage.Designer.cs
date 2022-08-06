@@ -28,13 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ((System.ComponentModel.ISupportInitialize)(this.txtCode)).BeginInit();
             this.SuspendLayout();
-            // 
-            // txtCode
-            // 
-            this.txtCode.Size = new System.Drawing.Size(261, 395);
-            this.txtCode.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.txtCode_TextChanged);
             // 
             // XMLConvertPage
             // 
@@ -42,7 +36,6 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "XMLConvertPage";
             this.Text = "XMLConvertPage";
-            ((System.ComponentModel.ISupportInitialize)(this.txtCode)).EndInit();
             this.ResumeLayout(false);
 
         }

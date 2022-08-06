@@ -17,17 +17,26 @@ namespace Excel2Other.Winform
         ToolStripMenuItem menuItemCopy = new ToolStripMenuItem();
         ToolStripMenuItem menuItemCopyAll = new ToolStripMenuItem();
 
-        ComponentResourceManager resources = new ComponentResourceManager(typeof(TextConvertPage));
 
 
+        public new string Text { get { return textBox.Text; } set { textBox.Text = value; } }
+        public char LeftBracket { get { return textBox.LeftBracket; } set { textBox.LeftBracket = value; } }
+        public char RightBracket { get { return textBox.RightBracket; } set { textBox.RightBracket = value; } }
+        public char LeftBracket2 { get { return textBox.LeftBracket2; } set { textBox.LeftBracket2 = value; } }
+        public char RightBracket2 { get { return textBox.RightBracket2; } set { textBox.RightBracket2 = value; } }
+        public string CommentPrefix { get { return textBox.CommentPrefix; } set { textBox.CommentPrefix = value; } }
+        public string AutoIndentCharsPatterns { get { return textBox.AutoIndentCharsPatterns; } set { textBox.AutoIndentCharsPatterns = value; } }
 
-        public string text  => textBox.Text;
+        public new EventHandler<TextChangedEventArgs> TextChanged;
 
+        public Line this[int index]
+        {
+            get { return textBox[index]; }
+        }
 
         public mTextBox()
         {
             InitializeComponent();
-            textBox.Dock = DockStyle.Fill;
             VBar.Parent = this;
             VBar.StyleCustomMode = true;
             VBar.FillColor = Color.FromArgb(30, 30, 30);
@@ -46,28 +55,28 @@ namespace Excel2Other.Winform
             textBox.ContextMenuStrip = menuStrip;
             textBox.Cursor = Cursors.IBeam;
             textBox.DisabledColor = Color.FromArgb(100, 180, 180, 180);
+            textBox.Dock = DockStyle.Fill;
             textBox.ForeColor = Color.FromArgb(212, 212, 212);
             textBox.ImeMode = ImeMode.Off;
             textBox.IndentBackColor = Color.FromArgb(30, 30, 30);
             textBox.IsReplaceMode = false;
             textBox.LineNumberColor = Color.FromArgb(133, 133, 133);
+            textBox.Language = Language.Custom;
             textBox.Location = new Point(50, 50);
             textBox.Paddings = new Padding(0);
             textBox.SelectionColor = Color.FromArgb(60, 0, 12, 215);
-            textBox.ServiceColors = (ServiceColors)(resources.GetObject("txtCode.ServiceColors"));
             textBox.ServiceLinesColor = Color.FromArgb(64, 64, 64);
-            textBox.ShowScrollBars = false;
             textBox.Size = new Size(150, 150);
-            textBox.TabIndex = 2;
-            textBox.Text = "fastColoredTextBox1";
             textBox.Zoom = 100;
+            textBox.TextChanged += (sender, e) => {
+                TextChanged?.Invoke(sender, e);
+            };
 
             menuStrip.BackColor = Color.FromArgb(46,46,46);
             menuStrip.BackgroundImageLayout = ImageLayout.None;
             menuStrip.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point,134);
             menuStrip.ForeColor = Color.FromArgb(48,48,48);
             menuStrip.Items.AddRange(new ToolStripItem[] {menuItemCopy,menuItemCopyAll});
-            menuStrip.Name = "uiContextMenuStrip1";
             menuStrip.ShowImageMargin = false;
             menuStrip.ShowItemToolTips = false;
             menuStrip.Size = new Size(120, 56);
@@ -75,13 +84,11 @@ namespace Excel2Other.Winform
             menuStrip.StyleCustomMode = true;
 
             menuItemCopy.ForeColor = Color.FromArgb(224, 224, 224);
-            menuItemCopy.Name = "MenuItemCopy";
             menuItemCopy.Size = new Size(119, 26);
             menuItemCopy.Text = "复制选中";
             menuItemCopy.Click += new EventHandler(MenuItemCopy_Click);
 
             menuItemCopyAll.ForeColor = Color.FromArgb(224, 224, 224);
-            menuItemCopyAll.Name = "MenuItemCopyAll";
             menuItemCopyAll.Size = new Size(119, 26);
             menuItemCopyAll.Text = "复制所有";
             menuItemCopyAll.Click += new EventHandler(MenuItemCopyAll_Click);
@@ -124,7 +131,7 @@ namespace Excel2Other.Winform
         {
             if (VBar != null)
             {
-                VBar.Left = base.Width - ScrollBarInfo.VerticalScrollBarWidth() - 1;
+                VBar.Left = base.Width - ScrollBarInfo.VerticalScrollBarWidth() - 50;
                 VBar.Top = 0;
                 VBar.Width = ScrollBarInfo.VerticalScrollBarWidth() + 1;
                 VBar.Height = base.Height;
