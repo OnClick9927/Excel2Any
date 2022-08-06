@@ -88,6 +88,18 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\CustomControls\mPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Base\CustomControls\mPanel.Designer.cs">
+      <DependentUpon>mPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\CustomControls\mTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Base\CustomControls\mTextBox.Designer.cs">
+      <DependentUpon>mTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\Settings\FormSetting.cs" />
     <Compile Include="Base\MainForm.cs">
       <SubType>Form</SubType>
@@ -106,9 +118,6 @@
     </Compile>
     <Compile Include="Base\Pages\DataConvertPage.Designer.cs">
       <DependentUpon>DataConvertPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Control\UICustomPanel.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Extend\CSV\CSVConvertPage.cs">
       <SubType>Form</SubType>

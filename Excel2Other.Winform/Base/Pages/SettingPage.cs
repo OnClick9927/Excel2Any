@@ -1,5 +1,6 @@
 ﻿using Sunny.UI;
 using System;
+using System.Drawing;
 using System.Reflection;
 
 namespace Excel2Other.Winform
@@ -48,8 +49,8 @@ namespace Excel2Other.Winform
             tabSettings.TabPages.Add(tabPage);
 
 
-            var panel = SettingUIHelper.GetUIFlowLayoutPanel();
-
+            var panel = SettingUIHelper.GetPanel();
+            int panelLocation = 0;
             #region 上方按钮部分
             if (!tabName.Equals("通用"))
             {
@@ -70,13 +71,17 @@ namespace Excel2Other.Winform
                     SettingHelper.SaveSetting(entityType, true);
                 };
 
-                loadButton.Location = new System.Drawing.Point(30, 10);
-                saveButton.Location = new System.Drawing.Point(150, 10);
+                loadButton.Location = new Point(30, 10);
+                saveButton.Location = new Point(150, 10);
 
                 panel.Add(panelContainer);
+
+                panelContainer.Location = new Point(0,panelLocation);
+                panelLocation = panelContainer.Location.Y + panelContainer.Size.Height + 20;
+
+                panel.Invalidate();
             }
             #endregion
-
             #region 内容部分
             foreach (var field in fields)
             {
@@ -146,14 +151,17 @@ namespace Excel2Other.Winform
                 }
 
                 panel.Add(panelContainer);
+
+                panelContainer.Location = new Point(0, panelLocation);
+                panelLocation = panelContainer.Location.Y + panelContainer.Size.Height + 20;
             }
             #endregion
-
             var blankLabel = SettingUIHelper.GetUILabel();
-            panel.Controls.Add(blankLabel);
+            panel.Add(blankLabel);
+            blankLabel.Location = new Point(0, panelLocation);
 
             tabPage.Controls.Add(panel);
-            tabSettings.Refresh();
+            tabSettings.Invalidate();
         }
 
         private void SaveAndRefreshSetting(ISetting setting, Type entityType)

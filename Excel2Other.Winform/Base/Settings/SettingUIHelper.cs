@@ -161,7 +161,6 @@ namespace Excel2Other.Winform
             {
                 BackColor = Color.FromArgb(30, 30, 30),
                 Text = tabName,
-                //AutoScroll = true
             };
 
             return tabPage;
@@ -192,14 +191,14 @@ namespace Excel2Other.Winform
         }
 
 
-        public static UICustomPanel GetUIFlowLayoutPanel()
+        public static mPanel GetPanel()
         {
-            var panel = new UICustomPanel
+            var panel = new mPanel
             {
                 Dock = DockStyle.Fill,
-                ScrollBarColor = Color.FromArgb(66, 66, 66),
+                AutoScroll = true,
+                BorderStyle = BorderStyle.None,
             };
-
 
             return panel;
         }
@@ -217,6 +216,16 @@ namespace Excel2Other.Winform
             };
 
             return panel;
+        }
+
+        public static UIScrollBar GetUIScrollBar()
+        {
+            var bar = new UIScrollBar
+            {
+                FillColor = Color.FromArgb(30, 30, 30),
+                ForeColor = Color.FromArgb(66, 66, 66),
+            };
+            return bar;
         }
     }
 }
