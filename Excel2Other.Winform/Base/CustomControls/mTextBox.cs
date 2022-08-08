@@ -17,7 +17,7 @@ namespace Excel2Other.Winform
         ToolStripMenuItem menuItemCopy = new ToolStripMenuItem();
         ToolStripMenuItem menuItemCopyAll = new ToolStripMenuItem();
 
-
+        private readonly Timer timer;
 
         public new string Text { get { return textBox.Text; } set { textBox.Text = value; } }
         public char LeftBracket { get { return textBox.LeftBracket; } set { textBox.LeftBracket = value; } }
@@ -68,15 +68,16 @@ namespace Excel2Other.Winform
             textBox.ServiceLinesColor = Color.FromArgb(64, 64, 64);
             textBox.Size = new Size(150, 150);
             textBox.Zoom = 100;
-            textBox.TextChanged += (sender, e) => {
+            textBox.TextChanged += (sender, e) =>
+            {
                 TextChanged?.Invoke(sender, e);
             };
 
-            menuStrip.BackColor = Color.FromArgb(46,46,46);
+            menuStrip.BackColor = Color.FromArgb(46, 46, 46);
             menuStrip.BackgroundImageLayout = ImageLayout.None;
-            menuStrip.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point,134);
-            menuStrip.ForeColor = Color.FromArgb(48,48,48);
-            menuStrip.Items.AddRange(new ToolStripItem[] {menuItemCopy,menuItemCopyAll});
+            menuStrip.Font = new Font("微软雅黑", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            menuStrip.ForeColor = Color.FromArgb(48, 48, 48);
+            menuStrip.Items.AddRange(new ToolStripItem[] { menuItemCopy, menuItemCopyAll });
             menuStrip.ShowImageMargin = false;
             menuStrip.ShowItemToolTips = false;
             menuStrip.Size = new Size(120, 56);
@@ -101,7 +102,24 @@ namespace Excel2Other.Winform
 
             Controls.Add(textBox);
             Controls.Add(VBar);
+
+
+            timer = new Timer();
+            timer.Interval = 100;
+            timer.Tick += Timer_Tick;
+            timer.Start();
         }
+
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (VBar.Maximum != textBox.VerticalScroll.Maximum || VBar.Visible != textBox.VerticalScroll.Visible)
+            {
+                SetScrollInfo();
+            }
+        }
+
+
         public void Add(Control control)
         {
             textBox.Controls.Add(control);
@@ -118,7 +136,7 @@ namespace Excel2Other.Winform
             {
                 if (textBox.VerticalScroll.Visible)
                 {
-                    VBar.Maximum = textBox.VerticalScroll.Maximum - textBox.VerticalScroll.LargeChange - textBox.VerticalScroll.Minimum;
+                    VBar.Maximum = textBox.VerticalScroll.Maximum - textBox.Size.Height - textBox.VerticalScroll.Minimum;
                     VBar.Value = textBox.VerticalScroll.Value;
                     //VBar = base.VerticalScroll.LargeChange;
                     //VBar.LargeChange = base.VerticalScroll.LargeChange;
@@ -131,7 +149,7 @@ namespace Excel2Other.Winform
         {
             if (VBar != null)
             {
-                VBar.Left = base.Width - ScrollBarInfo.VerticalScrollBarWidth() - 50;
+                VBar.Left = base.Width - ScrollBarInfo.VerticalScrollBarWidth() - 1;
                 VBar.Top = 0;
                 VBar.Width = ScrollBarInfo.VerticalScrollBarWidth() + 1;
                 VBar.Height = base.Height;
@@ -144,17 +162,7 @@ namespace Excel2Other.Winform
         }
         private void SetPanelVBarValue()
         {
-            var mMax = textBox.VerticalScroll.Maximum - textBox.VerticalScroll.LargeChange;
-            if (VBar.Value.InRange(0, mMax))
-            {
-                if (mMax > 0)
-                {
-                    //计算百分比
-                    var rate = VBar.Value * 1.0 / VBar.Maximum;
-                    int mValue = Convert.ToInt32(rate * mMax);
-                    textBox.VerticalScroll.Value = mValue;
-                }
-            }
+            textBox.VerticalScroll.Value = VBar.Value;
         }
         private void TextBox_MouseWheel(object sender, MouseEventArgs e)
         {
