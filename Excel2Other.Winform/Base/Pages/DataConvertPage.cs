@@ -13,7 +13,7 @@ namespace Excel2Other.Winform
             grdData.Visible = false;
         }
 
-        private void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
+        protected virtual void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabSheets.SelectedIndex == -1) return;
             tabSheets.TabPages[tabSheets.SelectedIndex].Controls.Add(grdData);
@@ -45,17 +45,20 @@ namespace Excel2Other.Winform
 
         private void grdData_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
-            e.PaintHeader(DataGridViewPaintParts.All & ~DataGridViewPaintParts.ContentBackground);
-            SolidBrush solidBrush = new SolidBrush(grdData.RowHeadersDefaultCellStyle.ForeColor);
-            int xh = e.RowIndex +1;
-            //设置显示数字的最大长度
-            var xhStr = xh.ToString();
-            if (xhStr.Length >2)
+            if (grdData.RowHeadersVisible)
             {
-                xhStr = xhStr.Substring(0, 2) + "...";
+                e.PaintHeader(DataGridViewPaintParts.All & ~DataGridViewPaintParts.ContentBackground);
+                SolidBrush solidBrush = new SolidBrush(grdData.RowHeadersDefaultCellStyle.ForeColor);
+                int xh = e.RowIndex + 1;
+                //设置显示数字的最大长度
+                var xhStr = xh.ToString();
+                if (xhStr.Length > 2)
+                {
+                    xhStr = xhStr.Substring(0, 2) + "...";
+                }
+                e.Graphics.DrawString(xhStr, e.InheritedRowStyle.Font,
+                    solidBrush, e.RowBounds.Location.X, e.RowBounds.Location.Y);
             }
-            e.Graphics.DrawString(xhStr, e.InheritedRowStyle.Font,
-                solidBrush, e.RowBounds.Location.X, e.RowBounds.Location.Y);
         }
     }
 }

@@ -75,7 +75,6 @@ namespace Excel2Other
             }
             if (rowHeads.Count == 0) return null;
 
-            //这里-1的原因是排除了一行，造成索引不对
             for (int i = _setting.StartRowNum; i < sheet.Rows.Count; i++)
             {
                 DataRow row = data.NewRow();
