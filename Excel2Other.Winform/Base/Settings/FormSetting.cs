@@ -7,6 +7,10 @@
         /// </summary>
         public string lastOpenPath;
         /// <summary>
+        /// 配置方案（默认为default）
+        /// </summary>
+        public string plan;
+        /// <summary>
         /// 是否打开上次路径
         /// </summary>
         [SettingAttribute("打开上一次的文件夹", "在程序打开时自动打开上一次打开的文件夹")]
@@ -35,6 +39,7 @@
             excludePrefix = "#";
             excludeFile = true;
             isExpand = false;
+            plan = "default";
         }
     }
 }

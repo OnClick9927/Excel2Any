@@ -88,6 +88,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\CustomControls\mPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Base\CustomControls\mPage.Designer.cs">
+      <DependentUpon>mPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\CustomControls\mPanel.cs">
       <SubType>Component</SubType>
     </Compile>

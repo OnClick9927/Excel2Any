@@ -155,9 +155,9 @@ namespace Excel2Other.Winform
             return uiSwitch;
         }
 
-        public static TabPage GetTabPage(string tabName)
+        public static mPage GetTabPage(string tabName)
         {
-            var tabPage = new TabPage
+            var tabPage = new mPage
             {
                 BackColor = Color.FromArgb(30, 30, 30),
                 Text = tabName,

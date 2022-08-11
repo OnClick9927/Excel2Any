@@ -9,6 +9,44 @@ namespace Excel2Other.Winform
 {
     public class SettingHelper
     {
+        #region 全局设置
+        /// <summary>
+        /// 全局设置
+        /// </summary>
+        public static FormSetting formSetting;
+
+        static SettingHelper()
+        {
+            formSetting = (FormSetting)GetFormSetting();
+        }
+
+
+        private static ISetting GetFormSetting()
+        {
+            Type settingType = typeof(FormSetting);
+            var ISetting = GetSettingBySettingType(settingType, GetDefaultSettingPath(settingType));
+            if (ISetting == null)
+            {
+                ISetting = new FormSetting();
+                SaveFormSetting(ISetting);
+            }
+            return ISetting;
+        }
+        private static void SaveFormSetting(ISetting set)
+        {
+            SaveSetting(set, GetDefaultSettingPath(typeof(FormSetting)));
+        }
+
+        public static void SaveFormSetting()
+        {
+            if (formSetting != null)
+            {
+                SaveSetting(formSetting, GetDefaultSettingPath(typeof(FormSetting)));
+            }
+        }
+
+        #endregion
+
         public static List<FieldInfo> GetFields(Type type)
         {
             List<FieldInfo> fs = new List<FieldInfo>();
@@ -20,12 +58,22 @@ namespace Excel2Other.Winform
             }
             return fs;
         }
-
-        static readonly string  rootPath = "";
-
-        private static string GetDefaultSettingPath(Type type)
+        private static string GetDefaultSettingPath(Type settingType,string plan ="")
         {
-            return Path.Combine(rootPath, $"Settings/config.{type.Name}");
+            if (settingType == typeof(FormSetting))
+            {
+                return $"Settings/config.{settingType.Name}";
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(plan))
+                {
+                    plan = formSetting.plan;
+                }
+                //return Path.Combine(rootPath, $"Settings/config.{type.Name}");
+                return $"Settings/{plan}/config.{settingType.Name}";
+            }
+            
         }
         public static ISetting GetSetting(Type entityType, string path = "")
         {
@@ -41,7 +89,6 @@ namespace Excel2Other.Winform
             }
             return GetSettingBySettingType(settingType, path);
         }
-
         private static ISetting GetSettingBySettingType(Type settingType, string path)
         {
             if (!File.Exists(path))
@@ -53,35 +100,23 @@ namespace Excel2Other.Winform
 
             return setting;
         }
-
         public static void SaveSetting(ISetting set, string path = "")
         {
             string str = JsonConvert.SerializeObject(set);
             if (string.IsNullOrEmpty(path))
             {
-                var type = set.GetType();
-                path = GetDefaultSettingPath(type);
+                var typeSetting = set.GetType();
+                path = GetDefaultSettingPath(typeSetting);
+            }
+            //文件夹如果不存在则创建
+            FileInfo fi = new FileInfo(path);
+            if (!Directory.Exists(fi.DirectoryName))
+            {
+                Directory.CreateDirectory(fi.DirectoryName);
             }
             File.WriteAllText(path, str);
         }
-
-        public static ISetting GetFormSetting()
-        {
-            Type type = typeof(FormSetting);
-            var ISetting = GetSettingBySettingType(type, GetDefaultSettingPath(type));
-            if (ISetting == null)
-            {
-                ISetting = new FormSetting();
-                SaveFormSetting(ISetting);
-            }
-            return ISetting;
-        }
-
-        private static void SaveFormSetting(ISetting set)
-        {
-            SaveSetting(set, GetDefaultSettingPath(typeof(FormSetting)));
-        }
-
+        
         public static void SaveSetting(Type entityType, bool isSelect = false)
         {
             ISetting setting = UIEntityHelper.GetUIEntity(entityType).setting;
@@ -109,10 +144,11 @@ namespace Excel2Other.Winform
             }
             ExcelHelper.SetAllDirty(entityType);
         }
-
-        public static void LoadSetting(Type settingType, bool isSelect = false)
+        public static void LoadSetting(Type entityType, bool isSelect = false)
         {
-            ISetting setting = null;
+            ISetting setting;
+
+            Type settingType = UIEntityHelper.GetUIEntity(entityType).setting.GetType();
             if (isSelect)
             {
                 var settingExtension = settingType.Name;
@@ -126,9 +162,9 @@ namespace Excel2Other.Winform
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var path = dialog.FileName;
-                    setting = GetSetting(settingType, path);
-
-                    ExcelHelper.GetEntity(settingType).SetSetting(setting);
+                    setting = GetSetting(entityType, path);
+                    UIEntityHelper.GetUIEntity(entityType).setting = (BaseSetting)setting;
+                    ExcelHelper.GetEntity(entityType).SetSetting(setting);
                 }
                 else
                 {
@@ -137,7 +173,7 @@ namespace Excel2Other.Winform
             }
             else
             {
-                setting = GetSetting(settingType);
+                setting = GetSetting(entityType);
             }
 
 
@@ -151,7 +187,7 @@ namespace Excel2Other.Winform
                 else
                 {
                     setting = Activator.CreateInstance(settingType) as ISetting;
-                    UIEntityHelper.GetUIEntity(settingType).setting = (BaseSetting)setting;
+                    UIEntityHelper.GetUIEntity(entityType).setting = (BaseSetting)setting;
                     SaveSetting(setting);
                 }
             }
@@ -163,7 +199,7 @@ namespace Excel2Other.Winform
                 }
             }
             
-            ExcelHelper.GetEntity(settingType).SetSetting(setting);
+            ExcelHelper.GetEntity(entityType).SetSetting(setting);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Excel2Other.Winform
 {
     public partial class SettingPage : UIPage
     {
+        private bool saveChange = true;
         public SettingPage()
         {
             InitializeComponent();
@@ -46,10 +47,12 @@ namespace Excel2Other.Winform
                 return xPriority - yPriority;
             });
             var tabPage = SettingUIHelper.GetTabPage(tabName);
+            //留存Type 方便反射获取设置
+            tabPage.entityType = entityType;
             tabSettings.TabPages.Add(tabPage);
 
-
             var panel = SettingUIHelper.GetPanel();
+
             int panelLocation = 0;
             #region 上方按钮部分
             if (!tabName.Equals("通用"))
@@ -64,7 +67,8 @@ namespace Excel2Other.Winform
                 //按钮绑定方法
                 loadButton.Click += (sender, e) =>
                 {
-                    SettingHelper.LoadSetting(settingType, true);
+                    SettingHelper.LoadSetting(entityType, true);
+                    RefreshUI(tabPage);
                 };
                 saveButton.Click += (sender, e) =>
                 {
@@ -76,17 +80,18 @@ namespace Excel2Other.Winform
 
                 panel.Add(panelContainer);
 
-                panelContainer.Location = new Point(0,panelLocation);
+                panelContainer.Location = new Point(0, panelLocation);
                 panelLocation = panelContainer.Location.Y + panelContainer.Size.Height + 20;
 
                 panel.Invalidate();
             }
             #endregion
+
             #region 内容部分
             foreach (var field in fields)
             {
                 var panelContainer = SettingUIHelper.GetUIPanel();
-                
+
                 int location = 10;
                 var attr = field.GetCustomAttribute<SettingAttribute>();
                 //生成标题
@@ -95,7 +100,7 @@ namespace Excel2Other.Winform
                 //生成内容
                 //分为两种  一个是切换按钮的  一个是填框框的，框框的文本框类型需要考虑
                 panelContainer.Controls.Add(title);
-                title.Location = new System.Drawing.Point(30, location);
+                title.Location = new Point(30, location);
                 location += 30;
 
                 if (field.FieldType == typeof(bool))
@@ -104,14 +109,18 @@ namespace Excel2Other.Winform
                     var uiSwitch = SettingUIHelper.GetSwith();
                     panelContainer.Controls.Add(uiSwitch);
                     panelContainer.Controls.Add(content);
-                    uiSwitch.Location = new System.Drawing.Point(30, location);
-                    content.Location = new System.Drawing.Point(110, location + 4);
+                    uiSwitch.Location = new Point(30, location);
+                    content.Location = new Point(110, location + 4);
                     location += 30;
                     uiSwitch.Active = (bool)field.GetValue(setting);
+                    uiSwitch.Name = field.Name;
                     uiSwitch.ActiveChanged += (sender, e) =>
                     {
                         field.SetValue(setting, uiSwitch.Active);
-                        SaveAndRefreshSetting(setting, entityType);
+                        if (saveChange)
+                        {
+                            SaveAndRefreshSetting(setting, entityType);
+                        }
                     };
                 }
                 else
@@ -121,32 +130,29 @@ namespace Excel2Other.Winform
                     {
                         inputBox = SettingUIHelper.GetInputBox(attr.textType);
 
-                        inputBox.Text = (string)field.GetValue(setting).ToString();
+                        inputBox.Text = field.GetValue(setting).ToString();
                         inputBox.Leave += (sender, e) =>
                         {
                             field.SetValue(setting, inputBox.Text);
-                            SettingHelper.SaveSetting(setting);
-                            SaveAndRefreshSetting(setting, entityType);
                         };
                     }
                     else if (field.FieldType == typeof(int))
                     {
                         //这里针对行号+1的问题处理……后续会改
                         inputBox = SettingUIHelper.GetInputBox(StringType.Integer);
-                        inputBox.Text = (string)((int)field.GetValue(setting) + 1).ToString();
+                        inputBox.Text = ((int)field.GetValue(setting) + 1).ToString();
                         inputBox.Leave += (sender, e) =>
                         {
                             int.TryParse(inputBox.Text, out int num);
                             field.SetValue(setting, num - 1);
-                            SaveAndRefreshSetting(setting, entityType);
                         };
                     }
-
+                    inputBox.Name = field.Name;
                     panelContainer.Controls.Add(inputBox);
                     panelContainer.Controls.Add(content);
 
-                    content.Location = new System.Drawing.Point(30, location);
-                    inputBox.Location = new System.Drawing.Point(30, location + 30);
+                    content.Location = new Point(30, location);
+                    inputBox.Location = new Point(30, location + 30);
                     location += 60;
                 }
 
@@ -161,6 +167,7 @@ namespace Excel2Other.Winform
             blankLabel.Location = new Point(0, panelLocation);
 
             tabPage.Controls.Add(panel);
+            tabPage.panel = panel;
             tabSettings.Invalidate();
         }
 
@@ -173,5 +180,63 @@ namespace Excel2Other.Winform
                 ExcelHelper.SetAllDirty(entityType);
             }
         }
+
+
+        public void RefreshUI(Type entityType)
+        {
+            for (int i = 0; i < tabSettings.TabPages.Count; i++)
+            {
+                var page = (mPage)tabSettings.TabPages[i];
+                if (page.entityType == entityType)
+                {
+                    RefreshUI(page);
+                    break;
+                }
+            }
+        }
+        public void RefreshUI()
+        {
+            foreach (var item in tabSettings.TabPages)
+            {
+                var page = (mPage)item;
+                if (!page.Text.Equals("通用"))
+                {
+                    RefreshUI(page);
+                }
+            }
+        }
+        public void RefreshUI(mPage page)
+        {
+            //防止修改时多次调用保存设置
+            saveChange = false;
+            ISetting setting = UIEntityHelper.GetUIEntity(page.entityType).setting;
+
+            foreach (var control in page.panel.GetAllControl())
+            {
+                if (control.GetType() == typeof(UISwitch))
+                {
+                    var mSwitch = (UISwitch)control;
+                    var field = setting.GetType().GetField(mSwitch.Name);
+                    mSwitch.Active = (bool)field.GetValue(setting);
+                }
+                else if (control.GetType() == typeof(UITextBox))
+                {
+                    var textBox = (UITextBox)control;
+                    var field = setting.GetType().GetField(textBox.Name);
+                    if (field.FieldType == typeof(int))
+                    {
+                        textBox.Text = ((int)field.GetValue(setting) + 1).ToString();
+                    }
+                    else
+                    {
+                        textBox.Text = field.GetValue(setting).ToString();
+                    }
+                }
+            }
+
+
+            saveChange = true;
+        }
+
     }
 }

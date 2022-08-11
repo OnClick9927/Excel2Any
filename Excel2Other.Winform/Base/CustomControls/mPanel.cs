@@ -1,6 +1,6 @@
 ﻿using Sunny.UI;
 using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -107,6 +107,31 @@ namespace Excel2Other.Winform
             //}
 
             RefreshVBarValue();
+        }
+
+        public List<Control> GetAllControl()
+        {
+            List<Control> controls = new List<Control>();
+            GetControls(panel, controls);
+            return controls;
+        }
+
+        private void GetControls(Control fatherControl,List<Control> controls)
+        {
+            ControlCollection sonControls = fatherControl.Controls;
+            //遍历所有控件
+            foreach (Control control in sonControls)
+            {
+                var type = control.GetType();
+                if (type == typeof(UITextBox) || type== typeof(UISwitch))
+                {
+                    controls.Add(control);
+                }
+                if (control.Controls != null)
+                {
+                    GetControls(control, controls);
+                }
+            }
         }
     }
 }

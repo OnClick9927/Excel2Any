@@ -158,7 +158,7 @@ namespace Excel2Other
         /// 清除对应类型的所有缓存
         /// </summary>
         /// <param name="entityType"></param>
-        public static void SetAllDirty(Type entityType)
+        public static void SetAllDirty(Type entityType = null)
         {
             if (entityType == null)
                 results.Clear();
@@ -171,6 +171,7 @@ namespace Excel2Other
             }
 
         }
+
         public static List<SheetData> GetSheets(Type entityType, string path)
         {
             if (!results.ContainsKey(entityType))

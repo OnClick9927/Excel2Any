@@ -8,7 +8,7 @@ namespace Excel2Other.Winform
 {
     public partial class MainForm : UIAsideMainFrame
     {
-        private FormSetting _formSetting = (FormSetting)SettingHelper.GetFormSetting(); //窗体配置
+        private FormSetting _formSetting = SettingHelper.formSetting; //窗体配置
 
         const int settingPageIndex = 9999;
         public MainForm()
