@@ -133,18 +133,20 @@ namespace Excel2Other.Winform
                         inputBox.Text = field.GetValue(setting).ToString();
                         inputBox.Leave += (sender, e) =>
                         {
-                            field.SetValue(setting, inputBox.Text);
+                            field.SetValue(setting, inputBox.Text); 
+                            SaveAndRefreshSetting(setting, entityType);
                         };
                     }
                     else if (field.FieldType == typeof(int))
                     {
-                        //这里针对行号+1的问题处理……后续会改
+                        //int用于行号，所以索引需要-1  后续看情况更改
                         inputBox = SettingUIHelper.GetInputBox(StringType.Integer);
                         inputBox.Text = ((int)field.GetValue(setting) + 1).ToString();
                         inputBox.Leave += (sender, e) =>
                         {
                             int.TryParse(inputBox.Text, out int num);
                             field.SetValue(setting, num - 1);
+                            SaveAndRefreshSetting(setting, entityType);
                         };
                     }
                     inputBox.Name = field.Name;
@@ -181,7 +183,6 @@ namespace Excel2Other.Winform
             }
         }
 
-
         public void RefreshUI(Type entityType)
         {
             for (int i = 0; i < tabSettings.TabPages.Count; i++)
@@ -199,16 +200,15 @@ namespace Excel2Other.Winform
             foreach (var item in tabSettings.TabPages)
             {
                 var page = (mPage)item;
-                if (!page.Text.Equals("通用"))
-                {
-                    RefreshUI(page);
-                }
+                RefreshUI(page);
             }
         }
         public void RefreshUI(mPage page)
         {
             //防止修改时多次调用保存设置
             saveChange = false;
+            if (page.entityType == null) return;
+
             ISetting setting = UIEntityHelper.GetUIEntity(page.entityType).setting;
 
             foreach (var control in page.panel.GetAllControl())
@@ -233,7 +233,6 @@ namespace Excel2Other.Winform
                     }
                 }
             }
-
 
             saveChange = true;
         }

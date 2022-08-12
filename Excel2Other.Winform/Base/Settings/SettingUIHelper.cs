@@ -218,14 +218,13 @@ namespace Excel2Other.Winform
             return panel;
         }
 
-        public static UIScrollBar GetUIScrollBar()
+
+        public static mComboList GetComboList()
         {
-            var bar = new UIScrollBar
-            {
-                FillColor = Color.FromArgb(30, 30, 30),
-                ForeColor = Color.FromArgb(66, 66, 66),
-            };
-            return bar;
+            var combo = new mComboList();
+
+            return combo;
         }
+
     }
 }

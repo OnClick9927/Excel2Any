@@ -88,6 +88,18 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\CustomControls\mComboItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Base\CustomControls\mComboItem.Designer.cs">
+      <DependentUpon>mComboItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Base\CustomControls\mComboList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Base\CustomControls\mComboList.Designer.cs">
+      <DependentUpon>mComboList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Base\CustomControls\mPage.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -178,6 +190,9 @@
     <Compile Include="Extend\Json\UIJsonEntity.cs" />
     <Compile Include="Extend\Sqlite\UISqliteEntity.cs" />
     <Compile Include="Extend\Xml\UIXmlEntity.cs" />
+    <EmbeddedResource Include="Base\CustomControls\mComboItem.resx">
+      <DependentUpon>mComboItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Base\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

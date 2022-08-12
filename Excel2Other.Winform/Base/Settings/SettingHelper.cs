@@ -58,7 +58,7 @@ namespace Excel2Other.Winform
             }
             return fs;
         }
-        private static string GetDefaultSettingPath(Type settingType,string plan ="")
+        private static string GetDefaultSettingPath(Type settingType, string plan = "")
         {
             if (settingType == typeof(FormSetting))
             {
@@ -73,7 +73,7 @@ namespace Excel2Other.Winform
                 //return Path.Combine(rootPath, $"Settings/config.{type.Name}");
                 return $"Settings/{plan}/config.{settingType.Name}";
             }
-            
+
         }
         public static ISetting GetSetting(Type entityType, string path = "")
         {
@@ -116,7 +116,7 @@ namespace Excel2Other.Winform
             }
             File.WriteAllText(path, str);
         }
-        
+
         public static void SaveSetting(Type entityType, bool isSelect = false)
         {
             ISetting setting = UIEntityHelper.GetUIEntity(entityType).setting;
@@ -198,8 +198,62 @@ namespace Excel2Other.Winform
                     SaveSetting(setting);
                 }
             }
-            
+
             ExcelHelper.GetEntity(entityType).SetSetting(setting);
         }
+
+        public static List<string> GetPlanList()
+        {
+            List<string> plans = new List<string>();
+            var path = "Settings";
+
+            DirectoryInfo dir = new DirectoryInfo(path);
+            DirectoryInfo[] dii = dir.GetDirectories();
+
+            foreach (DirectoryInfo info in dii)
+            {
+                plans.Add(info.Name);
+            }
+
+            return plans;
+        }
+
+        public static bool CreatePlan(string planName)
+        {
+            var path = $"Settings/{planName}";
+            if (Directory.Exists(path))
+            {
+                return false;
+            }
+            try
+            {
+                Directory.CreateDirectory(path);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static void DeletePlan(string planName)
+        {
+            var path = $"Settings/{planName}";
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(planName, true);
+            }
+        }
+
+        public static void ReNamePlan(string oldName, string newName)
+        {
+            var path1 = $"Settings/{oldName}";
+            var path2 = $"Settings/{newName}";
+            if (Directory.Exists(path1))
+            {
+                Directory.Move(path1, path2);
+            }
+        }
+
     }
 }
