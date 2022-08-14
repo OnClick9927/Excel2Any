@@ -133,7 +133,7 @@ namespace Excel2Any.Winform
                         inputBox.Text = field.GetValue(setting).ToString();
                         inputBox.Leave += (sender, e) =>
                         {
-                            field.SetValue(setting, inputBox.Text); 
+                            field.SetValue(setting, inputBox.Text);
                             SaveAndRefreshSetting(setting, entityType);
                         };
 
@@ -165,7 +165,16 @@ namespace Excel2Any.Winform
                     comboList.InitItems(SettingHelper.GetPlanList(), SettingHelper.formSetting.plan);
                     comboList.SubscribeItemDelete((a) => SettingHelper.DeletePlan(a));
                     comboList.SubscribeItemReName((a, b) => { SettingHelper.ReNamePlan(a, b); });
-                    comboList.SubscribeItemSelect((a) => { UIEntityHelper.setPlan(a); RefreshUI(); });
+                    comboList.SubscribeItemSelect((a) =>
+                    {
+                        UIEntityHelper.setPlan(a);
+                        RefreshUI();
+                        if (UIForm.ActiveForm != null)
+                        {
+                            UIForm.ActiveForm.Text = $"Excel转换器(配置：{a})";
+                        }
+
+                    });
 
                     panelContainer.Controls.Add(comboList);
                     panelContainer.Controls.Add(content);

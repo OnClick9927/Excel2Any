@@ -47,6 +47,7 @@ namespace Excel2Any.Winform
             var item = new mComboDownItem(name);
             item.parent = this;
             pnlContainer.Add(item);
+            item.StartEdit();
             return item;
         }
 

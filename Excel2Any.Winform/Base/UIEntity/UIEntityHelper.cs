@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sunny.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -58,7 +59,6 @@ namespace Excel2Any.Winform
                 uiEntity.setting = setting;
                 ExcelHelper.GetEntity(item).SetSetting(setting);
             }
-
         }
     }
 }

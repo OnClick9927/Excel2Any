@@ -30,10 +30,15 @@
         {
             this.SuspendLayout();
             // 
+            // edit
+            // 
+            this.edit.Size = new System.Drawing.Size(456, 22);
+            // 
             // mComboList
             // 
             this.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
             this.Name = "mComboList";
+            this.Size = new System.Drawing.Size(486, 29);
             this.ResumeLayout(false);
             this.PerformLayout();
 

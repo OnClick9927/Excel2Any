@@ -38,13 +38,13 @@ namespace Excel2Any.Winform
             StartEdit();
         }
 
-        private void StartEdit()
+        public void StartEdit()
         {
             Editing();
             txtPlan.Focus();
 
         }
-        private void EndEdit()
+        public void EndEdit()
         {
             if (string.IsNullOrWhiteSpace(txtPlan.Text) && !string.IsNullOrEmpty(nowName))
             {
@@ -63,6 +63,16 @@ namespace Excel2Any.Winform
             }
 
             DefaultState();
+        }
+
+        public void CancelEdit()
+        {
+            if (txtPlan.Enabled)
+            {
+                txtPlan.Text = nowName;
+                DefaultState();
+            }
+            
         }
         private void txtPlan_DoEnter(object sender, EventArgs e)
         {
@@ -93,12 +103,12 @@ namespace Excel2Any.Winform
 
         public void SetFocus()
         {
-            BackColor = Color.Green;
+            fillColor = Color.Green;
         }
 
         public void NotFocus()
         {
-            BackColor = Color.White;
+            fillColor = Color.White;
         }
 
 

@@ -42,14 +42,14 @@
             this.uiPanel1.Controls.Add(this.btnAdd);
             this.uiPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.uiPanel1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.uiPanel1.Location = new System.Drawing.Point(0, 213);
+            this.uiPanel1.Location = new System.Drawing.Point(0, 309);
             this.uiPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.uiPanel1.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiPanel1.Name = "uiPanel1";
             this.uiPanel1.RadiusSides = Sunny.UI.UICornerRadiusSides.None;
             this.uiPanel1.RectColor = System.Drawing.Color.Black;
             this.uiPanel1.RectSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Top;
-            this.uiPanel1.Size = new System.Drawing.Size(325, 41);
+            this.uiPanel1.Size = new System.Drawing.Size(672, 41);
             this.uiPanel1.Style = Sunny.UI.UIStyle.Custom;
             this.uiPanel1.StyleCustomMode = true;
             this.uiPanel1.TabIndex = 0;
@@ -66,7 +66,7 @@
             this.btnDelete.FillPressColor = System.Drawing.Color.FromArgb(((int)(((byte)(184)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnDelete.FillSelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(184)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnDelete.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnDelete.Location = new System.Drawing.Point(222, 3);
+            this.btnDelete.Location = new System.Drawing.Point(569, 3);
             this.btnDelete.MinimumSize = new System.Drawing.Size(1, 1);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
@@ -87,7 +87,7 @@
             // 
             this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAdd.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnAdd.Location = new System.Drawing.Point(116, 3);
+            this.btnAdd.Location = new System.Drawing.Point(463, 3);
             this.btnAdd.MinimumSize = new System.Drawing.Size(1, 1);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(100, 35);
@@ -108,7 +108,7 @@
             this.uiPanel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.uiPanel2.MinimumSize = new System.Drawing.Size(1, 1);
             this.uiPanel2.Name = "uiPanel2";
-            this.uiPanel2.Size = new System.Drawing.Size(325, 37);
+            this.uiPanel2.Size = new System.Drawing.Size(672, 37);
             this.uiPanel2.Style = Sunny.UI.UIStyle.Custom;
             this.uiPanel2.TabIndex = 1;
             this.uiPanel2.Text = "请选择你的配置";
@@ -127,7 +127,7 @@
             this.pnlContainer.RadiusSides = Sunny.UI.UICornerRadiusSides.None;
             this.pnlContainer.RectSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.None;
             this.pnlContainer.ShowText = false;
-            this.pnlContainer.Size = new System.Drawing.Size(325, 176);
+            this.pnlContainer.Size = new System.Drawing.Size(672, 272);
             this.pnlContainer.Style = Sunny.UI.UIStyle.Custom;
             this.pnlContainer.TabIndex = 2;
             this.pnlContainer.Text = "uiFlowLayoutPanel1";
@@ -144,7 +144,7 @@
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "mComboDown";
             this.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(58)))), ((int)(((byte)(92)))));
-            this.Size = new System.Drawing.Size(325, 254);
+            this.Size = new System.Drawing.Size(672, 350);
             this.Style = Sunny.UI.UIStyle.Custom;
             this.StyleCustomMode = true;
             this.uiPanel1.ResumeLayout(false);
