@@ -37,8 +37,17 @@
             // mComboList
             // 
             this.DropDownStyle = Sunny.UI.UIDropDownStyle.DropDownList;
+            this.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(41)))), ((int)(((byte)(41)))));
+            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.ForeDisableColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.Name = "mComboList";
+            this.RectColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.RectDisableColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.RectSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.None;
             this.Size = new System.Drawing.Size(486, 29);
+            this.Style = Sunny.UI.UIStyle.Custom;
+            this.StyleCustomMode = true;
+            this.Text = "aaaaaa ";
             this.ResumeLayout(false);
             this.PerformLayout();
 

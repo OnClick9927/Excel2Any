@@ -59,6 +59,7 @@ namespace Excel2Any.Winform
                 uiEntity.setting = setting;
                 ExcelHelper.GetEntity(item).SetSetting(setting);
             }
+
         }
     }
 }

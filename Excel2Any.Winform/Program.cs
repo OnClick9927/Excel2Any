@@ -16,7 +16,9 @@ namespace Excel2Any.Winform
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            var mainForm = new MainForm();
+            SettingHelper.form = mainForm;
+            Application.Run(mainForm);
         }
     }
 }

@@ -54,6 +54,8 @@ namespace Excel2Any.Winform
             }
 
             AsideWidthChange(_formSetting.isExpand);
+
+            Text = $"Excel转换器(配置：{_formSetting.plan})";
         }
 
         BaseConvertPage currentPage = null;

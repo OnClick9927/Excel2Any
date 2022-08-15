@@ -169,11 +169,10 @@ namespace Excel2Any.Winform
                     {
                         UIEntityHelper.setPlan(a);
                         RefreshUI();
-                        if (UIForm.ActiveForm != null)
+                        if (SettingHelper.form != null)
                         {
-                            UIForm.ActiveForm.Text = $"Excel转换器(配置：{a})";
+                            SettingHelper.form.Text = $"Excel转换器(配置：{a})";
                         }
-
                     });
 
                     panelContainer.Controls.Add(comboList);

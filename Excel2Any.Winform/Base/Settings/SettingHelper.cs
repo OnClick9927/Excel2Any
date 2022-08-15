@@ -9,6 +9,10 @@ namespace Excel2Any.Winform
 {
     public class SettingHelper
     {
+        /// <summary>
+        /// 保存主窗体
+        /// </summary>
+        public static Form form;
         #region 全局设置
         /// <summary>
         /// 全局设置

@@ -21,7 +21,7 @@ namespace Excel2Any.Winform
 
         private void btnAdd_Click(object sender, System.EventArgs e)
         {
-            Add("");
+            Add("",true);
         }
 
         public void Clear()
@@ -42,12 +42,16 @@ namespace Excel2Any.Winform
             }
         }
 
-        public mComboDownItem Add(string name)
+        public mComboDownItem Add(string name,bool rename = false)
         {
             var item = new mComboDownItem(name);
             item.parent = this;
             pnlContainer.Add(item);
-            item.StartEdit();
+            if (rename)
+            {
+                item.StartEdit();
+            }
+            
             return item;
         }
 
@@ -93,16 +97,24 @@ namespace Excel2Any.Winform
                 }
                 Current.Dispose();
                 Current = null;
-                UIMessageTip.Show("已删除!");
+                UIMessageTip.Show("已删除！");
+            }
+            else
+            {
+                UIMessageTip.ShowWarning("请选择需要删除的配置！");
             }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (UIMessageDialog.ShowAskDialog(UIForm.ActiveForm, "是否要删除这个配置",UIStyle.Black))
+            if (Current!= null)
             {
-                DeleteItem();
-            }            
+                if (UIMessageDialog.ShowAskDialog(null, $"是否要删除{Current.Text}这个配置？", UIStyle.Black))
+                {
+                    DeleteItem();
+                }
+            }
+            
         }
 
         public void SelectItem(mComboDownItem select)

@@ -72,7 +72,7 @@ namespace Excel2Any.Winform
                 txtPlan.Text = nowName;
                 DefaultState();
             }
-            
+
         }
         private void txtPlan_DoEnter(object sender, EventArgs e)
         {
@@ -103,12 +103,16 @@ namespace Excel2Any.Winform
 
         public void SetFocus()
         {
-            fillColor = Color.Green;
+            fillColor = Color.FromArgb(60, 60, 60);
+            lblSelectSign.Visible = true;
+            Refresh();
         }
 
         public void NotFocus()
         {
-            fillColor = Color.White;
+            fillColor = Color.FromArgb(40, 40, 40);
+            lblSelectSign.Visible = false;
+            Refresh();
         }
 
 
@@ -132,7 +136,7 @@ namespace Excel2Any.Winform
             lblSelect.Visible = false;
         }
 
-        public void Selected() 
+        public void Selected()
         {
             txtPlan.Enabled = false;
             btnOK.Visible = false;
