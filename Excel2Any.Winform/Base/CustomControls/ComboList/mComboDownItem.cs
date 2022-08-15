@@ -9,7 +9,7 @@ namespace Excel2Any.Winform
         private string nowName;
         public mComboDown parent;
         public new string Text => nowName;
-
+        public bool CanDelete => !lblSelect.Visible;
         public void SetName(string newName)
         {
             newName = newName.Trim();
