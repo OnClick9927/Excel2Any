@@ -165,6 +165,13 @@
       <DependentUpon>CSVConvertPage.cs</DependentUpon>
     </Compile>
     <Compile Include="Extend\CSV\UICSVEntity.cs" />
+    <Compile Include="Extend\Lua\LuaConvertPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Extend\Lua\LuaConvertPage.Designer.cs">
+      <DependentUpon>LuaConvertPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extend\Lua\UILuaEntity.cs" />
     <Compile Include="Extend\Sqlite\SqliteConvertPage.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -6,6 +6,7 @@
         Xml,
         CSharp,
         Sqlite,
-        CSV
+        CSV,
+        Lua
     }
 }

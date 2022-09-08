@@ -7,8 +7,8 @@
     <ProjectGuid>{F9E46E7A-8148-4E4E-A717-AC36868A8F70}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Excel2Other.Core</RootNamespace>
-    <AssemblyName>Excel2Other.Core</AssemblyName>
+    <RootNamespace>Excel2Any.Core</RootNamespace>
+    <AssemblyName>Excel2Any.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -79,6 +79,10 @@
     <Compile Include="Extend\CSharp\CSharpConverter.cs" />
     <Compile Include="Base\Interface\IConverter.cs" />
     <Compile Include="Extend\FieldTypeUtil.cs" />
+    <Compile Include="Extend\Lua\LuaConverter.cs" />
+    <Compile Include="Extend\Lua\LuaEntity.cs" />
+    <Compile Include="Extend\Lua\LuaSaver.cs" />
+    <Compile Include="Extend\Lua\LuaSetting.cs" />
     <Compile Include="Extend\Sqlite\SqliteConverter.cs" />
     <Compile Include="Base\Entity\HistoryData.cs" />
     <Compile Include="Base\BaseSetting.cs" />
