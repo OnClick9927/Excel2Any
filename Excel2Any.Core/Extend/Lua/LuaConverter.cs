@@ -156,6 +156,8 @@ namespace Excel2Any
 
 
             sb.AppendLine("}");
+            sb.AppendLine();
+            sb.AppendLine($"return {tableName}");
             return sb.ToString();
         }
 
