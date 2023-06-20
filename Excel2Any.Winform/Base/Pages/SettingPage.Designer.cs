@@ -38,7 +38,7 @@
             this.tabSettings.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabSettings.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.tabSettings.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tabSettings.ItemSize = new System.Drawing.Size(40, 130);
+            this.tabSettings.ItemSize = new System.Drawing.Size(130, 40);
             this.tabSettings.Location = new System.Drawing.Point(0, 0);
             this.tabSettings.MenuStyle = Sunny.UI.UIMenuStyle.Custom;
             this.tabSettings.Multiline = true;
@@ -54,7 +54,6 @@
             this.tabSettings.TabSelectedForeColor = System.Drawing.Color.White;
             this.tabSettings.TabSelectedHighColor = System.Drawing.Color.Silver;
             this.tabSettings.TextAlignment = System.Windows.Forms.HorizontalAlignment.Left;
-            this.tabSettings.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // SettingPage
             // 
