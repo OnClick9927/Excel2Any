@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Numerics;
 using System.Windows.Controls;
 
 namespace Excel2Any.Winform
@@ -11,6 +12,7 @@ namespace Excel2Any.Winform
         public Action<string> onItemDelete;
         public Action<string, string> onItemReName;
         public Action<string> onItemSelect;
+        public Action onItemAdd;
 
         public mComboDownItem Current;
         public mComboDownItem SelectedItem;
@@ -22,6 +24,7 @@ namespace Excel2Any.Winform
         private void btnAdd_Click(object sender, System.EventArgs e)
         {
             Add("", true);
+            onItemAdd.Invoke();
         }
 
         public void Clear()
@@ -51,7 +54,7 @@ namespace Excel2Any.Winform
             {
                 item.StartEdit();
             }
-
+            onItemAdd?.Invoke();
             return item;
         }
 
@@ -140,6 +143,21 @@ namespace Excel2Any.Winform
             onItemSelect?.Invoke(select.Text);
         }
 
+        public void SelectItem(string planName)
+        {
+            foreach (var item in pnlContainer.FlowLayoutPanel.Controls)
+            {
+                if (item is mComboDownItem)
+                {
+                    var text = ((mComboDownItem)item).Text;
+                    if (!string.IsNullOrEmpty(text) && text.Equals(planName))
+                    {
+                        SelectItem((mComboDownItem)item);
+                        break;
+                    }
+                }
+            }
+        }
         public void SetCurrentItem(mComboDownItem current)
         {
             foreach (var item in pnlContainer.FlowLayoutPanel.Controls)
@@ -152,5 +170,6 @@ namespace Excel2Any.Winform
             current.SetFocus();
             Current = current;
         }
+
     }
 }

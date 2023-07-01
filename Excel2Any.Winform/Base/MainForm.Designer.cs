@@ -34,6 +34,8 @@
             this.imglstFiles = new System.Windows.Forms.ImageList(this.components);
             this.tvwFile = new System.Windows.Forms.TreeView();
             this.btnSetting = new Sunny.UI.UISymbolButton();
+            this.ctxMenu = new Sunny.UI.UIContextMenuStrip();
+            this.lblPlanName = new Sunny.UI.UILabel();
             this.SuspendLayout();
             // 
             // Aside
@@ -120,8 +122,27 @@
             this.btnSetting.Symbol = 61459;
             this.btnSetting.TabIndex = 4;
             this.btnSetting.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnSetting.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
+            // 
+            // ctxMenu
+            // 
+            this.ctxMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(249)))), ((int)(((byte)(255)))));
+            this.ctxMenu.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ctxMenu.Name = "ctxMenu";
+            this.ctxMenu.Size = new System.Drawing.Size(61, 4);
+            // 
+            // lblPlanName
+            // 
+            this.lblPlanName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.lblPlanName.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblPlanName.ForeColor = System.Drawing.Color.White;
+            this.lblPlanName.Location = new System.Drawing.Point(744, -2);
+            this.lblPlanName.Name = "lblPlanName";
+            this.lblPlanName.Size = new System.Drawing.Size(123, 35);
+            this.lblPlanName.Style = Sunny.UI.UIStyle.Custom;
+            this.lblPlanName.TabIndex = 6;
+            this.lblPlanName.Text = "配置";
+            this.lblPlanName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // MainForm
             // 
@@ -130,8 +151,11 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1000, 600);
             this.ControlBoxFillHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.Controls.Add(this.lblPlanName);
             this.Controls.Add(this.btnSetting);
             this.Controls.Add(this.tvwFile);
+            this.ExtendBox = true;
+            this.ExtendMenu = this.ctxMenu;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "MainForm";
@@ -149,6 +173,7 @@
             this.Controls.SetChildIndex(this.Aside, 0);
             this.Controls.SetChildIndex(this.tvwFile, 0);
             this.Controls.SetChildIndex(this.btnSetting, 0);
+            this.Controls.SetChildIndex(this.lblPlanName, 0);
             this.ResumeLayout(false);
 
         }
@@ -158,5 +183,7 @@
         private System.Windows.Forms.ImageList imglstFiles;
         private System.Windows.Forms.TreeView tvwFile;
         private Sunny.UI.UISymbolButton btnSetting;
+        private Sunny.UI.UIContextMenuStrip ctxMenu;
+        private Sunny.UI.UILabel lblPlanName;
     }
 }

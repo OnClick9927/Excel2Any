@@ -162,19 +162,17 @@ namespace Excel2Any.Winform
                 {
                     var comboList = new mComboList();
 
+                    UIEntityHelper.setPlan(SettingHelper.formSetting.plan);
                     comboList.InitItems(SettingHelper.GetPlanList(), SettingHelper.formSetting.plan);
-                    comboList.SubscribeItemDelete((a) => SettingHelper.DeletePlan(a));
-                    comboList.SubscribeItemReName((a, b) => { SettingHelper.ReNamePlan(a, b); });
+                    comboList.SubscribeItemDelete((a) => { SettingHelper.DeletePlan(a); SettingHelper.form.RefeshPlanList(); });
+                    comboList.SubscribeItemReName((a, b) => { SettingHelper.ReNamePlan(a, b); SettingHelper.form.RefeshPlanList();});
                     comboList.SubscribeItemSelect((a) =>
                     {
                         UIEntityHelper.setPlan(a);
                         RefreshUI();
-                        if (SettingHelper.form != null)
-                        {
-                            SettingHelper.form.Text = $"Excel转换器(配置：{a})";
-                        }
+                        SettingHelper.form.RefeshPlanList();
                     });
-
+                    comboList.SubscribeItemAdd(() => { SettingHelper.form?.RefeshPlanList(); });
                     panelContainer.Controls.Add(comboList);
                     panelContainer.Controls.Add(content);
 
@@ -231,9 +229,11 @@ namespace Excel2Any.Winform
         {
             //防止修改时多次调用保存设置
             saveChange = false;
-            if (page.entityType == null) return;
-
-            ISetting setting = UIEntityHelper.GetUIEntity(page.entityType).setting;
+            ISetting setting;
+            if (page.entityType == null)
+                setting = SettingHelper.formSetting;
+            else
+                setting = UIEntityHelper.GetUIEntity(page.entityType).setting;
 
             foreach (var control in page.panel.GetAllControl())
             {
@@ -255,6 +255,12 @@ namespace Excel2Any.Winform
                     {
                         textBox.Text = field.GetValue(setting).ToString();
                     }
+                }
+                else if (control.GetType() == typeof(mComboList))
+                {
+                    var combo = (mComboList)control;
+                    var field = setting.GetType().GetField(combo.Name);
+                    combo.SelectItem(field.GetValue(setting).ToString());
                 }
             }
 

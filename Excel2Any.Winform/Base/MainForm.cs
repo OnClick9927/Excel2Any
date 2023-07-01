@@ -48,14 +48,63 @@ namespace Excel2Any.Winform
             Aside.SelectFirst();
 
             //程序设置部分
-            if (_formSetting.openLast && !string.IsNullOrEmpty(_formSetting.lastOpenPath) && Directory.Exists(_formSetting.lastOpenPath))
+            var path = "";
+            if (_formSetting.pathIsAbsolute)
             {
-                OpenFileOrDirectory(_formSetting.lastOpenPath);
+                path = _formSetting.lastOpenPath;
+            }
+            else
+            {
+                if (_formSetting.lastOpenPath.StartsWith("\\"))
+                {
+
+                    path = _formSetting.relativePath +  _formSetting.lastOpenPath;
+                }
+                else
+                {
+                    path = _formSetting.relativePath + "\\" + _formSetting.lastOpenPath;
+                }
+            }
+            if (_formSetting.openLast && !string.IsNullOrEmpty(path) && Directory.Exists(path))
+            {
+                OpenFileOrDirectory(path);
             }
 
             AsideWidthChange(_formSetting.isExpand);
 
-            Text = $"Excel转换器(配置：{_formSetting.plan})";
+            //添加menuContext
+            RefeshPlanList();
+
+            ctxMenu.ItemClicked += (o,e) => 
+            {
+                UIEntityHelper.setPlan(e.ClickedItem.Text);
+                settingPage.RefreshUI();
+                RefreshPlanLabel();
+                //打勾
+                foreach (ToolStripMenuItem item in ctxMenu.Items)
+                {
+                    item.Checked = false;
+                }
+                ((ToolStripMenuItem)e.ClickedItem).Checked = true;
+
+                lblPlanName.Text = e.ClickedItem.Text;
+            };
+            
+        }
+
+        public void RefeshPlanList()
+        {
+            ctxMenu.Items.Clear();
+            foreach (var item in SettingHelper.GetPlanList())
+            {
+                var newItem = ctxMenu.Items.Add(item);
+                if (_formSetting.plan.Equals(item))
+                {
+                    ((ToolStripMenuItem)newItem).Checked = true;
+                    lblPlanName.Text = item;
+                }
+            }
+            RefreshPlanLabel();
         }
 
         BaseConvertPage currentPage = null;
@@ -216,8 +265,30 @@ namespace Excel2Any.Winform
 
 
             //更新设置
-            _formSetting.lastOpenPath = path;
+            if (_formSetting.pathIsAbsolute)
+            {
+                _formSetting.lastOpenPath = path;
+            }
+            else
+            {
+                _formSetting.lastOpenPath = GetRelativePath(_formSetting.relativePath, path);
+            }
             SettingHelper.SaveSetting(_formSetting);
+        }
+
+        static string GetRelativePath(string parentPath, string childPath)
+        {
+            if (parentPath.Length ==0)
+            {
+                return childPath;
+            }
+            Uri parentUri = new Uri(parentPath);
+            Uri childUri = new Uri(childPath);
+
+            Uri relativeUri = parentUri.MakeRelativeUri(childUri);
+
+            string path =  Uri.UnescapeDataString(relativeUri.ToString());
+            return path.Right(path.Length - path.IndexOf('/')).Replace("/","\\");
         }
 
         /// <summary>
@@ -417,7 +488,15 @@ namespace Excel2Any.Winform
         }
         private void MainForm_Resize(object sender, EventArgs e)
         {
+            //ShowInfoDialog(btnPlanName.Location.ToString());
             btnSetting.Location = new Point(btnSetting.Location.X, this.Size.Height - btnSetting.Height);
+
+            RefreshPlanLabel();
+        }
+
+        private void RefreshPlanLabel()
+        {
+            lblPlanName.Location = new Point(this.Width - lblPlanName.Width - 125, 0);
         }
     }
 

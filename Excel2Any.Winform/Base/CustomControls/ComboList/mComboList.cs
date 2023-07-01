@@ -66,5 +66,15 @@ namespace Excel2Any.Winform
         {
             item.onItemSelect += action;
         }
+
+        public void SubscribeItemAdd(Action action)
+        {
+            item.onItemAdd += action;
+        }
+
+        public void SelectItem(string planName)
+        {
+            item.SelectItem(planName);
+        }
     }
 }
