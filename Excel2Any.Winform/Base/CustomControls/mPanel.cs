@@ -123,7 +123,7 @@ namespace Excel2Any.Winform
             foreach (Control control in sonControls)
             {
                 var type = control.GetType();
-                if (type == typeof(UITextBox) || type== typeof(UISwitch))
+                if (type == typeof(UITextBox) || type== typeof(UISwitch) || type == typeof(mComboList))
                 {
                     controls.Add(control);
                 }

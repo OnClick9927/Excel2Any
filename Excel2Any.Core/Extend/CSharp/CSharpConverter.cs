@@ -13,68 +13,43 @@ namespace Excel2Any
             _setting = (CSharpSetting)setting;
         }
 
-        public List<SheetData> Convert(DataSet data)
+        public List<SheetData> Convert(RawDataDetail rawData)
         {
+            
             var sheetData = new List<SheetData>();
             StringBuilder totalContent = new StringBuilder();
-            foreach (DataTable sheet in data.Tables)
+
+            for (int i = 0; i < rawData.headsCollection.Count; i++)
             {
-                //排除sheet包含头
-                //排除列数为0的sheet
-                //排除第一列时判断列数
-                //没有字段名的跳过
-                if ((_setting.excludeSheet && !string.IsNullOrWhiteSpace(_setting.excludePrefix) && sheet.TableName.StartsWith(_setting.excludePrefix))
-                    || sheet.Columns.Count < 0
-                    || (_setting.excludeFirstCol && sheet.Columns.Count < 1)
-                    || (_setting.FieldRowNum > sheet.Rows.Count - 1))
-                {
-                    continue;
-                }
+                var heads = rawData.headsCollection[i];
+                var sheet = rawData.data.Tables[i];
 
                 #region 内容
-                int startCol;//开始列数
-                string sheetName;//Sheet名
-                //判断是否排除第一列
-                startCol = _setting.excludeFirstCol ? 1 : 0;
-                sheetName = _setting.excludeFirstCol ? sheet.Rows[0][0].ToString() : sheet.TableName;
-
-
                 StringBuilder sb = new StringBuilder();
+
+                var sheetName = sheet.TableName;
                 sb.AppendLine($"public class {sheetName}\r\n{{");
                 //遍历列 根据配置里设置的行号来确认字段的类型、名称和描述
-                for (int i = startCol; i < sheet.Columns.Count; i++)
+                for (int j = 0; j < heads.Count; j++)
                 {
-                    var fieldName = sheet.Rows[_setting.FieldRowNum][i].ToString();
+                    var fieldName = heads[j].fieldName;
                     if (string.IsNullOrWhiteSpace(fieldName)) continue;
 
-
-                    //类型和描述放宽条件，越界就默认值
-                    string fieldType = "";
-                    if (_setting.TypeRowNum <= sheet.Rows.Count - 1)
-                    {
-                        fieldType = sheet.Rows[_setting.TypeRowNum][i].ToString().Trim().ToLower();
-                    }
-
-                    //从字典中拿类型
-                    fieldType = FieldTypeUtil.GetTypeName(fieldType);
+                    var fieldType = heads[j].typeName;
 
                     var summary = new StringBuilder();
-                    if (_setting.CommentRowNum <= sheet.Rows.Count - 1)
+                    var fieldComment = heads[j].comment;
+                    if (!string.IsNullOrWhiteSpace(fieldComment))
                     {
-                         var fieldComment = sheet.Rows[_setting.CommentRowNum][i].ToString();
-                        
-                        if (!string.IsNullOrWhiteSpace(fieldComment))
+                        summary.AppendLine("\t/// <summary>");
+                        foreach (var tempString in fieldComment.Replace("\r", "").Split('\n'))
                         {
-                            summary.AppendLine("\t/// <summary>");
-                            foreach (var tempString in fieldComment.Replace("\r","").Split('\n'))
-                            {
-                                summary.AppendLine($"\t/// {tempString}");
-                            }
-                            summary.AppendLine("\t/// </summary>");
+                            summary.AppendLine($"\t/// {tempString}");
                         }
+                        summary.AppendLine("\t/// </summary>");
                     }
                     sb.Append(summary);
-                    sb.AppendLine($"\tpublic {fieldType} {fieldName}{(_setting.IsProperty?"{ get; set; }":";")}\n");
+                    sb.AppendLine($"\tpublic {fieldType} {fieldName}{(_setting.IsProperty ? "{ get; set; }" : ";")}\n");
                 }
 
                 sb.Append('}');
@@ -83,7 +58,7 @@ namespace Excel2Any
                 //判断是否要将sheet区分开
                 if (_setting.separateBySheet && sb.Length > 0)
                 {
-                    sheetData.Add(new SheetData(sheetName,new TextContent(sb.ToString())));
+                    sheetData.Add(new SheetData(sheetName, new TextContent(sb.ToString())));
                 }
                 else
                 {
@@ -92,9 +67,9 @@ namespace Excel2Any
                 }
             }
 
-            if (!_setting.separateBySheet && totalContent.Length >0 )
+            if (!_setting.separateBySheet && totalContent.Length > 0)
             {
-                sheetData.Add(new SheetData(data.DataSetName, new TextContent(totalContent.ToString())));
+                sheetData.Add(new SheetData(rawData.data.DataSetName, new TextContent(totalContent.ToString())));
             }
 
             return sheetData;

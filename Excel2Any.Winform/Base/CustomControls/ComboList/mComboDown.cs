@@ -128,7 +128,7 @@ namespace Excel2Any.Winform
 
         }
 
-        public void SelectItem(mComboDownItem select)
+        public void SelectItem(mComboDownItem select,bool doAction = true)
         {
             foreach (var item in pnlContainer.FlowLayoutPanel.Controls)
             {
@@ -140,10 +140,14 @@ namespace Excel2Any.Winform
             select.Selected();
             DoValueChanged(this, select.Text);
             SelectedItem = select;
-            onItemSelect?.Invoke(select.Text);
+            if (doAction)
+            {
+                onItemSelect?.Invoke(select.Text);
+            }
+           
         }
 
-        public void SelectItem(string planName)
+        public void SelectItem(string planName, bool doAction = true)
         {
             foreach (var item in pnlContainer.FlowLayoutPanel.Controls)
             {
@@ -152,7 +156,7 @@ namespace Excel2Any.Winform
                     var text = ((mComboDownItem)item).Text;
                     if (!string.IsNullOrEmpty(text) && text.Equals(planName))
                     {
-                        SelectItem((mComboDownItem)item);
+                        SelectItem((mComboDownItem)item,doAction);
                         break;
                     }
                 }

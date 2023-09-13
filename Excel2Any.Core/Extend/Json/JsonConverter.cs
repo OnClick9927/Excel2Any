@@ -28,7 +28,7 @@ namespace Excel2Any
             _setting = (JsonSetting)setting;
         }
 
-        public List<SheetData> Convert(DataSet data)
+        public List<SheetData> Convert(RawDataDetail rawData)
         {
             List<SheetData> allSheetData = new List<SheetData>();
             Dictionary<string, List<object>> sheetDataDic = new Dictionary<string, List<object>>();
@@ -36,42 +36,26 @@ namespace Excel2Any
 
             //更改设置
             _jsonSerialSettings.DateFormatString = _setting.dateFormat;
-
-            foreach (DataTable sheet in data.Tables)
+            var data = rawData.data;
+            for (int i = 0; i < data.Tables.Count; i++)
             {
-                //排除sheet包含头
-                //排除列数为0的sheet
-                //排除第一列时判断列数
-                if ((_setting.excludeSheet && !string.IsNullOrWhiteSpace(_setting.excludePrefix) && sheet.TableName.StartsWith(_setting.excludePrefix))
-                    || sheet.Columns.Count < 0
-                    || (_setting.excludeFirstCol && sheet.Columns.Count < 1))
+                var sheet = data.Tables[i];
+                var rowHeadList = rawData.headsCollection[i];
+                var sheetName = sheet.TableName;
+                var sheetData = ConvertSheet(sheet, rowHeadList);
+
+                //判断是否拆分
+                if (_setting.separateBySheet)
                 {
-                    continue;
-                }
-                //如果 字段名 开始行号有误则跳过
-                else if ((_setting.FieldRowNum > sheet.Rows.Count - 1)
-                    || (_setting.StartRowNum > sheet.Rows.Count - 1))
-                {
-                    continue;
+                    if (sheetData != null)
+                    {
+                        var content = JsonConvert.SerializeObject(sheetData, _jsonSerialSettings);
+                        allSheetData.Add(new SheetData(sheetName, new TextContent(content)));
+                    }
                 }
                 else
                 {
-                    var sheetData = ConvertSheet(sheet, out string sheetName);
-
-                    //判断是否拆分
-                    if (_setting.separateBySheet)
-                    {
-                        if (sheetData != null)
-                        {
-                            var content = JsonConvert.SerializeObject(sheetData, _jsonSerialSettings);
-                            allSheetData.Add(new SheetData(sheetName, new TextContent(content)));
-                        }
-                        
-                    }
-                    else
-                    {
-                        sheetDataDic.Add(sheetName, sheetData);
-                    }
+                    sheetDataDic.Add(sheetName, sheetData);
                 }
             }
 
@@ -83,35 +67,18 @@ namespace Excel2Any
                     var content = JsonConvert.SerializeObject(sheetDataDic, _jsonSerialSettings);
                     allSheetData.Add(new SheetData(data.DataSetName, new TextContent(content)));
                 }
-                
+
             }
             return allSheetData;
         }
 
-        private List<object> ConvertSheet(DataTable sheet, out string sheetName)
+        private List<object> ConvertSheet(DataTable sheet, List<RowHead> rowHeads)
         {
-            //保存表头的索引
-            List<RowHead> rowHeads = new List<RowHead>();
 
             //保存每行的数据
             List<object> rows = new List<object>();
-
-            int startCol; //开始列号
-            //判断是否排除第一列
-            startCol = _setting.excludeFirstCol ? 1 : 0;
-            sheetName = _setting.excludeFirstCol ? sheet.Rows[0][0].ToString() : sheet.TableName;
-
-            //列表头索引和名字获取
-            for (int i = startCol; i < sheet.Columns.Count; i++)
-            {
-                var fieldName = sheet.Rows[_setting.FieldRowNum][i].ToString();
-                if (string.IsNullOrWhiteSpace(fieldName)) continue;
-                rowHeads.Add(new RowHead(fieldName, i));
-            }
-            if (rowHeads.Count == 0) return null;
-
             //遍历每行根据表头转换成对象字典
-            for (int i = _setting.StartRowNum; i < sheet.Rows.Count; i++)
+            for (int i = 0; i < sheet.Rows.Count; i++)
             {
                 //获取列的名
                 var rowDict = convertRowToDict(sheet, rowHeads, i);
@@ -134,9 +101,8 @@ namespace Excel2Any
             //根据表头获取对应的属性
             for (int i = 0; i < rowHeads.Count; i++)
             {
-                int columnIndex = rowHeads[i].index;
                 string fieldName = rowHeads[i].fieldName;
-                object value = sheet.Rows[rowIndex][columnIndex];
+                object value = sheet.Rows[rowIndex][i];
 
                 #region 对单元格进行处理
                 //为空时的处理
@@ -144,7 +110,7 @@ namespace Excel2Any
                 {
                     if (_setting.saveSpace)
                     {
-                        value = GetColumnDefault(sheet, columnIndex, _setting.StartRowNum);
+                        value = GetColumnDefault(sheet, i, _setting.StartRowNum);
                     }
                     else
                     {

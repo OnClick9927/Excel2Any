@@ -68,7 +68,7 @@ namespace Excel2Any.Winform
                 ForeColor = Color.FromArgb(240, 240, 240),
                 RectSides = ToolStripStatusLabelBorderSides.None,
                 Size = new Size(400, 40)
-            };
+        };
 
             switch (stringType)
             {
@@ -190,7 +190,6 @@ namespace Excel2Any.Winform
             return label;
         }
 
-
         public static mPanel GetPanel()
         {
             var panel = new mPanel
@@ -217,7 +216,6 @@ namespace Excel2Any.Winform
 
             return panel;
         }
-
 
         public static mComboList GetComboList()
         {

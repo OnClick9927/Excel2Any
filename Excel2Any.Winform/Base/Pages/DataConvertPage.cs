@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -38,7 +39,8 @@ namespace Excel2Any.Winform
                 grdData.Visible = true;
                 tabSheets.TabPages[0].Controls.Add(grdData);
                 //grdData.ClearAll();
-                grdData.DataSource = ((DataContent)_sheets[0].content).value;
+                var data = ((DataContent)_sheets[0].content).value;
+                grdData.DataSource = data;
                 tabSheets.SelectTab(0);
             }
         }

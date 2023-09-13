@@ -64,7 +64,7 @@ namespace Excel2Any.Winform
             textBox.Language = Language.Custom;
             textBox.Location = new Point(50, 50);
             textBox.Paddings = new Padding(0);
-            textBox.SelectionColor = Color.FromArgb(60, 0, 12, 215);
+            textBox.SelectionColor = Color.FromArgb(60, 38, 79, 200);
             textBox.ServiceLinesColor = Color.FromArgb(64, 64, 64);
             textBox.Size = new Size(150, 150);
             textBox.Zoom = 100;

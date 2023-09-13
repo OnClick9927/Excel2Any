@@ -7,6 +7,7 @@ namespace Excel2Any.Winform
     {
         public Type entityType;
         public mPanel panel;
+        public Type settingType;
         public mPage()
         {
             InitializeComponent();

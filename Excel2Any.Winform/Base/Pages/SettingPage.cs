@@ -8,6 +8,7 @@ namespace Excel2Any.Winform
     public partial class SettingPage : UIPage
     {
         private bool saveChange = true;
+        public Action RefreshMainFormPlanList; //刷新主窗体的PlanList
         public SettingPage()
         {
             InitializeComponent();
@@ -47,15 +48,11 @@ namespace Excel2Any.Winform
                 return xPriority - yPriority;
             });
             var tabPage = SettingUIHelper.GetTabPage(tabName);
-            //留存Type 方便反射获取设置
-            tabPage.entityType = entityType;
-            tabSettings.TabPages.Add(tabPage);
-
             var panel = SettingUIHelper.GetPanel();
 
             int panelLocation = 0;
             #region 上方按钮部分
-            if (!tabName.Equals("通用"))
+            if (entityType != null)
             {
                 var panelContainer = SettingUIHelper.GetUIPanel();
                 //生成按钮
@@ -119,7 +116,7 @@ namespace Excel2Any.Winform
                         field.SetValue(setting, uiSwitch.Active);
                         if (saveChange)
                         {
-                            SaveAndRefreshSetting(setting, entityType);
+                            SaveAndRefreshTemp(setting, entityType);
                         }
                     };
                 }
@@ -134,7 +131,7 @@ namespace Excel2Any.Winform
                         inputBox.Leave += (sender, e) =>
                         {
                             field.SetValue(setting, inputBox.Text);
-                            SaveAndRefreshSetting(setting, entityType);
+                            SaveAndRefreshTemp(setting, entityType);
                         };
 
                     }
@@ -147,7 +144,7 @@ namespace Excel2Any.Winform
                         {
                             int.TryParse(inputBox.Text, out int num);
                             field.SetValue(setting, num - 1);
-                            SaveAndRefreshSetting(setting, entityType);
+                            SaveAndRefreshTemp(setting, entityType);
                         };
                     }
                     inputBox.Name = field.Name;
@@ -160,19 +157,20 @@ namespace Excel2Any.Winform
                 }
                 else
                 {
+                    var formSetting = SettingHelper.formSetting;
                     var comboList = new mComboList();
-
-                    UIEntityHelper.setPlan(SettingHelper.formSetting.plan);
-                    comboList.InitItems(SettingHelper.GetPlanList(), SettingHelper.formSetting.plan);
-                    comboList.SubscribeItemDelete((a) => { SettingHelper.DeletePlan(a); SettingHelper.form.RefeshPlanList(); });
-                    comboList.SubscribeItemReName((a, b) => { SettingHelper.ReNamePlan(a, b); SettingHelper.form.RefeshPlanList();});
+                    comboList.Name = field.Name;
+                    SettingHelper.SetPlan(formSetting.plan);
+                    comboList.InitItems(SettingHelper.GetPlanList(), formSetting.plan);
+                    comboList.SubscribeItemDelete((a) => { SettingHelper.DeletePlan(a); RefreshMainFormPlanList.Invoke(); });
+                    comboList.SubscribeItemReName((a, b) => { SettingHelper.RenamePlan(a, b); RefreshMainFormPlanList.Invoke(); });
                     comboList.SubscribeItemSelect((a) =>
                     {
-                        UIEntityHelper.setPlan(a);
+                        SettingHelper.SetPlan(a);
                         RefreshUI();
-                        SettingHelper.form.RefeshPlanList();
+                        RefreshMainFormPlanList.Invoke();
                     });
-                    comboList.SubscribeItemAdd(() => { SettingHelper.form?.RefeshPlanList(); });
+                    comboList.SubscribeItemAdd(() => { RefreshMainFormPlanList.Invoke(); });
                     panelContainer.Controls.Add(comboList);
                     panelContainer.Controls.Add(content);
 
@@ -193,9 +191,14 @@ namespace Excel2Any.Winform
             tabPage.Controls.Add(panel);
             tabPage.panel = panel;
             tabSettings.Invalidate();
+
+            //留存EntityType和SettingType
+            tabPage.entityType = entityType;
+            tabPage.settingType = settingType;
+            tabSettings.TabPages.Add(tabPage);
         }
 
-        private void SaveAndRefreshSetting(ISetting setting, Type entityType)
+        private void SaveAndRefreshTemp(ISetting setting, Type entityType)
         {
             SettingHelper.SaveSetting(setting);
             if (entityType != null)
@@ -210,6 +213,7 @@ namespace Excel2Any.Winform
             for (int i = 0; i < tabSettings.TabPages.Count; i++)
             {
                 var page = (mPage)tabSettings.TabPages[i];
+                if (page.entityType is null) continue;
                 if (page.entityType == entityType)
                 {
                     RefreshUI(page);
@@ -229,11 +233,7 @@ namespace Excel2Any.Winform
         {
             //防止修改时多次调用保存设置
             saveChange = false;
-            ISetting setting;
-            if (page.entityType == null)
-                setting = SettingHelper.formSetting;
-            else
-                setting = UIEntityHelper.GetUIEntity(page.entityType).setting;
+            ISetting setting = SettingHelper.GetSettingBySettingType(page.settingType);
 
             foreach (var control in page.panel.GetAllControl())
             {
@@ -260,7 +260,7 @@ namespace Excel2Any.Winform
                 {
                     var combo = (mComboList)control;
                     var field = setting.GetType().GetField(combo.Name);
-                    combo.SelectItem(field.GetValue(setting).ToString());
+                    combo.SelectItem(field.GetValue(setting).ToString(),false);
                 }
             }
 

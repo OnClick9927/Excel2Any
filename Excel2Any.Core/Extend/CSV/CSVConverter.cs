@@ -13,94 +13,47 @@ namespace Excel2Any
         {
             _setting = (CSVSetting)setting;
         }
-        public List<SheetData> Convert(DataSet data)
+        public List<SheetData> Convert(RawDataDetail rawData)
         {
             var sheetData = new List<SheetData>();
-            foreach (DataTable sheet in data.Tables)
+            for (int sheetIndex = 0; sheetIndex < rawData.data.Tables.Count; sheetIndex++)
             {
-                //排除sheet包含头
-                //排除列数为0的sheet
-                //排除第一列时判断列数
-                //没有内容的跳过
-                if ((_setting.excludeSheet && !string.IsNullOrWhiteSpace(_setting.excludePrefix) && sheet.TableName.StartsWith(_setting.excludePrefix))
-                    || sheet.Columns.Count < 0
-                    || (_setting.excludeFirstCol && sheet.Columns.Count < 1)
-                    || (_setting.StartRowNum > sheet.Rows.Count - 1)
-                    )
-                {
-                    continue;
-                }
-
-                #region 内容
+                var sheet = rawData.data.Tables[sheetIndex];
+                var head = rawData.headsCollection[sheetIndex];
                 StringBuilder sb = new StringBuilder();
 
-                //判断是否排除第一列
-                var startCol = _setting.excludeFirstCol ? 1 : 0;
-                var sheetName = _setting.excludeFirstCol ? sheet.Rows[0][0].ToString() : sheet.TableName;
-                var endRowNum = (_setting.EndRowNum < 0 || _setting.EndRowNum > sheet.Rows.Count) ? sheet.Rows.Count - 1 : _setting.EndRowNum;
-
-                List<int> titleIndex = new List<int>();
-                //标题设置
-                if (_setting.FieldRowNum >= 0 && _setting.FieldRowNum <= sheet.Rows.Count - 1)
+                //判断是否排除标题
+                var sheetName = sheet.TableName;
+                if (!_setting.HideTitle)
                 {
-                    for (int i = startCol; i < sheet.Columns.Count; i++)
+                    for (int i = 0; i < head.Count; i++)
                     {
-                        var value = sheet.Rows[_setting.FieldRowNum][i].ToString();
-                        if (value.Length > 0)
-                        {
-                            if (!_setting.HideTitle)
-                            {
-                                value = value.Replace("\"", _setting.quotes).Replace(",", _setting.dot) + ",";
-                                sb.Append(value);
-                            }
-                            
-                            titleIndex.Add(i);
-                        }
+                        var value = head[i].fieldName;
+                        value = value.Replace("\"", _setting.quotes).Replace(",", _setting.dot) + ",";
+                        sb.Append(value);
                     }
                     sb.Append(Environment.NewLine);
                 }
 
-                for (int i = _setting.StartRowNum; i <= endRowNum; i++)
+                for (int i = 0; i < sheet.Rows.Count; i++)
                 {
-                    if (i >= sheet.Rows.Count) break;
-                    if (titleIndex.Count > 0)
+                    for (int j = 0; j < sheet.Columns.Count; j++)
                     {
-                        for (int j = 0; j < titleIndex.Count; j++)
+                        var value = sheet.Rows[i][j].ToString();
+                        if (value.StartsWith("[") && !value.EndsWith("]"))
                         {
-                            var value = sheet.Rows[i][titleIndex[j]].ToString();
-                            if (value.StartsWith("[") && !value.EndsWith("]"))
+                            if (value.EndsWith(","))
                             {
-                                if (value.EndsWith(","))
-                                {
-                                    value = value.Substring(0, value.Length - 1);
-                                }
-                                value += "]";
+                                value = value.Substring(0, value.Length - 1);
                             }
-                            value = value.Replace("\"", _setting.quotes).Replace(",", _setting.dot) + ",";
-                            sb.Append(value);
-                        }
-                    }
-                    else
-                    {
-                        for (int j = startCol; j < sheet.Columns.Count; j++)
-                        {
-                            var value = sheet.Rows[i][j].ToString();
-                            if (value.StartsWith("[") && !value.EndsWith("]"))
-                            {
-                                if (value.EndsWith(","))
-                                {
-                                    value = value.Substring(0, value.Length - 1);
-                                }
-                                value += "]";
-                            };
-                            value = value.Replace("\"", _setting.quotes).Replace(",", _setting.dot) + ",";
-                            sb.Append(value);
-                        }
+                            value += "]";
+                        };
+                        value = value.Replace("\"", _setting.quotes).Replace(",", _setting.dot) + ",";
+                        sb.Append(value);
                     }
                     sb.Append(Environment.NewLine);
                 }
 
-                #endregion
 
                 sheetData.Add(new SheetData(sheetName, new TextContent(sb.ToString())));
             }

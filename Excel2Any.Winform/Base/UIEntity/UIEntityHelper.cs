@@ -22,7 +22,7 @@ namespace Excel2Any.Winform
                 uiEntity.page.SetEntityType(item);
                 uiEntityMap.Add(item, uiEntity);
             };
-            setPlan();
+            SettingHelper.SetPlan();
         }
 
         public static string GetSettingExtension(Type entityType)
@@ -32,21 +32,15 @@ namespace Excel2Any.Winform
 
         public static UIEntity GetUIEntity(Type entityType)
         {
-            return uiEntityMap[entityType];
+            if (uiEntityMap.ContainsKey(entityType))
+            {
+                return uiEntityMap[entityType];
+            }
+            return null;
         }
 
-        public static void setPlan(string plan = "")
+        public static void ReadSetting()
         {
-            if (string.IsNullOrEmpty(plan))
-            {
-                plan = "default";
-            }
-
-            if (!SettingHelper.formSetting.plan.Equals(plan))
-            {
-                SettingHelper.formSetting.plan = plan;
-                SettingHelper.SaveFormSetting();
-            }
             foreach (var item in uiEntityMap.Keys)
             {
                 var setting = (BaseSetting)SettingHelper.GetSetting(item);
@@ -54,12 +48,10 @@ namespace Excel2Any.Winform
                 if (setting == null)
                 {
                     setting = (BaseSetting)Activator.CreateInstance(uiEntity.setting.GetType());
-                    SettingHelper.SaveSetting(setting);
                 }
                 uiEntity.setting = setting;
                 ExcelHelper.GetEntity(item).SetSetting(setting);
             }
-
         }
     }
 }

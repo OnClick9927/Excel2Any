@@ -5,35 +5,6 @@
     {
 
         /// <summary>
-        /// 描述行号设置
-        /// </summary>
-        [SettingAttribute(
-            "字段描述行号",
-            "Excel表中对应字段描述的行号（从1开始）",
-            priority = 100
-            )]
-        public int CommentRowNum;
-
-        /// <summary>
-        /// 字段名行号设置
-        /// </summary>
-        [SettingAttribute(
-            "字段名行号",
-            "Excel表中对应字段名的行号（从1开始）",
-            priority = 101
-            )]
-        public int FieldRowNum;
-
-        /// <summary>
-        /// 字段类型行号设置
-        /// </summary>
-        [SettingAttribute(
-            "字段类型行号",
-            "Excel表中对应字段类型的行号（从1开始）",
-            priority = 102
-            )]
-        public int TypeRowNum;
-        /// <summary>
         /// 是否为属性器
         /// </summary>
         [SettingAttribute(
@@ -55,9 +26,6 @@
 
         public CSharpSetting() : base()
         {
-            CommentRowNum = 0;              //字段描述所在行号
-            TypeRowNum = 3;                 //字段类型所在行号
-            FieldRowNum = 1;                //字段名所在行号
             IsProperty = true;
             separateBySheet = true;         //是否根据Sheet保存成多个文件
         }

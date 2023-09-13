@@ -1,6 +1,8 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using ExcelDataReader;
@@ -11,21 +13,28 @@ namespace Excel2Any
     {
         static ExcelDataTableConfiguration tableConfig;
         public static ExcelDataSetConfiguration dataSetConfig;
-        /// <summary>
-        /// map 保存 code、Convert类型、Setting类型、Saver类型
-        /// </summary>
-        static Dictionary<Type, Tuple<int, Type, Type, Type>> map = new Dictionary<Type, Tuple<int, Type, Type, Type>>();
+
+        static CommonSetting _common = new CommonSetting();
+
+        static Dictionary<Type, (int code, Type coverter, Type setting, Type saver)> map =
+            new Dictionary<Type, (int code, Type coverter, Type setting, Type saver)>();
+
         static Dictionary<Type, Entity> entityMap = new Dictionary<Type, Entity>();
         static ExcelHelper()
         {
             tableConfig = new ExcelDataTableConfiguration();
-
             dataSetConfig = new ExcelDataSetConfiguration
             {
                 UseColumnDataType = true,
                 ConfigureDataTable = (_) => { return tableConfig; }
             };
             Collect();
+        }
+
+        public static void Init(CommonSetting common)
+        {
+            _common = common;
+            SetAllDirty();
         }
         public static IEnumerable<Type> GetSubTypesInAssemblys(Type self)
         {
@@ -83,7 +92,7 @@ namespace Excel2Any
             foreach (var item in entitys)
             {
                 var attr = item.GetCustomAttributes(typeof(EntityCodeAttribute), false)[0] as EntityCodeAttribute;
-                map.Add(item, Tuple.Create(attr.code, coveterMap[item], setMap[item], saveMap[item]));
+                map.Add(item, (attr.code, coveterMap[item], setMap[item], saveMap[item]));
             }
         }
 
@@ -99,7 +108,7 @@ namespace Excel2Any
                 var saveType = GetSaveType(entityType);
                 var setType = GetSetType(entityType);
                 var converterType = GetConverterType(entityType);
-                var set = Activator.CreateInstance(setType);
+                var set = Activator.CreateInstance(setType) as BaseSetting;
                 var save = Activator.CreateInstance(saveType, new object[] { set });
                 var converter = Activator.CreateInstance(converterType, new object[] { set });
                 Entity entity = Activator.CreateInstance(entityType, new object[] { converter, save }) as Entity;
@@ -107,31 +116,10 @@ namespace Excel2Any
             }
             return entityMap[entityType];
         }
-
-        private static Type GetSetType(Type entityType)
-        {
-            var tuple = map[entityType];
-            var setType = tuple.Item3;
-            return setType;
-        }
-        private static Type GetSaveType(Type entityType)
-        {
-            var tuple = map[entityType];
-            var saveType = tuple.Item4;
-            return saveType;
-        }
-        private static Type GetConverterType(Type entityType)
-        {
-            var tuple = map[entityType];
-            var converterType = tuple.Item2;
-            return converterType;
-        }
-        private static int GetConverterCode(Type entityType)
-        {
-            var tuple = map[entityType];
-            var code = tuple.Item1;
-            return code;
-        }
+        private static Type GetSetType(Type entityType) => map[entityType].setting;
+        private static Type GetSaveType(Type entityType) => map[entityType].saver;
+        private static Type GetConverterType(Type entityType) => map[entityType].coverter;
+        private static int GetConverterCode(Type entityType) => map[entityType].code;
         public static IReadOnlyCollection<Type> GetAllEntityTypes()
         {
             var list = map.Keys.ToList();
@@ -139,7 +127,7 @@ namespace Excel2Any
             return list;
         }
 
-        private static Dictionary<string, HistoryData> history = new Dictionary<string, HistoryData>();
+        private static Dictionary<string, RawDataDetail> history = new Dictionary<string, RawDataDetail>();
         private static Dictionary<Type, Dictionary<string, List<SheetData>>> results = new Dictionary<Type, Dictionary<string, List<SheetData>>>();
         /// <summary>
         /// 清理对应类型对应路径的缓存
@@ -179,9 +167,7 @@ namespace Excel2Any
                 results.Add(entityType, new Dictionary<string, List<SheetData>>());
             }
 
-            FileInfo fileInfo = new FileInfo(path);
-
-            if (!results[entityType].ContainsKey(path) || history[path].lastWriteTime != fileInfo.LastWriteTime)
+            if (!results[entityType].ContainsKey(path) || history[path].crc != CRC.GetFileCRC(path))
             {
                 Create(entityType, path);
             }
@@ -190,15 +176,14 @@ namespace Excel2Any
         private static bool CheckHistoiry(string path)
         {
             FileInfo fileInfo = new FileInfo(path);
-            DateTime lastWriteTime = fileInfo.LastWriteTime;
-            var isChange = false;
+            bool isChange;
             if (!history.ContainsKey(fileInfo.FullName))
             {
                 isChange = true;
             }
             else
             {
-                isChange = history[path].lastWriteTime != lastWriteTime;
+                isChange = history[path].crc != CRC.GetFileCRC(path);
             }
 
             return isChange;
@@ -210,20 +195,112 @@ namespace Excel2Any
 
             if (CheckHistoiry(path) || history[fileInfo.FullName].data == null)
             {
-                using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                try
                 {
-                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    using (var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     {
-                        var result = reader.AsDataSet(ExcelHelper.dataSetConfig);
-                        result.DataSetName = fileInfo.Name.Substring(0, fileInfo.Name.IndexOf("."));
-                        HistoryData hisData = new HistoryData(fileInfo.LastWriteTime, result);
-                        history[fileInfo.FullName] = hisData;
+                        using (var reader = ExcelReaderFactory.CreateReader(stream))
+                        {
+                            var data = reader.AsDataSet(dataSetConfig);
+                            var headsCollection = new List<List<RowHead>>();
+                            var result = CreateRawData(data, out headsCollection);
+                            result.DataSetName = fileInfo.Name.Substring(0, fileInfo.Name.IndexOf("."));
+
+                            RawDataDetail hisData = new RawDataDetail(CRC.GetFileCRC(path), result, headsCollection);
+                            history[fileInfo.FullName] = hisData;
+                        }
                     }
                 }
+                catch (Exception e)
+                {
+
+                    throw e;
+                }
+
             }
 
-            results[entityType][fileInfo.FullName] = entity.Convert(history[fileInfo.FullName].data);
+            results[entityType][fileInfo.FullName] = entity.Convert(history[fileInfo.FullName]);
 
+        }
+        private static DataSet CreateRawData(DataSet dataSet, out List<List<RowHead>> headsCollection)
+        {
+            var result = new DataSet();
+            headsCollection = new List<List<RowHead>>();
+            for (int tableIndex = 0; tableIndex < dataSet.Tables.Count; tableIndex++)
+            {
+                DataTable sheet = dataSet.Tables[tableIndex];
+                if (sheet.Rows.Count <= 0) continue;
+                //获取sheet名，判断是否需要排除
+                var tabelName = _common.excludeFirstCol ? sheet.Rows[0][0].ToString() : sheet.TableName;
+                if (_common.excludeSheet && tabelName.Contains(_common.excludeSheetString)) continue;
+
+                //保存表头的索引
+                var rowHeads = new List<RowHead>();
+                DataTable resultTable = new DataTable();
+                //判断是否排除第一列
+                int startCol = _common.excludeFirstCol ? 1 : 0;
+                resultTable.TableName = tabelName;
+
+                //列表头索引和名字获取
+                for (int i = startCol; i < sheet.Columns.Count; i++)
+                {
+
+                    if (_common.FieldRowNum < sheet.Rows.Count)
+                    {
+                        //排除属性名为空的列
+                        var fieldName = sheet.Rows[_common.FieldRowNum][i].ToString();
+                        if (string.IsNullOrWhiteSpace(fieldName)) continue;
+
+                        //检查是否存在相同名字的Col
+                        if (resultTable.Columns.Contains(fieldName)) continue;
+
+                        Type fieldType = typeof(object);
+                        string fieldTypeName = "object";
+                        if (_common.TypeRowNum < sheet.Rows.Count)
+                        {
+                            fieldTypeName = sheet.Rows[_common.TypeRowNum][i].ToString().Trim();
+                            fieldType = FieldTypeUtil.GetType(fieldTypeName.ToLower());
+                            if (fieldType != typeof(object))
+                            {
+                                fieldTypeName = fieldTypeName.ToLower();
+                            }
+                        }
+
+
+                        var fieldComment = "";
+                        if (_common.CommentRowNum < sheet.Rows.Count)
+                        {
+                            fieldComment = sheet.Rows[_common.CommentRowNum][i].ToString();
+                        }
+
+                        rowHeads.Add(new RowHead(fieldName, i, fieldTypeName, fieldComment));
+
+                        resultTable.Columns.Add(fieldName, fieldType);
+                    }
+
+                }
+
+                //表头都没有的Sheet直接跳过
+                if (rowHeads.Count == 0) continue;
+
+                if (_common.StartRowNum >= 0)
+                {
+                    for (int i = _common.StartRowNum; i < sheet.Rows.Count; i++)
+                    {
+                        DataRow row = resultTable.NewRow();
+                        for (int j = 0; j < rowHeads.Count; j++)
+                        {
+                            object value = sheet.Rows[i][rowHeads[j].index];
+                            row[j] = value;
+                        }
+                        resultTable.Rows.Add(row);
+                    }
+                }
+                
+                headsCollection.Add(rowHeads);
+                result.Tables.Add(resultTable);
+            }
+            return result;
         }
 
         /// <summary>

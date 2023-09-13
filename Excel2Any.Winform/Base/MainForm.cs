@@ -8,19 +8,26 @@ namespace Excel2Any.Winform
 {
     public partial class MainForm : UIAsideMainFrame
     {
-        private FormSetting _formSetting = SettingHelper.formSetting; //窗体配置
+        private FormSetting _formSetting = null;    //窗体配置
 
         const int settingPageIndex = 9999;
         public MainForm()
         {
+            _formSetting = SettingHelper.formSetting;
+            var commonSetting = SettingHelper.GetSettingBySettingType(typeof(CommonSetting)) as CommonSetting;
+            ExcelHelper.Init(commonSetting); //初始化ExcelHelper
             InitializeComponent();
             tvwFile.Dock = DockStyle.Fill;
 
             //添加设置页面
             var settingPage = new SettingPage();
+            settingPage.RefreshMainFormPlanList += RefeshPlanList;
             AddPage(settingPage, settingPageIndex);
+
+
             var fields = SettingHelper.GetFields(typeof(FormSetting));
-            settingPage.CreateSettingTab(_formSetting, "通用");
+            settingPage.CreateSettingTab(_formSetting, "窗体");
+            settingPage.CreateSettingTab(commonSetting, "通用");
 
             foreach (var entityType in ExcelHelper.GetAllEntityTypes())
             {
@@ -42,7 +49,7 @@ namespace Excel2Any.Winform
 
                 uiEntity.page.onSave += () => SaveAllFiles(entityType);
 
-                settingPage.CreateSettingTab(uiEntity.setting, uiEntity.name,entityType);
+                settingPage.CreateSettingTab(uiEntity.setting, uiEntity.name, entityType);
             }
 
             Aside.SelectFirst();
@@ -58,11 +65,18 @@ namespace Excel2Any.Winform
                 if (_formSetting.lastOpenPath.StartsWith("\\"))
                 {
 
-                    path = _formSetting.relativePath +  _formSetting.lastOpenPath;
+                    path = _formSetting.relativePath + _formSetting.lastOpenPath;
                 }
                 else
                 {
-                    path = _formSetting.relativePath + "\\" + _formSetting.lastOpenPath;
+                    if (!string.IsNullOrEmpty(_formSetting.relativePath))
+                    {
+                        path = _formSetting.relativePath + "\\" + _formSetting.lastOpenPath;
+                    }
+                    else
+                    {
+                        path = _formSetting.lastOpenPath;
+                    }
                 }
             }
             if (_formSetting.openLast && !string.IsNullOrEmpty(path) && Directory.Exists(path))
@@ -75,9 +89,9 @@ namespace Excel2Any.Winform
             //添加menuContext
             RefeshPlanList();
 
-            ctxMenu.ItemClicked += (o,e) => 
+            ctxMenu.ItemClicked += (o, e) =>
             {
-                UIEntityHelper.setPlan(e.ClickedItem.Text);
+                SettingHelper.SetPlan(e.ClickedItem.Text);
                 settingPage.RefreshUI();
                 RefreshPlanLabel();
                 //打勾
@@ -89,7 +103,7 @@ namespace Excel2Any.Winform
 
                 lblPlanName.Text = e.ClickedItem.Text;
             };
-            
+
         }
 
         public void RefeshPlanList()
@@ -116,7 +130,7 @@ namespace Excel2Any.Winform
                 currentPage = (BaseConvertPage)GetPage(pageIndex);
                 GetAndSetSheets(currentPage, tvwFile.SelectedNode);
             }
-            
+
         }
         private void AsideWidthChange(bool expand)
         {
@@ -131,7 +145,7 @@ namespace Excel2Any.Winform
             e.Node.SelectedImageIndex = e.Node.ImageIndex;
         }
 
-        public void GetAndSetSheets(BaseConvertPage page,TreeNode node)
+        public void GetAndSetSheets(BaseConvertPage page, TreeNode node)
         {
             if (page != null && node != null)
             {
@@ -140,7 +154,7 @@ namespace Excel2Any.Winform
                 {
                     page.SetSheets(ExcelHelper.GetSheets(currentPage.entityType, path));
                 }
-                
+
             }
         }
 
@@ -278,7 +292,7 @@ namespace Excel2Any.Winform
 
         static string GetRelativePath(string parentPath, string childPath)
         {
-            if (parentPath.Length ==0)
+            if (parentPath.Length == 0)
             {
                 return childPath;
             }
@@ -287,8 +301,8 @@ namespace Excel2Any.Winform
 
             Uri relativeUri = parentUri.MakeRelativeUri(childUri);
 
-            string path =  Uri.UnescapeDataString(relativeUri.ToString());
-            return path.Right(path.Length - path.IndexOf('/')).Replace("/","\\");
+            string path = Uri.UnescapeDataString(relativeUri.ToString());
+            return path.Right(path.Length - path.IndexOf('/')).Replace("/", "\\");
         }
 
         /// <summary>
@@ -320,20 +334,12 @@ namespace Excel2Any.Winform
                 {
                     if (Path.GetFileName(file).StartsWith("~$") ||
                         (_formSetting.excludeFile
-                            && !string.IsNullOrWhiteSpace(_formSetting.excludePrefix)
-                            && file.StartsWith(_formSetting.excludePrefix))) continue;
+                            && !string.IsNullOrWhiteSpace(_formSetting.excludeFileString)
+                            && file.Contains(_formSetting.excludeFileString))) continue;
                     //只添加excel文件
                     if (IsExcelFile(file))
                     {
                         var fileName = file.Substring(file.LastIndexOf('\\') + 1);
-
-                        //排除文件头设置
-                        if (_formSetting.excludeFile
-                            && !string.IsNullOrWhiteSpace(_formSetting.excludePrefix)
-                            && fileName.StartsWith(_formSetting.excludePrefix))
-                        {
-                            continue;
-                        }
 
                         var fileNode = node.Nodes.Add(fileName);
                         //fileNode.ToolTipText = file;

@@ -136,7 +136,7 @@
             this.lblPlanName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.lblPlanName.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblPlanName.ForeColor = System.Drawing.Color.White;
-            this.lblPlanName.Location = new System.Drawing.Point(744, -2);
+            this.lblPlanName.Location = new System.Drawing.Point(744, 35);
             this.lblPlanName.Name = "lblPlanName";
             this.lblPlanName.Size = new System.Drawing.Size(123, 35);
             this.lblPlanName.Style = Sunny.UI.UIStyle.Custom;

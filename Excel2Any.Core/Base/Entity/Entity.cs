@@ -25,9 +25,9 @@ namespace Excel2Any
         {
             return converter.GetSetting();
         }
-        public List<SheetData> Convert(DataSet data)
+        public List<SheetData> Convert(RawDataDetail rawData)
         {
-            return converter?.Convert(data);
+            return converter?.Convert(rawData);
         }
         public string Save2String(List<SheetData> sheets)
         {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Numerics;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -9,47 +10,12 @@ namespace Excel2Any.Winform
 {
     public class SettingHelper
     {
-        /// <summary>
-        /// 保存主窗体
-        /// </summary>
-        public static MainForm form;
-        #region 全局设置
-        /// <summary>
-        /// 全局设置
-        /// </summary>
         public static FormSetting formSetting;
 
         static SettingHelper()
         {
-            formSetting = (FormSetting)GetFormSetting();
+            formSetting = (FormSetting)GetSettingBySettingType(typeof(FormSetting));
         }
-
-
-        private static ISetting GetFormSetting()
-        {
-            Type settingType = typeof(FormSetting);
-            var ISetting = GetSettingBySettingType(settingType, GetDefaultSettingPath(settingType));
-            if (ISetting == null)
-            {
-                ISetting = new FormSetting();
-                SaveFormSetting(ISetting);
-            }
-            return ISetting;
-        }
-        private static void SaveFormSetting(ISetting set)
-        {
-            SaveSetting(set, GetDefaultSettingPath(typeof(FormSetting)));
-        }
-
-        public static void SaveFormSetting()
-        {
-            if (formSetting != null)
-            {
-                SaveSetting(formSetting, GetDefaultSettingPath(typeof(FormSetting)));
-            }
-        }
-
-        #endregion
 
         public static List<FieldInfo> GetFields(Type type)
         {
@@ -64,7 +30,7 @@ namespace Excel2Any.Winform
         }
         private static string GetDefaultSettingPath(Type settingType, string plan = "")
         {
-            if (settingType == typeof(FormSetting))
+            if (settingType == typeof(FormSetting) || settingType ==typeof(CommonSetting))
             {
                 return $"Settings/config.{settingType.Name}";
             }
@@ -93,17 +59,24 @@ namespace Excel2Any.Winform
             }
             return GetSettingBySettingType(settingType, path);
         }
-        private static ISetting GetSettingBySettingType(Type settingType, string path)
+        public static ISetting GetSettingBySettingType(Type settingType, string path = "")
         {
             if (!File.Exists(path))
             {
-                return default;
+                return Activator.CreateInstance(settingType) as ISetting;
             }
             var str = File.ReadAllText(path);
             var setting = JsonConvert.DeserializeObject(str, settingType) as ISetting;
 
             return setting;
         }
+
+        public static ISetting GetSettingBySettingType(Type settingType)
+        {
+            var path = GetDefaultSettingPath(settingType);
+            return GetSettingBySettingType(settingType, path);
+        }
+
         public static void SaveSetting(ISetting set, string path = "")
         {
             string str = JsonConvert.SerializeObject(set);
@@ -121,6 +94,11 @@ namespace Excel2Any.Winform
             File.WriteAllText(path, str);
         }
 
+        /// <summary>
+        /// 保存设置文件
+        /// </summary>
+        /// <param name="entityType">保存类型</param>
+        /// <param name="isSelect">是否需要选择保存的路径</param>
         public static void SaveSetting(Type entityType, bool isSelect = false)
         {
             ISetting setting = UIEntityHelper.GetUIEntity(entityType).setting;
@@ -206,6 +184,9 @@ namespace Excel2Any.Winform
             ExcelHelper.GetEntity(entityType).SetSetting(setting);
         }
 
+
+
+
         public static List<string> GetPlanList()
         {
             List<string> plans = new List<string>();
@@ -221,7 +202,6 @@ namespace Excel2Any.Winform
 
             return plans;
         }
-
         public static bool CreatePlan(string planName)
         {
             var path = $"Settings/{planName}";
@@ -239,7 +219,6 @@ namespace Excel2Any.Winform
                 return false;
             }
         }
-
         public static void DeletePlan(string planName)
         {
             var path = $"Settings/{planName}";
@@ -248,8 +227,7 @@ namespace Excel2Any.Winform
                 Directory.Delete(path, true);
             }
         }
-
-        public static void ReNamePlan(string oldName, string newName)
+        public static void RenamePlan(string oldName, string newName)
         {
             var path1 = $"Settings/{oldName}";
             var path2 = $"Settings/{newName}";
@@ -262,6 +240,19 @@ namespace Excel2Any.Winform
                 Directory.Move(path1, path2);
             }
         }
-
+        public static void SetPlan(string planName="")
+        {
+            if (string.IsNullOrEmpty(planName))
+            {
+                planName = "default";
+            }
+            var setting = formSetting;
+            if (!setting.plan.Equals(planName))
+            {
+                setting.plan = planName;
+                SaveSetting(setting);
+            }
+            UIEntityHelper.ReadSetting();
+        }
     }
 }

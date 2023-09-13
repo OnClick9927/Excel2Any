@@ -12,7 +12,7 @@ namespace Excel2Any
         /// 将DataSet转换成对应内容
         /// </summary>
         /// <param name="data">数据</param>
-        List<SheetData> Convert(DataSet data);
+        List<SheetData> Convert(RawDataDetail data);
 
         /// <summary>
         /// 传入设置

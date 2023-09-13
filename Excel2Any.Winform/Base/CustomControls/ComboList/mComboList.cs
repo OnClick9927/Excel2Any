@@ -72,9 +72,9 @@ namespace Excel2Any.Winform
             item.onItemAdd += action;
         }
 
-        public void SelectItem(string planName)
+        public void SelectItem(string planName,bool doAction = true)
         {
-            item.SelectItem(planName);
+            item.SelectItem(planName,doAction);
         }
     }
 }

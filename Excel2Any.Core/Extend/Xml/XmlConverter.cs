@@ -16,7 +16,7 @@ namespace Excel2Any
         {
             _setting = (XmlSetting)setting;
         }
-        public List<SheetData> Convert(DataSet data)
+        public List<SheetData> Convert(RawDataDetail rawData)
         {
             List<SheetData> allSheetData = new List<SheetData>();
 
@@ -28,6 +28,7 @@ namespace Excel2Any
             XmlElement rootElement = allSheetDataXml.CreateElement("root");
             allSheetDataXml.AppendChild(rootElement);
 
+            /*
             foreach (DataTable sheet in data.Tables)
             {
                 //排除sheet包含头
@@ -65,76 +66,77 @@ namespace Excel2Any
                     }
                 }
             }
+            */
 
             if (!_setting.separateBySheet)
             {
-                allSheetData.Add(new SheetData(data.DataSetName, new TextContent(formatXml(allSheetDataXml))));
+                allSheetData.Add(new SheetData(rawData.data.DataSetName, new TextContent(formatXml(allSheetDataXml))));
             }
             return allSheetData;
         }
 
-        private XmlNode ConvertSheet(DataTable sheet,XmlDocument xd,out string sheetName)
-        {
+        //private XmlNode ConvertSheet(DataTable sheet,XmlDocument xd,out string sheetName)
+        //{
 
-            //保存表头的索引
-            List<RowHead> rowHeads = new List<RowHead>();
+        //    //保存表头的索引
+        //    List<RowHead> rowHeads = new List<RowHead>();
 
-            int startCol; //开始列号
+        //    int startCol; //开始列号
 
-            //判断是否排除第一列
-            startCol = _setting.excludeFirstCol ? 1 : 0;
-            sheetName = _setting.excludeFirstCol ? sheet.Rows[0][0].ToString() : sheet.TableName;
+        //    //判断是否排除第一列
+        //    startCol = _setting.excludeFirstCol ? 1 : 0;
+        //    sheetName = _setting.excludeFirstCol ? sheet.Rows[0][0].ToString() : sheet.TableName;
 
-            sheetName = sheetName.Replace("\n","");
-            if (string.IsNullOrEmpty(sheetName))
-            {
-                sheetName = "Empty";
-            }
-            //列表头索引和名字获取
-            for (int i = startCol; i < sheet.Columns.Count; i++)
-            {
-                var fieldName = sheet.Rows[_setting.FieldRowNum][i].ToString();
-                fieldName = fieldName.Replace("\n", "").Replace("#","").Replace("-","").Replace(" ", ""); //xml不能包含的字符
-                if (string.IsNullOrWhiteSpace(fieldName)) continue; 
-                rowHeads.Add(new RowHead(fieldName, i));
-            }
-            if (rowHeads.Count == 0) return null;
+        //    sheetName = sheetName.Replace("\n","");
+        //    if (string.IsNullOrEmpty(sheetName))
+        //    {
+        //        sheetName = "Empty";
+        //    }
+        //    //列表头索引和名字获取
+        //    for (int i = startCol; i < sheet.Columns.Count; i++)
+        //    {
+        //        var fieldName = sheet.Rows[_setting.FieldRowNum][i].ToString();
+        //        fieldName = fieldName.Replace("\n", "").Replace("#","").Replace("-","").Replace(" ", ""); //xml不能包含的字符
+        //        if (string.IsNullOrWhiteSpace(fieldName)) continue; 
+        //        rowHeads.Add(new RowHead(fieldName, i));
+        //    }
+        //    if (rowHeads.Count == 0) return null;
 
-            XmlElement root = xd.CreateElement($"{sheetName}s");
+        //    XmlElement root = xd.CreateElement($"{sheetName}s");
 
-            //遍历每行根据表头转换成对象字典
-            for (int i = _setting.StartRowNum; i < sheet.Rows.Count; i++)
-            {
-                //每一行 读取一个对象，以sheet名包围
-                //创建一个子节点
-                XmlElement child = xd.CreateElement(sheetName);
+        //    //遍历每行根据表头转换成对象字典
+        //    for (int i = _setting.StartRowNum; i < sheet.Rows.Count; i++)
+        //    {
+        //        //每一行 读取一个对象，以sheet名包围
+        //        //创建一个子节点
+        //        XmlElement child = xd.CreateElement(sheetName);
 
-                //遍历表头获取值并作为子节点的子节点
-                for (int j = 0; j < rowHeads.Count; j++)
-                {
-                    //获取值
-                    int columnIndex = rowHeads[j].index;
-                    object value = sheet.Rows[i][columnIndex];
+        //        //遍历表头获取值并作为子节点的子节点
+        //        for (int j = 0; j < rowHeads.Count; j++)
+        //        {
+        //            //获取值
+        //            int columnIndex = rowHeads[j].index;
+        //            object value = sheet.Rows[i][columnIndex];
 
 
-                    //为空时的处理
-                    if (value.GetType() == typeof(System.DBNull) && string.IsNullOrWhiteSpace(value.ToString()))
-                    {
-                        continue;
-                    }
-                    value = DataValueUtil.GetIntValue(value);
+        //            //为空时的处理
+        //            if (value.GetType() == typeof(System.DBNull) && string.IsNullOrWhiteSpace(value.ToString()))
+        //            {
+        //                continue;
+        //            }
+        //            value = DataValueUtil.GetIntValue(value);
 
-                    XmlElement innerChild = xd.CreateElement(rowHeads[j].fieldName);
-                    innerChild.InnerText = value.ToString();
-                    child.AppendChild(innerChild);
-                }
-                if (child.ChildNodes.Count != 0)
-                {
-                    root.AppendChild(child);
-                }
-            }
-            return root;
-        }
+        //            XmlElement innerChild = xd.CreateElement(rowHeads[j].fieldName);
+        //            innerChild.InnerText = value.ToString();
+        //            child.AppendChild(innerChild);
+        //        }
+        //        if (child.ChildNodes.Count != 0)
+        //        {
+        //            root.AppendChild(child);
+        //        }
+        //    }
+        //    return root;
+        //}
 
         private string formatXml(XmlDocument xd)
         {
