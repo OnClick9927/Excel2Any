@@ -34,7 +34,7 @@ namespace Excel2Any
                     sb.Append("    {");
                     for (int headIndex = 0; headIndex < rowHeads.Count; headIndex++)
                     {
-                        object value = sheet.Rows[rowIndex][rowHeads[headIndex].index];
+                        object value = sheet.Rows[rowIndex][headIndex];
                         #region 对单元格进行处理
                         //为空时的处理
                         if (value.GetType() != typeof(System.DBNull))
