@@ -64,7 +64,6 @@
             this.uiText.TabIndex = 3;
             this.uiText.Text = "文本区";
             this.uiText.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.uiText.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // tabSheets
             // 
@@ -73,8 +72,7 @@
             this.tabSheets.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabSheets.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
             this.tabSheets.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tabSheets.Frame = null;
-            this.tabSheets.ItemSize = new System.Drawing.Size(80, 30);
+            this.tabSheets.ItemSize = new System.Drawing.Size(110, 30);
             this.tabSheets.Location = new System.Drawing.Point(0, 0);
             this.tabSheets.MainPage = "";
             this.tabSheets.MenuStyle = Sunny.UI.UIMenuStyle.Custom;
@@ -91,7 +89,6 @@
             this.tabSheets.TabSelectedForeColor = System.Drawing.Color.White;
             this.tabSheets.TabSelectedHighColor = System.Drawing.Color.White;
             this.tabSheets.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tabSheets.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // btnSetting
             // 
@@ -120,7 +117,6 @@
             this.btnSetting.TabIndex = 4;
             this.btnSetting.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiToolTip1.SetToolTip(this.btnSetting, "转到设置");
-            this.btnSetting.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
             // 
             // btnRefresh
@@ -150,7 +146,6 @@
             this.btnRefresh.TabIndex = 3;
             this.btnRefresh.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiToolTip1.SetToolTip(this.btnRefresh, "刷新目录");
-            this.btnRefresh.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnOpen
@@ -180,7 +175,6 @@
             this.btnOpen.TabIndex = 1;
             this.btnOpen.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiToolTip1.SetToolTip(this.btnOpen, "打开文件夹");
-            this.btnOpen.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
             // btnSave
@@ -210,7 +204,6 @@
             this.btnSave.TabIndex = 2;
             this.btnSave.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiToolTip1.SetToolTip(this.btnSave, "保存所有文件");
-            this.btnSave.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // pnlFiles
@@ -232,7 +225,6 @@
             this.pnlFiles.TabIndex = 5;
             this.pnlFiles.Text = "文件列表";
             this.pnlFiles.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.pnlFiles.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // splitContainer1
             // 
@@ -281,7 +273,6 @@
             this.pnlOperations.TabIndex = 0;
             this.pnlOperations.Text = null;
             this.pnlOperations.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.pnlOperations.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // uiToolTip1
             // 

@@ -17,23 +17,13 @@ namespace Excel2Any.Winform
         /// <summary>
         /// 是否排除文件（读取文件的时候使用）
         /// </summary>
-        [SettingAttribute("根据前缀排除文件", "读取文件夹时，跳过带排除前缀的文件名和文件夹", priority = 102)]
+        [SettingAttribute("根据字符排除文件", "读取文件夹时，跳过带特定字符的文件名和文件夹", priority = 102)]
         public bool excludeFile;
         /// <summary>
         /// 是否打开上次路径
         /// </summary>
         [SettingAttribute("打开上一次的文件夹", "在程序打开时自动打开上一次打开的文件夹", priority = 103)]
         public bool openLast;
-        /// <summary>
-        /// 是否是绝对路径
-        /// </summary>
-        [SettingAttribute("是否为绝对路径", "文件夹路径是否以绝对路径保存", priority = 104)]
-        public bool pathIsAbsolute;
-        /// <summary>
-        /// 用户设置的相对路径
-        /// </summary>
-        [SettingAttribute("设置的相对路径", "当不使用绝对路径时，自动拼接相对路径", textType = StringType.Directory, priority = 105)]
-        public string relativePath;
         /// <summary>
         /// 上次打开路径
         /// </summary>
@@ -49,8 +39,6 @@ namespace Excel2Any.Winform
         public FormSetting()
         {
             openLast = false;
-            pathIsAbsolute = false;
-            relativePath = "";
             lastOpenPath = "";
             isExpand = false;
             plan = "default";

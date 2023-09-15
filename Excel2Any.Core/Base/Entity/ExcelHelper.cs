@@ -233,6 +233,8 @@ namespace Excel2Any
                 //获取sheet名，判断是否需要排除
                 var tabelName = _common.excludeFirstCol ? sheet.Rows[0][0].ToString() : sheet.TableName;
                 if (_common.excludeSheet && tabelName.Contains(_common.excludeSheetString)) continue;
+                if (result.Tables.Contains(tabelName)) continue;
+
 
                 //保存表头的索引
                 var rowHeads = new List<RowHead>();

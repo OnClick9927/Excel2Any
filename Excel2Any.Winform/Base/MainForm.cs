@@ -55,30 +55,7 @@ namespace Excel2Any.Winform
             Aside.SelectFirst();
 
             //程序设置部分
-            var path = "";
-            if (_formSetting.pathIsAbsolute)
-            {
-                path = _formSetting.lastOpenPath;
-            }
-            else
-            {
-                if (_formSetting.lastOpenPath.StartsWith("\\"))
-                {
-
-                    path = _formSetting.relativePath + _formSetting.lastOpenPath;
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(_formSetting.relativePath))
-                    {
-                        path = _formSetting.relativePath + "\\" + _formSetting.lastOpenPath;
-                    }
-                    else
-                    {
-                        path = _formSetting.lastOpenPath;
-                    }
-                }
-            }
+            var path = _formSetting.lastOpenPath;
             if (_formSetting.openLast && !string.IsNullOrEmpty(path) && Directory.Exists(path))
             {
                 OpenFileOrDirectory(path);
@@ -160,11 +137,11 @@ namespace Excel2Any.Winform
 
         private void tvwFile_DragEnter(object sender, DragEventArgs e)
         {
-            if (tvwFile.Nodes.Count > 0 && Directory.Exists(tvwFile.Nodes[0].Tag + tvwFile.Nodes[0].Text))
-            {
-                e.Effect = DragDropEffects.None;
-                return;
-            }
+            //if (tvwFile.Nodes.Count > 0 && Directory.Exists(tvwFile.Nodes[0].Tag + tvwFile.Nodes[0].Text))
+            //{
+            //    e.Effect = DragDropEffects.None;
+            //    return;
+            //}
             e.Effect = DragDropEffects.All;
         }
         private void tvwFile_DragDrop(object sender, DragEventArgs e)
@@ -217,7 +194,7 @@ namespace Excel2Any.Winform
             switch (pathType)
             {
                 case PathType.File:
-                    OpenFile(path);
+                    UIMessageTip.ShowError("请拖入文件夹！");
                     break;
                 case PathType.Folder:
                     OpenDirectory(path);
@@ -228,34 +205,6 @@ namespace Excel2Any.Winform
             }
         }
 
-        /// <summary>
-        /// 打开文件
-        /// </summary>
-        /// <param name="path">路径</param>
-        private void OpenFile(string path)
-        {
-            //如果是文件则单独将文件加入TreeView
-            if (IsExcelFile(path))
-            {
-                if (IsInNodes(path))
-                {
-                    UIMessageTip.ShowError("文件已经在列表中了");
-                }
-                else
-                {
-                    UIMessageTip.ShowOk("这是一个Excel文件");
-                    var node = tvwFile.Nodes.Add(path.Substring(path.LastIndexOf('\\') + 1));
-                    //将路径存到tag中 增加TreeView的可读性
-                    node.Tag = path.Substring(0, path.LastIndexOf('\\') + 1);
-                    node.ToolTipText = path;
-                    node.ImageIndex = 1;
-                }
-            }
-            else
-            {
-                UIMessageTip.ShowError("这不是Excel文件");
-            }
-        }
 
         /// <summary>
         /// 打开文件夹
@@ -277,33 +226,11 @@ namespace Excel2Any.Winform
 
             tvwFile.ExpandAll();
 
-
-            //更新设置
-            if (_formSetting.pathIsAbsolute)
-            {
-                _formSetting.lastOpenPath = path;
-            }
-            else
-            {
-                _formSetting.lastOpenPath = GetRelativePath(_formSetting.relativePath, path);
-            }
+            _formSetting.lastOpenPath = path;
             SettingHelper.SaveSetting(_formSetting);
+            ((SettingPage)GetPage(settingPageIndex))?.RefreshUI();
         }
 
-        static string GetRelativePath(string parentPath, string childPath)
-        {
-            if (parentPath.Length == 0)
-            {
-                return childPath;
-            }
-            Uri parentUri = new Uri(parentPath);
-            Uri childUri = new Uri(childPath);
-
-            Uri relativeUri = parentUri.MakeRelativeUri(childUri);
-
-            string path = Uri.UnescapeDataString(relativeUri.ToString());
-            return path.Right(path.Length - path.IndexOf('/')).Replace("/", "\\");
-        }
 
         /// <summary>
         /// 递归遍历文件夹及其文件

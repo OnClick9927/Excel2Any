@@ -11,6 +11,7 @@ namespace Excel2Any.Winform
     {
 
         UIScrollBar VBar = new UIScrollBar();
+        UIHorScrollBar HBar = new UIHorScrollBar();
         FastColoredTextBox textBox = new FastColoredTextBox();
 
         UIContextMenuStrip menuStrip = new UIContextMenuStrip();
@@ -44,6 +45,13 @@ namespace Excel2Any.Winform
             VBar.HoverColor = Color.FromArgb(79, 79, 79);
             VBar.PressColor = Color.FromArgb(94, 94, 94);
             VBar.ShowLeftLine = false;
+
+            HBar.Parent = this;
+            HBar.StyleCustomMode = true;
+            HBar.FillColor = Color.FromArgb(30, 30, 30);
+            HBar.ForeColor = Color.FromArgb(66, 66, 66);
+            HBar.HoverColor = Color.FromArgb(79, 79, 79);
+            HBar.PressColor = Color.FromArgb(94, 94, 94);
 
             textBox.AutoCompleteBracketsList = new char[] { '(', ')', '{', '}', '[', ']', '\"', '\"', '\'', '\'' };
             textBox.AutoScrollMinSize = new Size(0, 0);
@@ -95,10 +103,14 @@ namespace Excel2Any.Winform
             menuItemCopyAll.Click += new EventHandler(MenuItemCopyAll_Click);
 
 
-            textBox.Scroll += (sender, e) => { RefreshVBarValue(); };
+            textBox.Scroll += (sender, e) => { RefreshBarValue(); };
             textBox.ClientSizeChanged += (sender, e) => { SetScrollInfo(); };
             textBox.MouseWheel += TextBox_MouseWheel;
             VBar.ValueChanged += (sender, e) => { SetPanelVBarValue(); };
+            HBar.ValueChanged += (sender, e) => { SetPanelHBarValue(); };
+
+            VBar.MouseCaptureChanged += (sender, e) => { textBox.Refresh(); };
+            HBar.MouseCaptureChanged += (sender, e) => { textBox.Refresh(); };
 
             Controls.Add(textBox);
             Controls.Add(VBar);
@@ -118,8 +130,6 @@ namespace Excel2Any.Winform
                 SetScrollInfo();
             }
         }
-
-
         public void Add(Control control)
         {
             textBox.Controls.Add(control);
@@ -142,8 +152,20 @@ namespace Excel2Any.Winform
                     //VBar.LargeChange = base.VerticalScroll.LargeChange;
                 }
                 VBar.Visible = textBox.VerticalScroll.Visible;
-                SetBarPosition();
+                
             }
+
+            if (HBar != null)
+            {
+                if (textBox.HorizontalScroll.Visible)
+                {
+                    HBar.Maximum = textBox.HorizontalScroll.Maximum - textBox.Size.Width - textBox.HorizontalScroll.Minimum;
+                    HBar.Value = textBox.HorizontalScroll.Value;
+                }
+                HBar.Visible = textBox.HorizontalScroll.Visible;
+            }
+
+            SetBarPosition();
         }
         private void SetBarPosition()
         {
@@ -155,18 +177,35 @@ namespace Excel2Any.Winform
                 VBar.Height = base.Height;
                 VBar.BringToFront();
             }
+
+
+            if (HBar != null)
+            {
+                HBar.Left = 0;
+                HBar.Top = base.Height - ScrollBarInfo.HorizontalScrollBarHeight() - 1;
+                HBar.Height = ScrollBarInfo.HorizontalScrollBarHeight() + 1;
+                HBar.Width = base.Width;
+                HBar.BringToFront();
+            }
         }
-        private void RefreshVBarValue()
+        private void RefreshBarValue()
         {
             VBar.Value = textBox.VerticalScroll.Value;
+            HBar.Value = textBox.HorizontalScroll.Value;
         }
         private void SetPanelVBarValue()
         {
             textBox.VerticalScroll.Value = VBar.Value;
         }
+
+        private void SetPanelHBarValue()
+        {
+            textBox.HorizontalScroll.Value = HBar.Value;
+        }
+
         private void TextBox_MouseWheel(object sender, MouseEventArgs e)
         {
-            RefreshVBarValue();
+            RefreshBarValue();
         }
 
         private void MenuItemCopyAll_Click(object sender, EventArgs e)
