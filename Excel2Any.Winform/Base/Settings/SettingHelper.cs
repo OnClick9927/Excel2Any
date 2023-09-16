@@ -191,9 +191,15 @@ namespace Excel2Any.Winform
         {
             List<string> plans = new List<string>();
             var path = "Settings";
+            DirectoryInfo[] dii;
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                _=CreatePlan("default");
+            }
 
             DirectoryInfo dir = new DirectoryInfo(path);
-            DirectoryInfo[] dii = dir.GetDirectories();
+            dii = dir.GetDirectories();
 
             foreach (DirectoryInfo info in dii)
             {
