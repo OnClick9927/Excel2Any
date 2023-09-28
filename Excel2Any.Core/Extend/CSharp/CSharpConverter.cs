@@ -28,7 +28,7 @@ namespace Excel2Any
                 StringBuilder sb = new StringBuilder();
 
                 var sheetName = sheet.TableName;
-                sb.AppendLine($"public class {sheetName}\r\n{{");
+                sb.AppendLine($"public {(_setting.IsPartial? "partial ":"")}class {sheetName}\r\n{{");
                 //遍历列 根据配置里设置的行号来确认字段的类型、名称和描述
                 for (int j = 0; j < heads.Count; j++)
                 {

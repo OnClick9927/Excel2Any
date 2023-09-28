@@ -1,5 +1,4 @@
 ﻿using FastColoredTextBoxNS;
-using Sunny.UI;
 using System;
 using System.Windows.Forms;
 
@@ -17,7 +16,7 @@ namespace Excel2Any.Winform
         }
 
 
-        private void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
+        public override void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabSheets.SelectedIndex == -1) return;
             tabSheets.TabPages[tabSheets.SelectedIndex].Controls.Add(txtCode);

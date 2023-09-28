@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using ExcelDataReader;
+using Microsoft.Win32;
 
 namespace Excel2Any
 {
@@ -34,7 +35,7 @@ namespace Excel2Any
         public static void Init(CommonSetting common)
         {
             _common = common;
-            SetAllDirty();
+            SetAllResultsDirty();
         }
         public static IEnumerable<Type> GetSubTypesInAssemblys(Type self)
         {
@@ -134,7 +135,7 @@ namespace Excel2Any
         /// </summary>
         /// <param name="entityType">转换器类型</param>
         /// <param name="path">路径</param>
-        public static void SetDirty(Type entityType, string path)
+        public static void SetResultDirty(Type entityType, string path)
         {
             if (!results.ContainsKey(entityType)) return;
             if (results[entityType].ContainsKey(path))
@@ -146,7 +147,7 @@ namespace Excel2Any
         /// 清除对应类型的所有缓存
         /// </summary>
         /// <param name="entityType"></param>
-        public static void SetAllDirty(Type entityType = null)
+        public static void SetAllResultsDirty(Type entityType = null)
         {
             if (entityType == null)
                 results.Clear();
@@ -157,7 +158,17 @@ namespace Excel2Any
                     results[entityType].Clear();
                 }
             }
+        }
 
+        public static void SetHistoryDirty(string path)
+        {
+            if (!history.ContainsKey(path)) return;
+            else history.Remove(path);
+        }
+
+        public static void SetAllHistoryDirty()
+        {
+            history.Clear();
         }
 
         public static List<SheetData> GetSheets(Type entityType, string path)
@@ -173,6 +184,16 @@ namespace Excel2Any
             }
             return results[entityType][path];
         }
+
+        public static List<List<RowHead>> GetRowHeads(Type entityType, string path)
+        {
+            if (!history.ContainsKey(path))
+            {
+                Create(entityType, path);
+            }
+            return history[path].headsCollection;
+        }
+
         private static bool CheckHistoiry(string path)
         {
             FileInfo fileInfo = new FileInfo(path);
@@ -203,7 +224,9 @@ namespace Excel2Any
                         {
                             var data = reader.AsDataSet(dataSetConfig);
                             var headsCollection = new List<List<RowHead>>();
-                            var result = CreateRawData(data, out headsCollection);
+                            //获取一个保存Key的字典，先判断有没有文件夹和文件，如果没有就创建
+                            var keys = ReadKey(path);
+                            var result = CreateRawData(data, keys, out headsCollection);
                             result.DataSetName = fileInfo.Name.Substring(0, fileInfo.Name.IndexOf("."));
 
                             RawDataDetail hisData = new RawDataDetail(CRC.GetFileCRC(path), result, headsCollection);
@@ -222,7 +245,7 @@ namespace Excel2Any
             results[entityType][fileInfo.FullName] = entity.Convert(history[fileInfo.FullName]);
 
         }
-        private static DataSet CreateRawData(DataSet dataSet, out List<List<RowHead>> headsCollection)
+        private static DataSet CreateRawData(DataSet dataSet, HashSet<string> keys, out List<List<RowHead>> headsCollection)
         {
             var result = new DataSet();
             headsCollection = new List<List<RowHead>>();
@@ -275,7 +298,7 @@ namespace Excel2Any
                             fieldComment = sheet.Rows[_common.CommentRowNum][i].ToString();
                         }
 
-                        rowHeads.Add(new RowHead(fieldName, i, fieldTypeName, fieldComment));
+                        rowHeads.Add(new RowHead(fieldName, i, fieldTypeName, fieldType, fieldComment, keys.Contains(fieldName)));
 
                         resultTable.Columns.Add(fieldName, fieldType);
                     }
@@ -293,12 +316,18 @@ namespace Excel2Any
                         for (int j = 0; j < rowHeads.Count; j++)
                         {
                             object value = sheet.Rows[i][rowHeads[j].index];
+
+                            //增加判断数组
+                            if (rowHeads[j].type.IsArray)
+                            {
+                                value = GetArrayByString(value.ToString(), rowHeads[j].type.GetArrayRank());
+                            }
                             row[j] = value;
                         }
                         resultTable.Rows.Add(row);
                     }
                 }
-                
+
                 headsCollection.Add(rowHeads);
                 result.Tables.Add(resultTable);
             }
@@ -317,6 +346,76 @@ namespace Excel2Any
             var entity = GetEntity(entityType);
 
             entity.Save2File(GetSheets(entityType, path), filename);
+        }
+        private static object GetArrayByString(object value, int rank)
+        {
+            var str = value as string;
+            if (rank == 1)
+            {
+                str = str.Replace("[", "").Replace("]", "");
+
+                if (string.IsNullOrWhiteSpace(str)) return null;
+                return str.Split(',');
+            }
+            else if (rank == 2)
+            {
+                str = str.Replace("[[", "").Replace("]]", "").Replace("],[", "[");
+
+                if (string.IsNullOrWhiteSpace(str)) return null;
+                var rows = str.Split('[');
+
+                int rowCount = rows.Length;
+                int colCount = rows[0].Split(',').Length;
+
+                string[,] myArray = new string[rowCount, colCount];
+
+                for (int i = 0; i < rowCount; i++)
+                {
+                    try
+                    {
+                        string[] elements = rows[i].Split(',');
+                        for (int j = 0; j < colCount; j++)
+                        {
+                            myArray[i, j] = elements[j];
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+
+                }
+                return myArray;
+            }
+            else return value;
+        }
+
+        private static HashSet<string> ReadKey(string path)
+        {
+            var keys = new HashSet<string>();
+            var keyDir = Path.GetDirectoryName(path) + "/.keys";
+            var fileName = Path.GetFileNameWithoutExtension(path);
+            if (Directory.Exists(keyDir))
+            {
+                var keyFileDir = Path.Combine(keyDir, fileName);
+                if (File.Exists(keyFileDir))
+                {
+                    var str = File.ReadAllText(keyFileDir);
+                    try
+                    {
+                        keys = Newtonsoft.Json.JsonConvert.DeserializeObject<HashSet<string>>(str);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            if (keys is null)
+            {
+
+                keys = new HashSet<string>();
+            }
+            return keys;
         }
     }
 }

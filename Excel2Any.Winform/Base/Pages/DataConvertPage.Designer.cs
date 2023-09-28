@@ -40,7 +40,6 @@
             // tabSheets
             // 
             this.tabSheets.Size = new System.Drawing.Size(536, 450);
-            this.tabSheets.SelectedIndexChanged += new System.EventHandler(this.tabSheets_SelectedIndexChanged);
             // 
             // grdData
             // 

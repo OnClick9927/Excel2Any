@@ -129,7 +129,7 @@ namespace Excel2Any.Winform
                 var path = tvwFile.Nodes[0].Tag + node.FullPath;
                 if (IsExcelFile(path))
                 {
-                    page.SetSheets(ExcelHelper.GetSheets(currentPage.entityType, path));
+                    page.SetSheetsAndRows(ExcelHelper.GetSheets(currentPage.entityType, path), ExcelHelper.GetRowHeads(currentPage.entityType, path),path);
                 }
 
             }

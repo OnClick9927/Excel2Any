@@ -1,88 +1,104 @@
-﻿
-using FastColoredTextBoxNS;
+﻿using Excel2Any.Winform.Base.CustomControls;
+using Newtonsoft.Json;
 using Sunny.UI;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Globalization;
-using System.Text.RegularExpressions;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Excel2Any.Winform
 {
-    public partial class LuaConvertPage : TextConvertPage
+    public partial class LuaConvertPage : BaseConvertPage
     {
-        protected Regex LuaCommentRegex1,
-                      LuaCommentRegex2,
-                      LuaCommentRegex3;
-
-        protected Regex LuaKeywordRegex;
-        protected Regex LuaNumberRegex;
-        protected Regex LuaStringRegex;
-        protected Regex LuaFunctionsRegex;
+        protected mTextBox txtCode = new mTextBox();
+        protected TableLayoutPanel pnlLua = new TableLayoutPanel();
+        protected mLuaKeys grdData = new mLuaKeys();
         public LuaConvertPage()
         {
             InitializeComponent();
 
-            LuaStringRegex = new Regex(@"""""|''|"".*?[^\\]""|'.*?[^\\]'");
-            LuaCommentRegex1 = new Regex(@"--.*$", RegexOptions.Multiline);
-            LuaCommentRegex2 = new Regex(@"(--\[\[.*?\]\])|(--\[\[.*)", RegexOptions.Singleline);
-            LuaCommentRegex3 = new Regex(@"(--\[\[.*?\]\])|(.*\]\])",
-                                             RegexOptions.Singleline | RegexOptions.RightToLeft);
-            LuaNumberRegex = new Regex(@"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b");
-            LuaKeywordRegex =
-                new Regex(
-                    @"\b(and|break|do|else|elseif|end|false|for|function|if|in|local|nil|not|or|repeat|return|then|true|until|while)\b");
+            grdData.Parent = pnlLua;
+            txtCode.Parent = pnlLua;
 
-            LuaFunctionsRegex =
-                new Regex(
-                    @"\b(assert|collectgarbage|dofile|error|getfenv|getmetatable|ipairs|load|loadfile|loadstring|module|next|pairs|pcall|print|rawequal|rawget|rawset|require|select|setfenv|setmetatable|tonumber|tostring|type|unpack|xpcall)\b");
+            grdData.Height = 80;
+
+            pnlLua.Dock = DockStyle.Fill;
+
+            grdData.Dock = DockStyle.Top;
+            txtCode.Dock = DockStyle.Fill;
+            txtCode.TextChanged += txtCode_TextChanged;
+            grdData.OnKeyChange += SaveKeys;
         }
 
 
-        Style StringStyle = new TextStyle(new SolidBrush(Color.FromArgb(255, 206, 146, 120)), null, FontStyle.Regular);
-        Style CommentStyle = new TextStyle(new SolidBrush(Color.FromArgb(255, 106, 153, 85)), null, FontStyle.Regular);
-        Style NumberStyle = new TextStyle(new SolidBrush(Color.FromArgb(255, 181, 206, 168)), null, FontStyle.Regular);
-        Style KeywordStyle = new TextStyle(new SolidBrush(Color.FromArgb(255, 86, 156, 214)), null, FontStyle.Regular);
-        Style FunctionsStyle = new TextStyle(new SolidBrush(Color.FromArgb(255, 220, 220, 170)), null, FontStyle.Regular);
-
-        private void LuaSyntaxHighlight(TextChangedEventArgs e)
+        public override void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
         {
-            e.ChangedRange.tb.CommentPrefix = "--";
-            e.ChangedRange.tb.LeftBracket = '(';
-            e.ChangedRange.tb.RightBracket = ')';
-            e.ChangedRange.tb.LeftBracket2 = '{';
-            e.ChangedRange.tb.RightBracket2 = '}';
-            e.ChangedRange.tb.BracketsHighlightStrategy = BracketsHighlightStrategy.Strategy2;
+            if (tabSheets.SelectedIndex == -1) return;
+            tabSheets.TabPages[tabSheets.SelectedIndex].Controls.Add(pnlLua);
+            RefreshDataGrid(_rows[tabSheets.SelectedIndex]);
+            txtCode.Text = _sheets[tabSheets.SelectedIndex].content.ToString();
+        }
 
-            e.ChangedRange.tb.AutoIndentCharsPatterns
-                = "\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>.+)\n";
+        public override void RefreshSheet()
+        {
+            pnlLua.Visible = false;
+            if (RefreshTab())
+            {
+                tabSheets.TabPages[0].Controls.Add(pnlLua);
+                RefreshDataGrid(_rows[0]);
+                txtCode.Text = _sheets[0].content.ToString();
 
-            //clear style of changed range
-            e.ChangedRange.ClearStyle(StringStyle, CommentStyle, NumberStyle, KeywordStyle, FunctionsStyle);
-            //string highlighting
-            e.ChangedRange.SetStyle(StringStyle, LuaStringRegex);
-            //comment highlighting
-            e.ChangedRange.SetStyle(CommentStyle, LuaCommentRegex1);
-            e.ChangedRange.SetStyle(CommentStyle, LuaCommentRegex2);
-            e.ChangedRange.SetStyle(CommentStyle, LuaCommentRegex3);
-            //number highlighting
-            e.ChangedRange.SetStyle(NumberStyle, LuaNumberRegex);
-            //keyword highlighting
-            e.ChangedRange.SetStyle(KeywordStyle, LuaKeywordRegex);
-            //functions highlighting
-            e.ChangedRange.SetStyle(FunctionsStyle, LuaFunctionsRegex);
-            //clear folding markers
-            e.ChangedRange.ClearFoldingMarkers();
-            //set folding markers
-            e.ChangedRange.SetFoldingMarkers("{", "}"); //allow to collapse brackets block
-            e.ChangedRange.SetFoldingMarkers(@"--\[\[", @"\]\]"); //allow to collapse comment block
+                pnlLua.Visible = true;
+            }
+        }
 
+        private void RefreshDataGrid(List<RowHead> rows)
+        {
+            grdData.ClearAll();
+
+            DataGridViewRow row = new DataGridViewRow();
+
+            for (int i = 0; i < rows.Count; i++)
+            {
+                var fieldName = rows[i].fieldName;
+                var isKey = rows[i].isKey;
+                var col = grdData.AddColumn(fieldName, fieldName);
+                col.Tag = isKey;
+                col.DefaultCellStyle.NullValue = null;
+
+                DataGridViewImageCell imageCell = new DataGridViewImageCell();
+                imageCell.Value = isKey ? Properties.Resources.key : null;
+                row.Cells.Add(imageCell);
+            }
+
+            grdData.Rows.Add(row);
         }
 
 
-        protected override void txtCode_TextChanged(object sender, TextChangedEventArgs e)
+        public void SaveKeys(HashSet<string> keys)
         {
-            LuaSyntaxHighlight(e);
+            //将文件用Json序列化至文件目录下的.keys文件夹下的同名文件
+            var keyDir = Path.GetDirectoryName(_path) + "/.keys";
+            var fileName = Path.GetFileNameWithoutExtension(_path);
+            var keyFileDir = Path.Combine(keyDir, fileName);
+            if (!Directory.Exists(keyDir))
+            {
+                var dir = Directory.CreateDirectory(keyDir);
+                dir.Attributes |= FileAttributes.Hidden;
+            }
+
+            using (FileStream file = new FileStream(keyFileDir, FileMode.Create, FileAccess.Write))
+            {
+                var encoding = new UTF8Encoding(false);
+                using (TextWriter writer = new StreamWriter(file, encoding))
+                {
+                    var str = JsonConvert.SerializeObject(keys);
+                    writer.Write(str);
+                }
+            }
+            //ExcelHelper.SetResultDirty(_path);
         }
     }
 }

@@ -62,7 +62,7 @@
             this.uiText.Size = new System.Drawing.Size(536, 400);
             this.uiText.Style = Sunny.UI.UIStyle.Custom;
             this.uiText.TabIndex = 3;
-            this.uiText.Text = "文本区";
+            this.uiText.Text = null;
             this.uiText.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tabSheets
@@ -89,6 +89,7 @@
             this.tabSheets.TabSelectedForeColor = System.Drawing.Color.White;
             this.tabSheets.TabSelectedHighColor = System.Drawing.Color.White;
             this.tabSheets.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tabSheets.SelectedIndexChanged += new System.EventHandler(this.tabSheets_SelectedIndexChanged);
             // 
             // btnSetting
             // 

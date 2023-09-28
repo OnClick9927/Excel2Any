@@ -12,13 +12,17 @@ namespace Excel2Any
         public int index;
         public string typeName;
         public string comment;
+        public bool isKey;
+        public Type type;
 
-        public RowHead(string rowName, int index,string typeName, string comment)
+        public RowHead(string rowName, int index,string typeName,Type type, string comment,bool iskey)
         {
+            this.type = type;
             this.fieldName = rowName;
             this.index = index;
             this.typeName = typeName;
             this.comment = comment;
+            this.isKey = iskey;
         }
     }
 }

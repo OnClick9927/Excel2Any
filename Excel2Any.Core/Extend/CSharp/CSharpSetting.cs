@@ -3,6 +3,15 @@
     [Entity(typeof(CSharpEntity))]
     public class CSharpSetting : BaseSetting
     {
+        /// <summary>
+        /// 是否为partial
+        /// </summary>
+        [SettingAttribute(
+            "使用partial类",
+            "使用关键字partial定义生成的类",
+            priority = 102
+            )]
+        public bool IsPartial;
 
         /// <summary>
         /// 是否为属性器
@@ -26,6 +35,7 @@
 
         public CSharpSetting() : base()
         {
+            IsPartial = true;
             IsProperty = true;
             separateBySheet = true;         //是否根据Sheet保存成多个文件
         }

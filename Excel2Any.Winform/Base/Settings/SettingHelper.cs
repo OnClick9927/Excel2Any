@@ -124,7 +124,7 @@ namespace Excel2Any.Winform
             {
                 SaveSetting(setting);
             }
-            ExcelHelper.SetAllDirty(entityType);
+            ExcelHelper.SetAllResultsDirty(entityType);
         }
         public static void LoadSetting(Type entityType, bool isSelect = false)
         {

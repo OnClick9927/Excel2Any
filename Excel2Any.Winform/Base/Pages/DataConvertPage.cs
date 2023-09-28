@@ -16,7 +16,7 @@ namespace Excel2Any.Winform
             grdData.RowHeadersVisible = false;
         }
 
-        protected virtual void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
+        public override void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabSheets.SelectedIndex == -1) return; 
             grdData.Visible = false;

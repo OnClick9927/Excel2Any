@@ -10,6 +10,11 @@ namespace Excel2Any.Winform
     public partial class BaseConvertPage : UIPage
     {
         public List<SheetData> _sheets;
+        public List<List<RowHead>> _rows;
+        public string _path;
+
+
+
         public Action<string> onFolderOpen;
         public Action onFolderRefresh;
         public Action onSettingClick;
@@ -32,11 +37,14 @@ namespace Excel2Any.Winform
         /// 设置内容
         /// </summary>
         /// <param name="sheets"></param>
-        public void SetSheets(List<SheetData> sheets)
+        public void SetSheetsAndRows(List<SheetData> sheets, List<List<RowHead>> rows,string path)
         {
             _sheets = sheets;
+            _rows = rows;
+            _path = path;
             RefreshSheet();
         }
+
         /// <summary>
         /// 将文件列表控件移过来
         /// </summary>
@@ -90,5 +98,9 @@ namespace Excel2Any.Winform
             return true;
         }
 
+        public virtual void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

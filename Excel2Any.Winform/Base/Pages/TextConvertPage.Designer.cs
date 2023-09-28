@@ -32,8 +32,8 @@
             // 
             // tabSheets
             // 
+            this.tabSheets.Location = new System.Drawing.Point(0, 0);
             this.tabSheets.Size = new System.Drawing.Size(536, 450);
-            this.tabSheets.SelectedIndexChanged += new System.EventHandler(this.tabSheets_SelectedIndexChanged);
             // 
             // TextConvertPage
             // 

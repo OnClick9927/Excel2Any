@@ -12,7 +12,7 @@ namespace Excel2Any.Winform
             grdData.RowHeadersVisible = false;
         }
 
-        protected override void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
+        public override void tabSheets_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabSheets.SelectedIndex == -1) return;
             tabSheets.TabPages[tabSheets.SelectedIndex].Controls.Add(grdData);

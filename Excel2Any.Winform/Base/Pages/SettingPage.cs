@@ -204,7 +204,7 @@ namespace Excel2Any.Winform
             if (entityType != null)
             {
                 ExcelHelper.GetEntity(entityType).SetSetting(setting);
-                ExcelHelper.SetAllDirty(entityType);
+                ExcelHelper.SetAllResultsDirty(entityType);
             }
         }
 

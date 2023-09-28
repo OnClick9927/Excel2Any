@@ -21,7 +21,39 @@ namespace Excel2Any
             { "obj", typeof(object) },
             { "object", typeof(object) },
 
-            { "datetime", typeof(DateTime) }
+            { "datetime", typeof(DateTime) },
+
+
+
+            { "string[]",typeof(string[]) },
+            { "byte[]", typeof(byte[])},
+            { "int[]", typeof(int[]) },
+            { "long[]", typeof(long[]) },
+            { "float[]", typeof(float[]) },
+            { "double[]", typeof(double[]) },
+
+            { "bool[]", typeof(bool[])},
+            { "boolean[]", typeof(bool[]) },
+
+            { "obj[]", typeof(object[]) },
+            { "object[]", typeof(object[]) },
+            { "datetime[]", typeof(DateTime[]) },
+
+
+            { "string[,]",typeof(string[,]) },
+            { "byte[,]", typeof(byte[,])},
+            { "int[,]", typeof(int[,]) },
+            { "long[,]", typeof(long[,]) },
+            { "float[,]", typeof(float[,]) },
+            { "double[,]", typeof(double[,]) },
+
+            { "bool[,]", typeof(bool[,])},
+            { "boolean[,]", typeof(bool[,]) },
+
+            { "obj[,]", typeof(object[,]) },
+            { "object[,]", typeof(object[,]) },
+            { "datetime[,]", typeof(DateTime[,]) },
+
         };
 
         private static Dictionary<Type, string> sqliteTypeDict = new Dictionary<Type, string>
@@ -48,7 +80,27 @@ namespace Excel2Any
             { typeof(double), "double" },
             { typeof(DateTime), "DateTime" },
             { typeof(object), "object" },
-            { typeof(bool), "bool" }
+            { typeof(bool), "bool" },
+
+            { typeof(string[]), "string[]" },
+            { typeof(byte[]), "byte[]" },
+            { typeof(int[]), "int[]" },
+            { typeof(long[]), "long[]" },
+            { typeof(float[]), "float[]" },
+            { typeof(double[]), "double[]" },
+            { typeof(DateTime[]), "DateTime[]" },
+            { typeof(object[]), "object[]" },
+            { typeof(bool[]), "bool[]" },
+
+            { typeof(string[,]), "string[,]" },
+            { typeof(byte[,]), "byte[,]" },
+            { typeof(int[,]), "int[,]" },
+            { typeof(long[,]), "long[,]" },
+            { typeof(float[,]), "float[,]" },
+            { typeof(double[,]), "double[,]" },
+            { typeof(DateTime[,]), "DateTime[,]" },
+            { typeof(object[,]), "object[,]" },
+            { typeof(bool[,]), "bool[,]" }
 
         };
 
