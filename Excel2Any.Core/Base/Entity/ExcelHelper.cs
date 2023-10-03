@@ -160,16 +160,12 @@ namespace Excel2Any
             }
         }
 
-        public static void SetHistoryDirty(string path)
+        public static void ReloadHead(string path)
         {
             if (!history.ContainsKey(path)) return;
             else history.Remove(path);
         }
 
-        public static void SetAllHistoryDirty()
-        {
-            history.Clear();
-        }
 
         public static List<SheetData> GetSheets(Type entityType, string path)
         {
@@ -178,7 +174,7 @@ namespace Excel2Any
                 results.Add(entityType, new Dictionary<string, List<SheetData>>());
             }
 
-            if (!results[entityType].ContainsKey(path) || history[path].crc != CRC.GetFileCRC(path))
+            if (!results[entityType].ContainsKey(path) || !history.ContainsKey(path) ||history[path].crc != CRC.GetFileCRC(path))
             {
                 Create(entityType, path);
             }

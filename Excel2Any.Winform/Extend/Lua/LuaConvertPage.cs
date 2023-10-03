@@ -98,7 +98,7 @@ namespace Excel2Any.Winform
                     writer.Write(str);
                 }
             }
-            //ExcelHelper.SetResultDirty(_path);
+            ExcelHelper.ReloadHead(_path);
         }
     }
 }
