@@ -160,7 +160,7 @@ namespace Excel2Any
             }
         }
 
-        public static void ReloadHead(string path)
+        public static void SetHistoryDirty(string path)
         {
             if (!history.ContainsKey(path)) return;
             else history.Remove(path);
@@ -403,6 +403,7 @@ namespace Excel2Any
                     }
                     catch (Exception)
                     {
+
                     }
                 }
             }
